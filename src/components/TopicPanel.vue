@@ -1,5 +1,8 @@
 <script setup>
 
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n() 
+
 import { computed } from 'vue';
 import { useMainStore } from '@/stores/MainStore.js'
 const GeocodeStore = useGeocodeStore();
@@ -57,21 +60,32 @@ const zipCode = computed(() => {
     </div>
     <div class="topic-panel-final-content">
       <h1 class="subtitle is-3">
-        Atlas is your front door to the City of Philadelphia.
+        Philadelphia's Voter Hub for personalized election information
       </h1>
       <p class="subtitle is-4">
-        Here are some things you can do with Atlas:
+        Search your home address or click on the map to:
       </p>
       <ul class="bullet-list">
         <li>Find your polling place</li>
-        <li>Get the history of permits, licenses, and inspections at any address</li>
-        <li>Research real estate information including property values, zoning, and document archives</li>
-        <li>Get easy access to a variety of hard-to-find City resources</li>
-        <li>View recent activity around your address, such as crimes, 311 service requests, and more</li>
-        <li>Explore historical imagery and maps</li>
+        <li>Check upcoming election dates</li>
+        <li>View your sample ballot</li>
+        <li>See mail-in voting drop-off locations near you</li>
+        <li>Look up your elected representatives and committeepeople</li>
       </ul>
       <br>
-      <p>To get started, click anywhere on the map, or type an address, intersection, property assessment account number, or Department of Records Map Registry number into the search box.</p>
+
+      <div
+        class="section-header"
+        :style="{ 'background-color': '#F0F0F0', 'color': 'black' }"
+      >
+        <b>{{ t('default.introPage.relatedContent') }}</b>
+      </div>
+      <div class="custom-section">
+        <ul class="custom-ul">
+          <li><a target="_blank" href="https://www.pavoterservices.pa.gov/pages/voterregistrationstatus.aspx">{{ t('default.introPage.link1') }}</a></li>
+          <li><a target="_blank" href="https://www.pavoterservices.pa.gov/pages/ballottracking.aspx">{{ t('default.introPage.link3') }}</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 

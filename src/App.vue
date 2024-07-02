@@ -4,6 +4,9 @@ if (import.meta.env.VITE_DEBUG == 'true') console.log('App.vue setup is running 
 import isMobileDevice from './util/is-mobile-device';
 import isMac from './util/is-mac';
 
+import i18nFromFiles from './i18n/i18n.js';
+const languages = i18nFromFiles.i18n.languages;
+
 // STORES
 import { useMainStore } from '@/stores/MainStore.js'
 const MainStore = useMainStore();
@@ -84,15 +87,15 @@ const fullScreenMapEnabled = computed(() => {
   return MainStore.fullScreenMapEnabled;
 });
 
-const appTitle = computed(() => {
-  let version = 'Atlas';
-  if (import.meta.env.VITE_VERSION == 'cityatlas'){
-    version = 'CityAtlas';
-  }
-  return version;
-})
+// const appTitle = computed(() => {
+//   let version = 'Atlas';
+//   if (import.meta.env.VITE_VERSION == 'cityatlas'){
+//     version = 'CityAtlas';
+//   }
+//   return version;
+// })
 
-document.title = appTitle.value + ' | phila.gov';
+// document.title = appTitle.value + ' | phila.gov';
 
 </script>
 
@@ -103,13 +106,21 @@ document.title = appTitle.value + ' | phila.gov';
   >Skip to main content</a>
 
   <app-header
-    :app-title="appTitle"
+    app-title="Voter Hub"
     app-link="/"
+    :branding-image="{
+      src: 'images/philadelphia-city-commissioners-logo-edit_6.png',
+      alt: 'Philadelphia City Commissioners logo',
+      width: '250px',
+    }"
     :is-sticky="true"
     :is-fluid="true"
   >
     <template #mobile-nav>
       <mobile-nav :links="links" />
+    </template>
+    <template #lang-selector-nav>
+      <lang-selector :languages="languages" />
     </template>
   </app-header>
 
@@ -154,6 +165,9 @@ document.title = appTitle.value + ' | phila.gov';
 
 <style>
 
+.branding-col {
+  padding-bottom: 0px !important;
+}
 
 
 </style>
