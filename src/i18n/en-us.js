@@ -2,7 +2,7 @@
 export default {
   "language": "English",
   "app": {
-    "title": "Atlas",
+    "title": "Voter Hub",
   },
   "default": {
     "introPage": {

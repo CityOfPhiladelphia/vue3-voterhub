@@ -1,6 +1,9 @@
 <script setup>
 if (import.meta.env.VITE_DEBUG == 'true') console.log('App.vue setup is running in debug mode');
 
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n() 
+
 import isMobileDevice from './util/is-mobile-device';
 import isMac from './util/is-mac';
 
@@ -106,10 +109,10 @@ const fullScreenMapEnabled = computed(() => {
   >Skip to main content</a>
 
   <app-header
-    app-title="Voter Hub"
+    :app-title="$t('app.title')"
     app-link="/"
     :branding-image="{
-      src: 'images/philadelphia-city-commissioners-logo-edit_6.png',
+      src: '/images/philadelphia-city-commissioners-logo-edit_6.png',
       alt: 'Philadelphia City Commissioners logo',
       width: '250px',
     }"

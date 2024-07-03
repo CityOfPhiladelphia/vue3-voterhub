@@ -209,7 +209,7 @@ const zipCode = computed(() => {
 
     <topic
       :topic-name="$t('pollingPlace.topic.pollingPlace')"
-      :topic-icon="'fa-solid fa-gavel'"
+      :topic-icon="'fa-solid fa-building'"
       :loading="!dataSourcesLoadedArray.includes('Voting')"
       :topic-index="5"
     >
