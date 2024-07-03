@@ -210,7 +210,7 @@ const zipCode = computed(() => {
     <topic
       :topic-name="$t('pollingPlace.topic.pollingPlace')"
       :topic-icon="'fa-solid fa-building'"
-      :loading="!dataSourcesLoadedArray.includes('Voting')"
+      :loading="!dataSourcesLoadedArray.includes('Polling Place')"
       :topic-index="5"
     >
       <PollingPlace />

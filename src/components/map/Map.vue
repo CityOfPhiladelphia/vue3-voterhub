@@ -26,14 +26,10 @@ import { useGeocodeStore } from '@/stores/GeocodeStore.js'
 const GeocodeStore = useGeocodeStore();
 import { useParcelsStore } from '@/stores/ParcelsStore.js'
 const ParcelsStore = useParcelsStore();
-import { useLiStore } from '@/stores/LiStore.js'
-const LiStore = useLiStore();
 import { useVotingStore } from '@/stores/VotingStore.js'
 const VotingStore = useVotingStore();
 import { useNearbyActivityStore } from '@/stores/NearbyActivityStore';
 const NearbyActivityStore = useNearbyActivityStore();
-import { use311Store } from '@/stores/311Store';
-const Nearby311Store = use311Store();
 
 // ROUTER
 import { useRouter, useRoute } from 'vue-router';
@@ -123,13 +119,6 @@ onMounted(async () => {
     }
   });
 
-  // if the L&I topic is selected, and a building footrprint is clicked, set the selected building number in the LiStore
-  map.on('click', 'liBuildingFootprints', (e) => {
-    // if (import.meta.env.VITE_DEBUG == 'true') console.log('liBuildingFootprints click, e:', e);
-    e.clickOnLayer = true;
-    LiStore.selectedLiBuildingNumber = e.features[0].properties.id;
-  });
-
   map.on('mouseenter', 'liBuildingFootprints', (e) => {
     if (e.features.length > 0) {
       map.getCanvas().style.cursor = 'pointer'
@@ -165,10 +154,6 @@ onMounted(async () => {
       idField = NearbyActivityStore.dataFields[properties.type].id_field;
       infoField = NearbyActivityStore.dataFields[properties.type].info_field;
       row = NearbyActivityStore[properties.type].rows.filter(row => row[idField] === properties.id)[0];
-    } else if (MainStore.currentTopic == '311') {
-      idField = Nearby311Store.dataFields[properties.type].id_field;
-      infoField = Nearby311Store.dataFields[properties.type].info_field;
-      row = Nearby311Store[properties.type].rows.filter(row => row[idField] === properties.id)[0];
     }
     if (import.meta.env.VITE_DEBUG == 'true') console.log('nearby click, e:', e, 'properties:', properties, 'idField:', idField, 'infoField:', infoField, 'e.features[0]:', e.features[0], 'row:', row);
     // if (import.meta.env.VITE_DEBUG == 'true') console.log('nearby click, e:', e, 'properties:', properties, 'idField:', idField, 'e.features[0]:', e.features[0], 'type:', type, 'row:', row);
@@ -333,7 +318,7 @@ watch(
 watch(
   () => route.params.topic,
   async newTopic => {
-    // if (import.meta.env.VITE_DEBUG == 'true') console.log('Map route.params.topic watch, newTopic:', newTopic);
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('Map route.params.topic watch, newTopic:', newTopic);
     const popup = document.getElementsByClassName('maplibregl-popup');
     if (popup.length) {
       popup[0].remove();
@@ -344,6 +329,7 @@ watch(
         map.addLayer($config.mapLayers[imagerySelected.value], 'cyclomediaRecordings')
         map.addLayer($config.mapLayers.imageryLabels, 'cyclomediaRecordings')
       }
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('map:', map);
       const addressMarker = map.getSource('addressMarker');
       const dorParcel = map.getSource('dorParcel');
       if (addressMarker && dorParcel && pwdCoordinates.value.length) {
@@ -528,33 +514,6 @@ const handleStormwaterOpacityChange = (opacity) => {
   );
 }
 
-// for L&I topic, watch selected building for changing building footprint color
-const selectedLiBuildingNumber = computed(() => { return LiStore.selectedLiBuildingNumber; });
-watch(
-  () => selectedLiBuildingNumber.value,
-  newSelectedLiBuildingNumber => {
-    if (import.meta.env.VITE_DEBUG == 'true') console.log('Map.vue watch newSelectedLiBuildingNumber:', newSelectedLiBuildingNumber, 'selectedLiBuildingNumber.value:', selectedLiBuildingNumber.value);
-    if (newSelectedLiBuildingNumber == null) {
-      map.setPaintProperty(
-        'liBuildingFootprints',
-        'fill-color',
-        '#C2B7FF',
-      )
-      return;
-    }
-    map.setPaintProperty(
-      'liBuildingFootprints',
-      'fill-color',
-      ['match',
-      ['get', 'id'],
-      newSelectedLiBuildingNumber,
-      '#FFFA80',
-      /* other */ '#C2B7FF'
-      ],
-    )
-  }
-)
-
 const votingDivision = computed(() => { 
   if (VotingStore.divisions.features) {
     return VotingStore.divisions.features[0].geometry.coordinates[0];
@@ -594,10 +553,6 @@ watch(
       idField = NearbyActivityStore.dataFields[newClickedRow.type].id_field;
       infoField = NearbyActivityStore.dataFields[newClickedRow.type].info_field;
       row = NearbyActivityStore[newClickedRow.type].rows.filter(row => row[idField] === newClickedRow.id)[0];
-    } else if (MainStore.currentTopic == '311') {
-      idField = Nearby311Store.dataFields[newClickedRow.type].id_field;
-      infoField = Nearby311Store.dataFields[newClickedRow.type].info_field;
-      row = Nearby311Store[newClickedRow.type].rows.filter(row => row[idField] === newClickedRow.id)[0];
     }
     // if (import.meta.env.VITE_DEBUG == 'true') console.log('nearby click, idField:', idField, 'row:', row);
     if (row.properties) row[infoField] = row.properties[infoField];

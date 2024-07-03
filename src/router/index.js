@@ -6,12 +6,8 @@ import { useGeocodeStore } from '@/stores/GeocodeStore.js'
 import { useCondosStore } from '@/stores/CondosStore.js'
 import { useParcelsStore } from '@/stores/ParcelsStore.js'
 import { useOpaStore } from '@/stores/OpaStore.js'
-import { useLiStore } from '@/stores/LiStore.js'
 import { useDorStore } from '@/stores/DorStore.js'
-import { useZoningStore } from '@/stores/ZoningStore.js'
 import { useVotingStore } from '@/stores/VotingStore.js'
-import { use311Store } from '@/stores/311Store.js'
-import { useStormwaterStore } from '@/stores/StormwaterStore.js'
 import { useNearbyActivityStore } from '@/stores/NearbyActivityStore.js'
 import { useMainStore } from '@/stores/MainStore.js'
 
@@ -28,14 +24,8 @@ const getGeocodeAndPutInStore = async(address) => {
   OpaStore.clearAllOpaData();
   const DorStore = useDorStore();
   DorStore.clearAllDorData();
-  const LiStore = useLiStore();
-  LiStore.clearAllLiData();
-  const ZoningStore = useZoningStore();
-  ZoningStore.clearAllZoningData();
   const VotingStore = useVotingStore();
   VotingStore.clearAllVotingData();
-  const StormwaterStore = useStormwaterStore();
-  StormwaterStore.clearAllStormwaterData();
   const NearbyActivityStore = useNearbyActivityStore();
   NearbyActivityStore.clearAllNearbyActivityData();
 
@@ -169,12 +159,6 @@ const topicDataFetch = async (topic, data) => {
     OpaStore.loadingOpaData = false;
   }
 
-  if (topic === 'Licenses & Inspections') {
-    const LiStore = useLiStore();
-    await LiStore.fillAllLiData();
-    LiStore.loadingLiData = false;
-  }
-
   if (topic === 'Deeds') {
     const DorStore = useDorStore();
     if (import.meta.env.VITE_DEBUG == 'true') console.log('topic deeds before promise')
@@ -186,29 +170,10 @@ const topicDataFetch = async (topic, data) => {
     DorStore.loadingDorData = false;
   }
 
-  if (topic === 'Zoning') {
-    const ZoningStore = useZoningStore();
-    await ZoningStore.fillAllZoningData();
-    ZoningStore.loadingZoningData = false;
-  }
-
-  if (topic === 'Voting') {
+  if (topic === 'Polling Place') {
     const VotingStore = useVotingStore();
     await VotingStore.fillAllVotingData();
     VotingStore.loadingVotingData = false;
-  }
-
-  if (topic === '311') {
-    const Nearby311Store = use311Store();
-    await Nearby311Store.getAgoToken();
-    await Nearby311Store.fillNearby311(data);
-  }
-
-  if (topic === 'Stormwater') {
-    const StormwaterStore = useStormwaterStore();
-    await StormwaterStore.fillStormwaterData();
-    await StormwaterStore.fillStormwaterCapData();
-    StormwaterStore.loadingStormwaterData = false;
   }
 
   if (topic === 'Nearby Activity') {
