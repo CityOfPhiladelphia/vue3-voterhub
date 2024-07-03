@@ -15,16 +15,16 @@ import FullScreenTopicsToggleTab from '@/components/FullScreenTopicsToggleTab.vu
 import AddressSearchControl from '@/components/AddressSearchControl.vue';
 
 import Topic from '@/components/Topic.vue';
-import Property from '@/components/topics/Property.vue';
-import Condos from '@/components/topics/Condos.vue';
-import Deeds from '@/components/topics/Deeds.vue';
-import LI from '@/components/topics/LI.vue';
-import Zoning from '@/components/topics/Zoning.vue';
-import Voting from '@/components/topics/Voting.vue';
-import NearbyActivity from '@/components/topics/nearbyActivity/NearbyActivity.vue';
-import ThreeOneOne from '@/components/topics/cityAtlas/ThreeOneOne.vue';
-import Stormwater from '@/components/topics/cityAtlas/Stormwater.vue';
-import Districts from '@/components/topics/cityAtlas/Districts.vue';
+// import Property from '@/components/topics/Property.vue';
+// import Condos from '@/components/topics/Condos.vue';
+// import Deeds from '@/components/topics/Deeds.vue';
+// import LI from '@/components/topics/LI.vue';
+// import Zoning from '@/components/topics/Zoning.vue';
+import PollingPlace from '@/components/topics/PollingPlace.vue';
+// import NearbyActivity from '@/components/topics/nearbyActivity/NearbyActivity.vue';
+// import ThreeOneOne from '@/components/topics/cityAtlas/ThreeOneOne.vue';
+// import Stormwater from '@/components/topics/cityAtlas/Stormwater.vue';
+// import Districts from '@/components/topics/cityAtlas/Districts.vue';
 
 import { useRoute } from 'vue-router';
 
@@ -60,17 +60,17 @@ const zipCode = computed(() => {
     </div>
     <div class="topic-panel-final-content">
       <h1 class="subtitle is-3">
-        Philadelphia's Voter Hub for personalized election information
+        {{ $t('default.introPage.introTitle') }}
       </h1>
       <p class="subtitle is-4">
-        Search your home address or click on the map to:
+        {{ $t('default.introPage.p3') }}
       </p>
       <ul class="bullet-list">
-        <li>Find your polling place</li>
-        <li>Check upcoming election dates</li>
-        <li>View your sample ballot</li>
-        <li>See mail-in voting drop-off locations near you</li>
-        <li>Look up your elected representatives and committeepeople</li>
+        <li>{{ $t('default.introPage.ul1.li1') }}</li>
+        <li>{{ $t('default.introPage.ul1.li2') }}</li>
+        <li>{{ $t('default.introPage.ul1.li3') }}</li>
+        <li>{{ $t('default.introPage.ul1.li4') }}</li>
+        <li>{{ $t('default.introPage.ul1.li5') }}</li>
       </ul>
       <br>
 
@@ -161,16 +161,16 @@ const zipCode = computed(() => {
     id="topic-panel-content"
     class="topics"
   >
-    <topic
+    <!-- <topic
       :topic-name="'Property'"
       :topic-icon="'fa-solid fa-home'"
       :loading="!dataSourcesLoadedArray.includes('Property')"
       :topic-index="1"
     >
       <Property />
-    </topic>
+    </topic> -->
 
-    <topic
+    <!-- <topic
       v-show="CondosStore.condosData.pages.page_1.features && CondosStore.condosData.pages.page_1.features.length"
       :topic-name="'Condominiums'"
       :topic-icon="'fa-solid fa-building'"
@@ -178,64 +178,63 @@ const zipCode = computed(() => {
       :topic-index="2"
     >
       <Condos v-if="dataSourcesLoadedArray.includes('Condominiums')" />
-    </topic>
+    </topic> -->
 
-    <topic
+    <!-- <topic
       :topic-name="'Deeds'"
       :topic-icon="'fa-solid fa-book'"
       :loading="!dataSourcesLoadedArray.includes('Deeds')"
       :topic-index="2"
     >
       <Deeds />
-    </topic>
+    </topic> -->
 
-    <topic
+    <!-- <topic
       :topic-name="'Licenses & Inspections'"
       :topic-icon="'fa-solid fa-wrench'"
       :loading="!dataSourcesLoadedArray.includes('Licenses & Inspections')"
       :topic-index="3"
     >
       <LI />
-    </topic>
+    </topic> -->
 
-    <topic
+    <!-- <topic
       :topic-name="'Zoning'"
       :topic-icon="'fa-solid fa-university'"
       :loading="!dataSourcesLoadedArray.includes('Zoning')"
       :topic-index="4"
     >
       <Zoning />
-    </topic>
+    </topic> -->
 
     <topic
-      v-if="MainStore.appVersion == 'atlas'"
-      :topic-name="'Voting'"
+      :topic-name="$t('pollingPlace.topic.pollingPlace')"
       :topic-icon="'fa-solid fa-gavel'"
       :loading="!dataSourcesLoadedArray.includes('Voting')"
       :topic-index="5"
     >
-      <Voting />
+      <PollingPlace />
     </topic>
 
-    <topic
+    <!-- <topic
       v-if="MainStore.appVersion == 'cityatlas'"
       :topic-name="'311'"
       :topic-icon="'fa-solid fa-phone'"
       :topic-index="5"
     >
       <ThreeOneOne />
-    </topic>
+    </topic> -->
 
-    <topic
+    <!-- <topic
       v-if="MainStore.appVersion == 'cityatlas'"
       :topic-name="'Stormwater'"
       :topic-icon="'fa-solid fa-tint'"
       :topic-index="6"
     >
       <Stormwater />
-    </topic>
+    </topic> -->
 
-    <topic
+    <!-- <topic
       :topic-name="'Nearby Activity'"
       :topic-icon="'fa-solid fa-map-marker-alt'"
       :loading="!dataSourcesLoadedArray.includes('Nearby Activity')"
@@ -244,16 +243,16 @@ const zipCode = computed(() => {
       <KeepAlive>
         <NearbyActivity />
       </KeepAlive>
-    </topic>
+    </topic> -->
 
-    <topic
+    <!-- <topic
       v-if="MainStore.appVersion == 'cityatlas'"
       :topic-name="'Districts'"
       :topic-icon="'fa-solid fa-clone'"
       :topic-index="8"
     >
       <Districts />
-    </topic>
+    </topic> -->
   </div>
 </template>
 
