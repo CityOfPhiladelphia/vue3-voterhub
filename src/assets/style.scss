@@ -30,7 +30,7 @@ a {
   height: calc(100vh - 50px);
   display: flex;
   flex-direction: row;
-  padding-top: 42px !important;
+  padding-top: 56px !important;
   margin-top: 0px !important;
 }
 
@@ -40,7 +40,7 @@ a {
   width: 50% !important;
   padding: 0;
   margin: 0;
-  height: calc(100vh - 110px);
+  height: calc(100vh - 126px);
 }
 
 .topics-holder-full {
@@ -113,7 +113,7 @@ a {
 }
 
 .map-panel {
-  height: calc(100vh - 110px);
+  height: calc(100vh - 126px);
 }
 
 .map-panel.cyclomedia-eagleview {
