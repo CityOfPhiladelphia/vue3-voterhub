@@ -26,14 +26,6 @@ const council = computed(() => {
   }
 });
 
-const ballotFileId = computed(() => {
-  if (electedOfficials.value) {
-    return electedOfficials.value[0].ballot_file_id;
-  } else {
-    return null;
-  }
-});
-
 const councilMember = computed(() => {
   if (council.value && council.value[0]) {
     return '<a href="http://' + council.value[0].website + '" target="_blank">' +
@@ -130,32 +122,6 @@ const nextElectionDate = computed(() => {
 </script>
 
 <template>
-  <!-- <section>
-    <div class="columns is-multiline column is-8 is-offset-2 has-text-centered badge">
-      <div class="column is-12 badge-title">
-        <b>Next Eligible Election Is</b>
-      </div>
-      <div class="column is-12 election">
-        {{ nextElectionDate }}
-      </div>
-    </div>
-  </section>
-  <div class="mt-3 mb-3 has-text-centered">
-    <a
-      target="_blank"
-      :href="ballotFileId"
-    >Preview ballot <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
-  </div>
-
-  <div
-    id="Voting-description"
-    class="box"
-  >
-    The deadline to register for the next election is 15 days prior to the election. You can confirm your registration and learn about registering to vote at <a
-      target="_blank"
-      href="vote.phila.gov"
-    >vote.phila.gov</a>.
-  </div> -->
 
   <h5 class="subtitle is-5 table-title">
     Polling Place
@@ -164,16 +130,7 @@ const nextElectionDate = computed(() => {
     :table-id="'pollingPlaceTable'"
     :data="pollingPlaceData"
   />
-  <br>
 
-  <!-- <h5 class="subtitle is-5 table-title">
-    Elected Representatives
-  </h5>
-  <vertical-table
-    :table-id="'electedRepsTable'"
-    :data="electedRepsData"
-  />
-  <br> -->
 </template>
 
 <style scoped>

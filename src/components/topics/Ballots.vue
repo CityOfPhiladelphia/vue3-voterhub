@@ -2,28 +2,13 @@
 
 import { parseISO, format } from 'date-fns';
 
-import useTransforms from '@/composables/useTransforms';
-const { nth, phoneNumber, titleCase } = useTransforms();
-
 import { useBallotsStore } from '@/stores/BallotsStore';
 import { computed } from 'vue';
 const BallotsStore = useBallotsStore();
 
-import VerticalTable from '@/components/VerticalTable.vue';
-
 const electedOfficials = computed(() => {
   if (!BallotsStore.electedOfficials.rows || !BallotsStore.electedOfficials.rows.length) return null;
   return BallotsStore.electedOfficials.rows;
-});
-
-const council = computed(() => {
-  if (electedOfficials.value) {
-    return electedOfficials.value.filter((item) => {
-      return item.office_label == "City Council";
-    });
-  } else {
-    return null;
-  }
 });
 
 const ballotFileId = computed(() => {
@@ -33,93 +18,6 @@ const ballotFileId = computed(() => {
     return null;
   }
 });
-
-const councilMember = computed(() => {
-  if (council.value && council.value[0]) {
-    return '<a href="http://' + council.value[0].website + '" target="_blank">' +
-      council.value[0].first_name +" " +council.value[0].last_name + " - " + nth(council.value[0].district) + " Council District </a>";
-  }
-});
-
-const office = computed(() => {
-  if (council.value && council.value[0]) {
-    return council.value[0].main_contact_address_2 + '<br>' +
-      phoneNumber(council.value[0].main_contact_phone_1) + ", " + phoneNumber(council.value[0].main_contact_phone_2) + '<br>\
-      F: '+ phoneNumber(council.value[0].main_contact_fax) + ' <br>\
-      <b><a href=mailto:"' + council.value[0].email + '">' + council.value[0].email + '</a></b>';
-  }
-});
-
-const term = computed(() => {
-  if (council.value && council.value[0]) {
-    return council.value[0].next_election - 4 + ' - ' + council.value[0].next_election;
-  }
-});
-
-const accessibility = computed(() => {
-  if (BallotsStore.pollingPlaces.rows && BallotsStore.pollingPlaces.rows.length) {
-    const code = BallotsStore.pollingPlaces.rows[0].accessibility_code;
-    const answer = code== "F" ? 'Building Fully Accessible' :
-      code== "B" ? 'Building Substantially Accessible' :
-      code== "M" ? 'Building Accessibility Modified' :
-      code== "A" ? 'Alternate Entrance' :
-      code== "R" ? 'Building Accessible With Ramp' :
-      code== "N" ? 'Building Not Accessible' :
-      'Information Not Available';
-    return answer;
-  }
-});
-
-const parking = computed(() => {
-  if (BallotsStore.pollingPlaces.rows && BallotsStore.pollingPlaces.rows.length) {
-    const code = BallotsStore.pollingPlaces.rows[0].parking_info;
-    const parking = code == "N" ? 'No Parking' :
-      code == "G" ? 'General Parking' :
-      code == "L" ? 'Loading Zone' :
-      'Information Not Available';
-    return parking;
-  }
-});
-
-const pollingPlaceData = computed(() => {
-  if (BallotsStore.pollingPlaces.rows && BallotsStore.pollingPlaces.rows.length) {
-    return [
-      {
-        label: 'Location',
-        value: '<b>Ward ' + BallotsStore.pollingPlaces.rows[0].ward + ', Division ' + BallotsStore.pollingPlaces.rows[0].division + '</b><br>' +
-            titleCase(BallotsStore.pollingPlaces.rows[0].placename) + '<br>' +
-            titleCase(BallotsStore.pollingPlaces.rows[0].street_address)
-      },
-      {
-        label: 'Hours',
-        value: 'All polling places will be open on election day from 7 a.m. to 8 p.m.'
-      },
-      {
-        label: 'Accessibility',
-        value: `<a target="_blank" href="https://vote.phila.gov/voting/voting-at-the-polls/polling-place-accessibility/">${accessibility.value}</a>`,
-      },
-      {
-        label: 'Parking',
-        value: parking.value,
-      },
-    ];
-  }
-});
-
-const electedRepsData = computed(() => [
-  {
-    label: 'District Council Member',
-    value: councilMember.value,
-  },
-  {
-    label: 'City Hall Office',
-    value: office.value,
-  },
-  {
-    label: 'Current Term',
-    value: term.value,
-  }
-]);
 
 const nextElectionDate = computed(() => {
   if (BallotsStore.nextElection.election_count_down_settings) {
@@ -157,23 +55,6 @@ const nextElectionDate = computed(() => {
     >vote.phila.gov</a>.
   </div>
 
-  <!-- <h5 class="subtitle is-5 table-title">
-    Polling Place
-  </h5>
-  <vertical-table
-    :table-id="'pollingPlaceTable'"
-    :data="pollingPlaceData"
-  />
-  <br>
-
-  <h5 class="subtitle is-5 table-title">
-    Elected Representatives
-  </h5>
-  <vertical-table
-    :table-id="'electedRepsTable'"
-    :data="electedRepsData"
-  />
-  <br> -->
 </template>
 
 <style scoped>
