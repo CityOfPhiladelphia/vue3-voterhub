@@ -5,15 +5,15 @@ import { parseISO, format } from 'date-fns';
 import useTransforms from '@/composables/useTransforms';
 const { nth, phoneNumber, titleCase } = useTransforms();
 
-import { useVotingStore } from '@/stores/VotingStore';
+import { useBallotsStore } from '@/stores/BallotsStore';
 import { computed } from 'vue';
-const VotingStore = useVotingStore();
+const BallotsStore = useBallotsStore();
 
 import VerticalTable from '@/components/VerticalTable.vue';
 
 const electedOfficials = computed(() => {
-  if (!VotingStore.electedOfficials.rows || !VotingStore.electedOfficials.rows.length) return null;
-  return VotingStore.electedOfficials.rows;
+  if (!BallotsStore.electedOfficials.rows || !BallotsStore.electedOfficials.rows.length) return null;
+  return BallotsStore.electedOfficials.rows;
 });
 
 const council = computed(() => {
@@ -57,8 +57,8 @@ const term = computed(() => {
 });
 
 const accessibility = computed(() => {
-  if (VotingStore.pollingPlaces.rows && VotingStore.pollingPlaces.rows.length) {
-    const code = VotingStore.pollingPlaces.rows[0].accessibility_code;
+  if (BallotsStore.pollingPlaces.rows && BallotsStore.pollingPlaces.rows.length) {
+    const code = BallotsStore.pollingPlaces.rows[0].accessibility_code;
     const answer = code== "F" ? 'Building Fully Accessible' :
       code== "B" ? 'Building Substantially Accessible' :
       code== "M" ? 'Building Accessibility Modified' :
@@ -71,8 +71,8 @@ const accessibility = computed(() => {
 });
 
 const parking = computed(() => {
-  if (VotingStore.pollingPlaces.rows && VotingStore.pollingPlaces.rows.length) {
-    const code = VotingStore.pollingPlaces.rows[0].parking_info;
+  if (BallotsStore.pollingPlaces.rows && BallotsStore.pollingPlaces.rows.length) {
+    const code = BallotsStore.pollingPlaces.rows[0].parking_info;
     const parking = code == "N" ? 'No Parking' :
       code == "G" ? 'General Parking' :
       code == "L" ? 'Loading Zone' :
@@ -82,13 +82,13 @@ const parking = computed(() => {
 });
 
 const pollingPlaceData = computed(() => {
-  if (VotingStore.pollingPlaces.rows && VotingStore.pollingPlaces.rows.length) {
+  if (BallotsStore.pollingPlaces.rows && BallotsStore.pollingPlaces.rows.length) {
     return [
       {
         label: 'Location',
-        value: '<b>Ward ' + VotingStore.pollingPlaces.rows[0].ward + ', Division ' + VotingStore.pollingPlaces.rows[0].division + '</b><br>' +
-            titleCase(VotingStore.pollingPlaces.rows[0].placename) + '<br>' +
-            titleCase(VotingStore.pollingPlaces.rows[0].street_address)
+        value: '<b>Ward ' + BallotsStore.pollingPlaces.rows[0].ward + ', Division ' + BallotsStore.pollingPlaces.rows[0].division + '</b><br>' +
+            titleCase(BallotsStore.pollingPlaces.rows[0].placename) + '<br>' +
+            titleCase(BallotsStore.pollingPlaces.rows[0].street_address)
       },
       {
         label: 'Hours',
@@ -122,15 +122,15 @@ const electedRepsData = computed(() => [
 ]);
 
 const nextElectionDate = computed(() => {
-  if (VotingStore.nextElection.election_count_down_settings) {
-    return format(parseISO(VotingStore.nextElection.election_count_down_settings.election_day), 'MMMM d, yyyy');
+  if (BallotsStore.nextElection.election_count_down_settings) {
+    return format(parseISO(BallotsStore.nextElection.election_count_down_settings.election_day), 'MMMM d, yyyy');
   }
 });
 
 </script>
 
 <template>
-  <!-- <section>
+  <section>
     <div class="columns is-multiline column is-8 is-offset-2 has-text-centered badge">
       <div class="column is-12 badge-title">
         <b>Next Eligible Election Is</b>
@@ -155,9 +155,9 @@ const nextElectionDate = computed(() => {
       target="_blank"
       href="vote.phila.gov"
     >vote.phila.gov</a>.
-  </div> -->
+  </div>
 
-  <h5 class="subtitle is-5 table-title">
+  <!-- <h5 class="subtitle is-5 table-title">
     Polling Place
   </h5>
   <vertical-table
@@ -166,7 +166,7 @@ const nextElectionDate = computed(() => {
   />
   <br>
 
-  <!-- <h5 class="subtitle is-5 table-title">
+  <h5 class="subtitle is-5 table-title">
     Elected Representatives
   </h5>
   <vertical-table

@@ -20,6 +20,7 @@ import Topic from '@/components/Topic.vue';
 // import Deeds from '@/components/topics/Deeds.vue';
 // import LI from '@/components/topics/LI.vue';
 // import Zoning from '@/components/topics/Zoning.vue';
+import Ballots from '@/components/topics/Ballots.vue';
 import PollingPlace from '@/components/topics/PollingPlace.vue';
 // import NearbyActivity from '@/components/topics/nearbyActivity/NearbyActivity.vue';
 // import ThreeOneOne from '@/components/topics/cityAtlas/ThreeOneOne.vue';
@@ -206,6 +207,15 @@ const zipCode = computed(() => {
     >
       <Zoning />
     </topic> -->
+
+    <topic
+      :topic-name="$t('ballots.topic.ballots')"
+      :topic-icon="'fa-solid fa-star'"
+      :loading="!dataSourcesLoadedArray.includes('Elections & Ballots')"
+      :topic-index="5"
+    >
+      <Ballots />
+    </topic>
 
     <topic
       :topic-name="$t('pollingPlace.topic.pollingPlace')"

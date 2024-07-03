@@ -7,6 +7,7 @@ import { useCondosStore } from '@/stores/CondosStore.js'
 import { useParcelsStore } from '@/stores/ParcelsStore.js'
 import { useOpaStore } from '@/stores/OpaStore.js'
 import { useDorStore } from '@/stores/DorStore.js'
+import { useBallotsStore } from '@/stores/BallotsStore.js'
 import { useVotingStore } from '@/stores/VotingStore.js'
 import { useNearbyActivityStore } from '@/stores/NearbyActivityStore.js'
 import { useMainStore } from '@/stores/MainStore.js'
@@ -159,15 +160,21 @@ const topicDataFetch = async (topic, data) => {
     OpaStore.loadingOpaData = false;
   }
 
-  if (topic === 'Deeds') {
-    const DorStore = useDorStore();
-    if (import.meta.env.VITE_DEBUG == 'true') console.log('topic deeds before promise')
-    await Promise.all([DorStore.fillDorDocuments(),
-      DorStore.fillRegmaps(),
-      DorStore.fillDorCondos()
-    ]);
-    if (import.meta.env.VITE_DEBUG == 'true') console.log('topic deeds after promise')
-    DorStore.loadingDorData = false;
+  // if (topic === 'Deeds') {
+  //   const DorStore = useDorStore();
+  //   if (import.meta.env.VITE_DEBUG == 'true') console.log('topic deeds before promise')
+  //   await Promise.all([DorStore.fillDorDocuments(),
+  //     DorStore.fillRegmaps(),
+  //     DorStore.fillDorCondos()
+  //   ]);
+  //   if (import.meta.env.VITE_DEBUG == 'true') console.log('topic deeds after promise')
+  //   DorStore.loadingDorData = false;
+  // }
+
+  if (topic === 'Elections & Ballots') {
+    const BallotsStore = useBallotsStore();
+    await BallotsStore.fillAllBallotsData();
+    BallotsStore.loadingBallotsData = false;
   }
 
   if (topic === 'Polling Place') {

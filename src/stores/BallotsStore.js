@@ -3,27 +3,27 @@ import axios from 'axios';
 import { defineStore } from 'pinia';
 import { useGeocodeStore } from '@/stores/GeocodeStore.js'
 
-export const useVotingStore = defineStore("VotingStore", {
+export const useBallotsStore = defineStore("BallotsStore", {
   state: () => {
     return {
       divisions: {},
       pollingPlaces: {},
       electedOfficials: {},
       nextElection: {},
-      loadingVotingData: true,
+      loadingBallotsData: true,
     };
   },
   actions: {
     // setLoadingData(loading) {
     //   this.loadingData = loading;
     // },
-    async fillAllVotingData() {
+    async fillAllBallotsData() {
       this.fillDivisions();
       this.fillPollingPlaces();
       this.fillElectedOfficials();
       this.fillNextElection();
     },
-    async clearAllVotingData() {
+    async clearAllBallotsData() {
       this.divisions = {};
       this.pollingPlaces = {};
       this.electedOfficials = {};

@@ -31,7 +31,7 @@ export default {
       "link10": "Access campaign finance information",
     },
   },
-  "ballot": {
+  "ballots": {
     "introPage": {
       "introTitle": "View your sample ballot",
       "p3": "Search your home address or click on the map to find:",
@@ -42,6 +42,7 @@ export default {
       },
     },
     "topic": {
+      "ballots": "Elections & Ballots",
       "exclamationCallout1": {
         "p1_b": "COVID-19 info: ",
         "p1": "Many polling places for the May 2021 Municipal Primary have changed. Check here to confirm the location and more before you head to the polls on election day.",

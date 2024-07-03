@@ -59,6 +59,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { faTint } from '@fortawesome/free-solid-svg-icons';
 import { faClone } from '@fortawesome/free-solid-svg-icons';
 import { faPhone } from '@fortawesome/free-solid-svg-icons';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 // import { faBars } from '@fortawesome/free-solid-svg-icons';
 library.add(
@@ -79,6 +80,7 @@ library.add(
   faTint,
   faClone,
   faPhone,
+  faStar,
   // faBars,
 );
 
