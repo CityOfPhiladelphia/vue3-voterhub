@@ -22,6 +22,8 @@ import Topic from '@/components/Topic.vue';
 // import Zoning from '@/components/topics/Zoning.vue';
 import Ballots from '@/components/topics/Ballots.vue';
 import PollingPlace from '@/components/topics/PollingPlace.vue';
+import MailInVoting from '@/components/topics/MailInVoting.vue';
+import ElectedOfficials from '@/components/topics/ElectedOfficials.vue';
 // import NearbyActivity from '@/components/topics/nearbyActivity/NearbyActivity.vue';
 // import ThreeOneOne from '@/components/topics/cityAtlas/ThreeOneOne.vue';
 // import Stormwater from '@/components/topics/cityAtlas/Stormwater.vue';
@@ -209,7 +211,7 @@ const zipCode = computed(() => {
     </topic> -->
 
     <topic
-      :topic-name="$t('ballots.topic.ballots')"
+      :topic-name="$t('ballot.topic.ballots')"
       :topic-icon="'fa-solid fa-star'"
       :loading="!dataSourcesLoadedArray.includes('Elections & Ballots')"
       :topic-index="5"
@@ -224,6 +226,24 @@ const zipCode = computed(() => {
       :topic-index="5"
     >
       <PollingPlace />
+    </topic>
+
+    <topic
+      :topic-name="$t('mailInVoting.topic.mailInVoting')"
+      :topic-icon="'fa-solid fa-envelope'"
+      :loading="!dataSourcesLoadedArray.includes('Mail-in Voting')"
+      :topic-index="5"
+    >
+      <MailInVoting />
+    </topic>
+
+    <topic
+      :topic-name="$t('electedOfficials.topic.electedOfficials')"
+      :topic-icon="'fa-solid fa-flag-usa'"
+      :loading="!dataSourcesLoadedArray.includes('Elected Officials')"
+      :topic-index="5"
+    >
+      <ElectedOfficials />
     </topic>
 
     <!-- <topic

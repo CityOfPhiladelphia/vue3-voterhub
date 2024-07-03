@@ -60,6 +60,8 @@ import { faTint } from '@fortawesome/free-solid-svg-icons';
 import { faClone } from '@fortawesome/free-solid-svg-icons';
 import { faPhone } from '@fortawesome/free-solid-svg-icons';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { faFlagUsa } from '@fortawesome/free-solid-svg-icons';
 
 // import { faBars } from '@fortawesome/free-solid-svg-icons';
 library.add(
@@ -81,6 +83,8 @@ library.add(
   faClone,
   faPhone,
   faStar,
+  faEnvelope,
+  faFlagUsa,
   // faBars,
 );
 

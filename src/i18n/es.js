@@ -160,4 +160,14 @@ export default {
       },
     },
   },
+  "mailInVoting": {
+    "topic": {
+      "mailInVoting": 'Spanish Mail-in Voting',
+    }
+  },
+  "electedOfficials": {
+    "topic": {
+      "electedOfficials": 'Spanish Elected Officials',
+    }
+  }
 };

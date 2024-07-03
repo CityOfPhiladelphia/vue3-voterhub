@@ -31,7 +31,7 @@ export default {
       "link10": "Access campaign finance information",
     },
   },
-  "ballots": {
+  "ballot": {
     "introPage": {
       "introTitle": "View your sample ballot",
       "p3": "Search your home address or click on the map to find:",
@@ -172,6 +172,7 @@ export default {
       "p5": "If a dropbox is full, not functioning, or is damaged in any way, call <a href='tel:215-686-3469'>(215) 686-3469</a> or email <a href='mailto:vote@phila.gov'>vote@phila.gov</a>.",
     },
     "topic": {
+      "mailInVoting": 'Mail-in Voting',
       "exclamationCallout1": {
         "p1": "Mail-in ballot dropoff locations and availability may change for each election.\
         Check back closer to election day to get updated details about where you can drop off your mail-in ballot.",
@@ -261,6 +262,7 @@ export default {
       "p5": "If a dropbox is full, not functioning, or is damaged in any way, call <a href='tel:215-686-3469'>(215) 686-3469</a> or email <a href='mailto:vote@phila.gov'>vote@phila.gov</a>.",
     },
     "topic": {
+      "electedOfficials": 'Elected Officials',
       "hours": "Hours",
       "previewBallot": "Preview ballot ",
       "electedRep": "Elected Representatives",
