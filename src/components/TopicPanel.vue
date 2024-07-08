@@ -19,8 +19,11 @@ import DefaultIntro from '@/components/intros/DefaultIntro.vue';
 import Ballots from '@/components/topics/Ballots.vue';
 import BallotsIntro from '@/components/intros/BallotsIntro.vue';
 import PollingPlace from '@/components/topics/PollingPlace.vue';
+import PollingPlaceIntro from '@/components/intros/PollingPlaceIntro.vue';
 import MailInVoting from '@/components/topics/MailInVoting.vue';
+import MailInVotingIntro from '@/components/intros/MailInVotingIntro.vue';
 import ElectedOfficials from '@/components/topics/ElectedOfficials.vue';
+import ElectedOfficialsIntro from '@/components/intros/ElectedOfficialsIntro.vue';
 
 import { useRoute } from 'vue-router';
 
@@ -48,6 +51,9 @@ const zipCode = computed(() => {
   <!-- FRONT PAGE CONTENT -->
   <DefaultIntro v-if="route.name == 'home'" />
   <BallotsIntro v-if="route.name == 'topic' && route.params.topic == 'Elections & Ballots'" />
+  <PollingPlaceIntro v-if="route.name == 'topic' && route.params.topic == 'Polling Place'" />
+  <MailInVotingIntro v-if="route.name == 'topic' && route.params.topic == 'Mail-in Voting'" />
+  <ElectedOfficialsIntro v-if="route.name == 'topic' && route.params.topic == 'Elected Officials'" />
 
   <!-- ADDRESS NOT FOUND CONTENT -->
   <div

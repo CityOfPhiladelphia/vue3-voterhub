@@ -211,7 +211,7 @@ const router = createRouter({
       beforeEnter: async (to, from) => {
         console.log('address-or-topic route beforeEnter, to:', to, 'from:', from);
         const MainStore = useMainStore();
-        const topics = [ 'Elections & Ballots', 'Polling Place' ];
+        const topics = [ 'Elections & Ballots', 'Polling Place', 'Mail-in Voting', 'Elected Officials' ];
         if (topics.includes(to.params.addressOrTopic)) {
           MainStore.currentTopic = to.params.addressOrTopic;
           routeApp(router);
