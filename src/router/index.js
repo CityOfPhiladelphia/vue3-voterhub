@@ -210,10 +210,13 @@ const router = createRouter({
       component: App,
       beforeEnter: async (to, from) => {
         console.log('address-or-topic route beforeEnter, to:', to, 'from:', from);
+        const MainStore = useMainStore();
         const topics = [ 'Elections & Ballots', 'Polling Place' ];
         if (topics.includes(to.params.addressOrTopic)) {
-          const MainStore = useMainStore();
           MainStore.currentTopic = to.params.addressOrTopic;
+          routeApp(router);
+        } else {
+          MainStore.currentAddress = to.params.addressOrTopic;
           routeApp(router);
         }
       }
