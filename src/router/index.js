@@ -88,7 +88,7 @@ const dataFetch = async(to, from) => {
     return;
   }
 
-  if (to.name === 'address') {
+  if (to.name === 'address-or-topic') {
     MainStore.currentTopic = '';
   } else {
     if (!MainStore.currentTopic) {
@@ -133,8 +133,8 @@ const dataFetch = async(to, from) => {
     await CondosStore.fillCondoData(address);
     CondosStore.loadingCondosData = false;
     if (to.params.topic == "Condominiums" && !CondosStore.condosData.pages.page_1.features.length) {
-      MainStore.currentTopic = "Property";
-      router.push({ name: 'address-and-topic', params: { address: to.params.address, topic: 'Property' } });
+      MainStore.currentTopic = "Elections & Ballots";
+      router.push({ name: 'address-and-topic', params: { address: to.params.address, topic: 'Elections & Ballots' } });
       return
     }
   }
@@ -205,9 +205,34 @@ const router = createRouter({
       props: true,
     },
     {
+      path: '/:addressOrTopic',
+      name: 'address-or-topic',
+      component: App,
+      beforeEnter: async (to, from) => {
+        console.log('address-or-topic route beforeEnter, to:', to, 'from:', from);
+        const topics = [ 'Elections & Ballots', 'Polling Place' ];
+        if (topics.includes(to.params.addressOrTopic)) {
+          const MainStore = useMainStore();
+          MainStore.currentTopic = to.params.addressOrTopic;
+          routeApp(router);
+        }
+      }
+    },
+    {
       path: '/:address',
       name: 'address',
       component: App,
+      beforeEnter: async (to, from) => {
+        console.log('address route beforeEnter, to:', to, 'from:', from);
+      }
+    },
+    {
+      path: '/:topic',
+      name: 'topic',
+      component: App,
+      beforeEnter: async (to, from) => {
+        console.log('topic route beforeEnter, to:', to, 'from:', from);
+      }
     },
     {
       path: '/:address/:topic',
@@ -251,11 +276,13 @@ const router = createRouter({
 
 router.afterEach(async (to, from) => {
   if (import.meta.env.VITE_DEBUG == 'true') console.log('router afterEach to:', to, 'from:', from);
-  if (to.name !== 'not-found' && to.name !== 'search') {
+  if (to.name === 'address-or-topic') {
+    return;
+  } else if (to.name !== 'not-found' && to.name !== 'search') {
     await dataFetch(to, from);
   } else if (to.name == 'not-found') {
     const MainStore = useMainStore();
-    MainStore.currentTopic = "Property"
+    MainStore.currentTopic = "Elections & Ballots"
   }
 });
 

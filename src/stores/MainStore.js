@@ -12,7 +12,7 @@ export const useMainStore = defineStore("MainStore", {
       addressSearchValue: '',
       lastClickCoords: [0,0],
       currentAddress: '',
-      currentTopic: 'Property',
+      currentTopic: 'Elections & Ballots',
       currentNearbyDataType: null,
       currentNearbyTimeInterval: {},
       dataSourcesLoadedArray: [],
