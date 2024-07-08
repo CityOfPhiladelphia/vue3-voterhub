@@ -4,6 +4,12 @@ export default {
   "app": {
     "title": "Voter Hub",
   },
+  "topics": {
+    "Elections & Ballots": "Elections & Ballots",
+    "Polling Place": "Polling Place",
+    "Mail-in Voting": "Mail-in Voting",
+    "Elected Officials": "Elected Officials",
+  },
   "default": {
     "introPage": {
       "introTitle": "Philadelphia's Voter Hub for personalized election information",

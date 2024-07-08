@@ -50,10 +50,10 @@ const zipCode = computed(() => {
       
   <!-- FRONT PAGE CONTENT -->
   <DefaultIntro v-if="route.name == 'home'" />
-  <BallotsIntro v-if="route.name == 'topic' && route.params.topic == 'Elections & Ballots'" />
-  <PollingPlaceIntro v-if="route.name == 'topic' && route.params.topic == 'Polling Place'" />
-  <MailInVotingIntro v-if="route.name == 'topic' && route.params.topic == 'Mail-in Voting'" />
-  <ElectedOfficialsIntro v-if="route.name == 'topic' && route.params.topic == 'Elected Officials'" />
+  <BallotsIntro v-if="route.name == 'topic' && route.params.topic == 'Elections-and-Ballots'" />
+  <PollingPlaceIntro v-if="route.name == 'topic' && route.params.topic == 'Polling-Place'" />
+  <MailInVotingIntro v-if="route.name == 'topic' && route.params.topic == 'Mail-in-Voting'" />
+  <ElectedOfficialsIntro v-if="route.name == 'topic' && route.params.topic == 'Elected-Officials'" />
 
   <!-- ADDRESS NOT FOUND CONTENT -->
   <div
@@ -102,36 +102,36 @@ const zipCode = computed(() => {
     class="topics"
   >
     <topic
-      :topic-name="$t('ballot.topic.ballots')"
+      :topic-name="'Elections & Ballots'"
       :topic-icon="'fa-solid fa-star'"
-      :loading="!dataSourcesLoadedArray.includes('Elections & Ballots')"
+      :loading="!dataSourcesLoadedArray.includes('Elections-and-Ballots')"
       :topic-index="5"
     >
       <Ballots />
     </topic>
 
     <topic
-      :topic-name="$t('pollingPlace.topic.pollingPlace')"
+      :topic-name="'Polling Place'"
       :topic-icon="'fa-solid fa-building'"
-      :loading="!dataSourcesLoadedArray.includes('Polling Place')"
+      :loading="!dataSourcesLoadedArray.includes('Polling-Place')"
       :topic-index="5"
     >
       <PollingPlace />
     </topic>
 
     <topic
-      :topic-name="$t('mailInVoting.topic.mailInVoting')"
+      :topic-name="'Mail-in Voting'"
       :topic-icon="'fa-solid fa-envelope'"
-      :loading="!dataSourcesLoadedArray.includes('Mail-in Voting')"
+      :loading="!dataSourcesLoadedArray.includes('Mail-in-Voting')"
       :topic-index="5"
     >
       <MailInVoting />
     </topic>
 
     <topic
-      :topic-name="$t('electedOfficials.topic.electedOfficials')"
+      :topic-name="'Elected Officials'"
       :topic-icon="'fa-solid fa-flag-usa'"
-      :loading="!dataSourcesLoadedArray.includes('Elected Officials')"
+      :loading="!dataSourcesLoadedArray.includes('Elected-Officials')"
       :topic-index="5"
     >
       <ElectedOfficials />

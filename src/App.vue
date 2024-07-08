@@ -30,23 +30,33 @@ import { useRouter, useRoute } from 'vue-router';
 const route = useRoute();
 const router = useRouter();
 
-import { onMounted, computed } from 'vue';
+import { onMounted, computed, getCurrentInstance, watch } from 'vue';
 
 // COMPONENTS
 import TopicPanel from '@/components/TopicPanel.vue';
 import MapPanel from '@/components/MapPanel.vue';
+
+const instance = getCurrentInstance();
+// if (import.meta.env.VITE_DEBUG == 'true') console.log('instance:', instance);
+const locale = computed( () => instance.appContext.config.globalProperties.$i18n.locale );
+// if (import.meta.env.VITE_DEBUG == 'true') console.log('locale:', locale);
 
 onMounted(async () => {
   MainStore.appVersion = import.meta.env.VITE_VERSION;
   MainStore.isMobileDevice = isMobileDevice();
   MainStore.isMac = isMac();
   await router.isReady()
-  if (import.meta.env.VITE_DEBUG == 'true') console.log('App onMounted, route.params.topic:', route.params.topic, 'route.params.address:', route.params.address);
+  if (import.meta.env.VITE_DEBUG == 'true') console.log('App onMounted, route.params.topic:', route.params.topic, 'route.params.address:', route.params.address, 'route.query:', route.query);
   if (route.name === 'not-found') {
     router.push({ name: 'home' });
   }
   if (route.params.topic) {
     MainStore.currentTopic = route.params.topic;
+  }
+  if (route.query.lang) {
+    // const instance = getCurrentInstance();
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('instance:', instance);
+    instance.appContext.config.globalProperties.$i18n.locale = route.query.lang;
   }
 
   const main = document.getElementById('main');
@@ -99,6 +109,22 @@ const fullScreenMapEnabled = computed(() => {
 // })
 
 // document.title = appTitle.value + ' | phila.gov';
+
+watch(
+  () => locale.value,
+  (newVal, oldVal) => {
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('locale changed:', newVal, oldVal);
+    if (newVal && newVal != 'en-US') {
+      let currentRoute = route.fullPath;
+      MainStore.currentLang = newVal;
+      router.push({ query: { 'lang': newVal }});
+    } else {
+      let currentRoute = route.fullPath;
+      MainStore.currentLang = null;
+      router.push({ fullPath: route.path });
+    }
+  }
+)
 
 </script>
 
