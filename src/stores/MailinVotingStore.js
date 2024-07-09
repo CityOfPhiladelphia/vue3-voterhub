@@ -1,33 +1,170 @@
+import axios from 'axios';
 
 import { defineStore } from 'pinia';
+import { useGeocodeStore } from './GeocodeStore';
+
+const evaluateParams = (feature, dataSource) => {
+  const params = {};
+  if (!dataSource.options.params) {
+    return params; 
+  }
+  // if (import.meta.env.VITE_DEBUG == 'true') console.log("dataSource: ", dataSource);
+  const paramEntries = Object.entries(dataSource.options.params);
+
+  for (let [ key, valOrGetter ] of paramEntries) {
+    let val;
+
+    if (typeof valOrGetter === 'function') {
+      val = valOrGetter(feature);
+    } else {
+      val = valOrGetter;
+    }
+    params[key] = val;
+  }
+  // if (import.meta.env.VITE_DEBUG == 'true') console.log("params: ", params)
+  return params;
+}
+
+// this was the fetch function from @phila/vue-datafetch http-client.js
+const fetchNearby = (feature, dataSource) => {
+  const params = evaluateParams(feature, dataSource);
+  const options = dataSource.options;
+  // const srid = options.srid || 4326;
+  const table = options.table;
+  // TODO generalize these options into something like a `sql` param that
+  // returns a sql statement
+  const dateMinNum = options.dateMinNum || null;
+  const dateMinType = options.dateMinType || null;
+  // if (import.meta.env.VITE_DEBUG == 'true') console.log('dateMinType:', dateMinType);
+  const dateField = options.dateField || null;
+  const distances = options.distances || 250;
+  // if (import.meta.env.VITE_DEBUG == 'true') console.log('fetchNearby distances:', distances);
+  const extraWhere = options.where || null;
+
+  const groupby = options.groupby || null;
+
+  const distQuery = "ST_Distance(the_geom::geography, ST_SetSRID(ST_Point("
+                  + feature.geometry.coordinates[0]
+                  + "," + feature.geometry.coordinates[1]
+                  + "),4326)::geography)";
+
+  const latQuery = "ST_Y(the_geom)";
+  const lngQuery = "ST_X(the_geom)";
+
+  let select;
+  
+  if (!groupby) {
+    select = '*';
+  } else {
+    select = groupby + ', the_geom';
+  }
+  // if (calculateDistance) {
+  select = select + ", " + distQuery + 'as distance,' + latQuery + 'as lat, ' + lngQuery + 'as lng';
+  // }
+
+  params['q'] = "select " + select + " from " + table + " where " + distQuery + " < " + distances;
+
+  let subFn;
+  if (dateMinNum) {
+    // let subFn, addFn;
+    switch (dateMinType) {
+    case 'hour':
+      subFn = subHours;
+      break;
+    case 'day':
+      subFn = subDays;
+      break;
+    case 'week':
+      subFn = subWeeks;
+      break;
+    case 'month':
+      subFn = subMonths;
+      break;
+    case 'year':
+      subFn = subYears;
+      break;
+    }
+
+    // let test = format(subFn(new Date(), dateMinNum), 'YYYY-MM-DD');
+    params['q'] = params['q'] + " and " + dateField + " > '" + format(subFn(new Date(), dateMinNum), 'yyyy-MM-dd') + "'";
+  }
+
+  if (extraWhere) {
+    params['q'] = params['q'] + " and " + extraWhere;
+  }
+
+  if (groupby) {
+    params['q'] = params['q'] + " group by " + groupby + ", the_geom";
+  }
+  return params
+}
 
 export const useMailinVotingStore = defineStore("MailinVotingStore", {
   state: () => {
     return {
-      votingSites: {},
-      loadingMailinVotingData: true,
+      dataError: false,
+      mailinVoting: {},
+      loadingData: true,
+      dataFields: {
+        mailinVoting: {
+          title: 'Mail-in Voting Sites',
+          id_field: 'cartodb_id',
+          info_field: 'site_name'
+        },
+      },
     };
   },
   actions: {
+    setLoadingData(loading) {
+      this.loadingData = loading;
+    },
+    setDataError(error) {
+      this.dataError = error;
+    },
     async fillAllMailinVotingData() {
       this.fillVotingSites();
     },
     async clearAllMailinVotingData() {
-      this.votingSites = {};
+      this.dataError = false;
+      this.loadingData = true;
+      this.mailinVoting = {};
     },
     async fillVotingSites() {
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('findVotingSites is running');
       try {
-        if (import.meta.env.VITE_DEBUG == 'true') console.log('findVotingSites is running');
-        let baseUrl = 'https://phl.carto.com:443/api/v2/sql?q=';
-        const url = baseUrl += `select * from voting_sites`
-        const response = await fetch(url);
-        if (response.ok) {
-          this.votingSites = await response.json();
+        const GeocodeStore = useGeocodeStore();
+        this.setLoadingData(true);
+        const feature = GeocodeStore.aisData.features[0];
+
+        let dataSource = {
+          url: 'https://phl.carto.com:443/api/v2/sql?',
+          options: {
+            table: 'voting_sites',
+            distances: 35000,
+            // where: "typeofwork like '%NEW CONSTRUCTION%'",
+            // dateMinNum: 1,
+            // dateMinType: 'year',
+            // dateField: 'permitissuedate',
+          },
+        };
+        // let baseUrl = 'https://phl.carto.com:443/api/v2/sql?q=';
+        // const url = baseUrl += `select * from voting_sites`
+        let params = fetchNearby(feature, dataSource);
+        const response = await axios.get(dataSource.url, { params })
+        if (response.status === 200) {
+        // const response = await fetch(url);
+        // if (response.ok) {
+          const data = response.data;
+          data.rows.forEach(row => {
+            row.distance_miles = (row.distance * 0.000621371).toFixed(2) + ' miles';
+          });
+          this.mailinVoting = data;
+          this.setLoadingData(false);
         } else {
-          if (import.meta.env.VITE_DEBUG == 'true') console.warn('votingSites - await resolved but HTTP status was not successful');
+          if (import.meta.env.VITE_DEBUG == 'true') console.warn('mailinVoting - await resolved but HTTP status was not successful');
         }
       } catch {
-        if (import.meta.env.VITE_DEBUG == 'true') console.error('votingSites - await never resolved, failed to fetch address data');
+        if (import.meta.env.VITE_DEBUG == 'true') console.error('mailinVoting - await never resolved, failed to fetch address data');
       }
     },
   },

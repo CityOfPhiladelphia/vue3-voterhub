@@ -28,8 +28,8 @@ import { useParcelsStore } from '@/stores/ParcelsStore.js'
 const ParcelsStore = useParcelsStore();
 import { usePollingPlaceStore } from '@/stores/PollingPlaceStore.js'
 const PollingPlaceStore = usePollingPlaceStore();
-import { useNearbyActivityStore } from '@/stores/NearbyActivityStore';
-const NearbyActivityStore = useNearbyActivityStore();
+import { useMailinVotingStore } from '@/stores/MailinVotingStore';
+const MailinVotingStore = useMailinVotingStore();
 
 // ROUTER
 import { useRouter, useRoute } from 'vue-router';
@@ -150,10 +150,10 @@ onMounted(async () => {
   map.on('click', 'nearby', (e) => {
     const properties = e.features[0].properties;
     let idField, infoField, row;
-    if (MainStore.currentTopic == 'Nearby Activity') {
-      idField = NearbyActivityStore.dataFields[properties.type].id_field;
-      infoField = NearbyActivityStore.dataFields[properties.type].info_field;
-      row = NearbyActivityStore[properties.type].rows.filter(row => row[idField] === properties.id)[0];
+    if (MainStore.currentTopic == 'Mail-in-Voting') {
+      idField = MailinVotingStore.dataFields[properties.type].id_field;
+      infoField = MailinVotingStore.dataFields[properties.type].info_field;
+      row = MailinVotingStore[properties.type].rows.filter(row => row[idField] === properties.id)[0];
     }
     if (import.meta.env.VITE_DEBUG == 'true') console.log('nearby click, e:', e, 'properties:', properties, 'idField:', idField, 'infoField:', infoField, 'e.features[0]:', e.features[0], 'row:', row);
     // if (import.meta.env.VITE_DEBUG == 'true') console.log('nearby click, e:', e, 'properties:', properties, 'idField:', idField, 'e.features[0]:', e.features[0], 'type:', type, 'row:', row);
@@ -549,10 +549,10 @@ watch(
     // if (import.meta.env.VITE_DEBUG == 'true') console.log('Map.vue clickedRow watch, newClickedRow:', newClickedRow);
     if (newClickedRow) map.flyTo({ center: newClickedRow.lngLat });
     let idField, infoField, row;
-    if (MainStore.currentTopic == 'Nearby Activity') {
-      idField = NearbyActivityStore.dataFields[newClickedRow.type].id_field;
-      infoField = NearbyActivityStore.dataFields[newClickedRow.type].info_field;
-      row = NearbyActivityStore[newClickedRow.type].rows.filter(row => row[idField] === newClickedRow.id)[0];
+    if (MainStore.currentTopic == 'Mail-in-Voting') {
+      idField = MailinVotingStore.dataFields[newClickedRow.type].id_field;
+      infoField = MailinVotingStore.dataFields[newClickedRow.type].info_field;
+      row = MailinVotingStore[newClickedRow.type].rows.filter(row => row[idField] === newClickedRow.id)[0];
     }
     // if (import.meta.env.VITE_DEBUG == 'true') console.log('nearby click, idField:', idField, 'row:', row);
     if (row.properties) row[infoField] = row.properties[infoField];
@@ -602,20 +602,20 @@ watch(
         "#F3D661",
         ['match',
         ['get', 'type'],
-        'nearby311',
+        'mailinVoting',
         '#FF0000',
-        'nearbyCrimeIncidents',
-        '#0096FF',
-        'nearbyZoningAppeals',
-        '#009900',
-        'nearbyVacantIndicatorPoints',
-        '#9400c6',
-        'nearbyConstructionPermits',
-        '#FF0000',
-        'nearbyDemolitionPermits',
-        '#0096FF',
-        'nearbyImminentlyDangerous',
-        '#009900',
+        // 'nearbyCrimeIncidents',
+        // '#0096FF',
+        // 'nearbyZoningAppeals',
+        // '#009900',
+        // 'nearbyVacantIndicatorPoints',
+        // '#9400c6',
+        // 'nearbyConstructionPermits',
+        // '#FF0000',
+        // 'nearbyDemolitionPermits',
+        // '#0096FF',
+        // 'nearbyImminentlyDangerous',
+        // '#009900',
         /* other */ '#000000'
         ]
       ]
@@ -631,20 +631,20 @@ watch(
         'circle-color', 
         ['match',
         ['get', 'type'],
-        'nearby311',
+        'mailinVoting',
         '#FF0000',
-        'nearbyCrimeIncidents',
-        '#0096FF',
-        'nearbyZoningAppeals',
-        '#009900',
-        'nearbyVacantIndicatorPoints',
-        '#9400c6',
-        'nearbyConstructionPermits',
-        '#FF0000',
-        'nearbyDemolitionPermits',
-        '#0096FF',
-        'nearbyImminentlyDangerous',
-        '#009900',
+        // 'nearbyCrimeIncidents',
+        // '#0096FF',
+        // 'nearbyZoningAppeals',
+        // '#009900',
+        // 'nearbyVacantIndicatorPoints',
+        // '#9400c6',
+        // 'nearbyConstructionPermits',
+        // '#FF0000',
+        // 'nearbyDemolitionPermits',
+        // '#0096FF',
+        // 'nearbyImminentlyDangerous',
+        // '#009900',
         /* other */ '#000000'
         ]
       );

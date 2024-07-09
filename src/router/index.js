@@ -195,7 +195,7 @@ const topicDataFetch = async (topic, data) => {
   if (topic === 'Mail-in-Voting') {
     const MailInPollingPlaceStore = useMailinVotingStore();
     await MailInPollingPlaceStore.fillAllMailinVotingData();
-    MailInPollingPlaceStore.loadingMailinVotingData = false;
+    MailInPollingPlaceStore.loadingData = false;
   }
 
   if (topic === 'Elected-Officials') {
@@ -204,10 +204,6 @@ const topicDataFetch = async (topic, data) => {
     ElectedOfficialsStore.loadingElectedOfficialsData = false;
   }
 
-  // if (topic === 'Nearby Activity') {
-  //   const NearbyActivityStore = useNearbyActivityStore();
-  //   await NearbyActivityStore.fetchData(data);
-  // }
 }
 
 const router = createRouter({
