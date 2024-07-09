@@ -1,8 +1,12 @@
 <script setup>
+
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n() 
 import { useMainStore } from '@/stores/MainStore.js'
 const MainStore = useMainStore();
+
+import AddressSearchControl from '@/components/AddressSearchControl.vue';
+
 </script>
 
 <template>
