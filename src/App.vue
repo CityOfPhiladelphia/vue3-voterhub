@@ -46,12 +46,14 @@ onMounted(async () => {
   MainStore.isMobileDevice = isMobileDevice();
   MainStore.isMac = isMac();
   await router.isReady()
-  if (import.meta.env.VITE_DEBUG == 'true') console.log('App onMounted, route.params.topic:', route.params.topic, 'route.params.address:', route.params.address, 'route.query:', route.query);
+  if (import.meta.env.VITE_DEBUG == 'true') console.log('App onMounted, route.name:', route.name, 'route.params.topic:', route.params.topic, 'route.params.address:', route.params.address, 'route.query:', route.query);
   if (route.name === 'not-found') {
     router.push({ name: 'home' });
   }
   if (route.params.topic) {
     MainStore.currentTopic = route.params.topic;
+  } else {
+    MainStore.currentTopic = null;
   }
   if (route.query.lang) {
     // const instance = getCurrentInstance();
@@ -100,26 +102,37 @@ const fullScreenMapEnabled = computed(() => {
   return MainStore.fullScreenMapEnabled;
 });
 
-// const appTitle = computed(() => {
-//   let version = 'Atlas';
-//   if (import.meta.env.VITE_VERSION == 'cityatlas'){
-//     version = 'CityAtlas';
-//   }
-//   return version;
-// })
-
-// document.title = appTitle.value + ' | phila.gov';
+watch(
+  () => MainStore.currentLang,
+  (newLang, oldLang) => {
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('watch MainStore.currentLang:', newLang, oldLang, 'locale.value:', locale.value);
+    if (newLang != locale.value) {
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('setting locale:', newLang);
+      // const instance = getCurrentInstance();
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('instance:', instance);
+      if (instance) {
+        if (import.meta.env.VITE_DEBUG == 'true') console.log('instance:', instance);
+        if (newLang) {
+          instance.appContext.config.globalProperties.$i18n.locale = newLang;
+        } else {
+          instance.appContext.config.globalProperties.$i18n.locale = 'en-US';
+        }
+      }
+    }
+  
+  }
+)
 
 watch(
   () => locale.value,
-  (newVal, oldVal) => {
-    if (import.meta.env.VITE_DEBUG == 'true') console.log('locale changed:', newVal, oldVal);
-    if (newVal && newVal != 'en-US') {
-      let currentRoute = route.fullPath;
-      MainStore.currentLang = newVal;
-      router.push({ query: { 'lang': newVal }});
+  (newLocale, oldLocale) => {
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('watch locale:', newLocale, oldLocale);
+    if (newLocale === MainStore.currentLang) {
+      return;
+    } else if (newLocale && newLocale != 'en-US') {
+      MainStore.currentLang = newLocale;
+      router.push({ query: { 'lang': newLocale }});
     } else {
-      let currentRoute = route.fullPath;
       MainStore.currentLang = null;
       router.push({ fullPath: route.path });
     }

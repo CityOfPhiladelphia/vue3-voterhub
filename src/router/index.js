@@ -88,7 +88,7 @@ const dataFetch = async(to, from) => {
     return;
   }
 
-  if (to.name === 'address-or-topic') {
+  if (to.name === 'address') {
     MainStore.currentTopic = '';
   } else {
     if (!MainStore.currentTopic) {
@@ -217,6 +217,7 @@ const router = createRouter({
           MainStore.currentLang = to.query.lang;
           routeApp(router);
         } else {
+          MainStore.currentTopic = null;
           MainStore.currentAddress = to.params.addressOrTopic;
           MainStore.currentLang = to.query.lang;
           routeApp(router);
@@ -280,8 +281,11 @@ const router = createRouter({
 })
 
 router.afterEach(async (to, from) => {
+  const MainStore = useMainStore();
   if (import.meta.env.VITE_DEBUG == 'true') console.log('router afterEach to:', to, 'from:', from);
-  if (to.path === from.path) {
+  if (to.query !== from.query && to.path === from.path) {
+    MainStore.currentLang = to.query.lang;
+  } else if (to.path === from.path) {
     return;
   } else if (to.name === 'address-or-topic') {
     return;
