@@ -21,7 +21,7 @@ jobs:
       with:
         node-version: '20.x'
 
-    - name: Atlas - npm install and build
+    - name: Voterhub - npm install and build
       run: |
         printf "@fortawesome:registry=https://npm.fontawesome.com/\n//npm.fontawesome.com/:_authToken=${FA_AUTH_TOKEN}" >> ~/.npmrc
         npm install
