@@ -8,10 +8,6 @@ export default function useRouting() {
 
   const routeApp = (router) => {
     if (import.meta.env.VITE_DEBUG == 'true') console.log('routeApp')
-    // const instance = getCurrentInstance();
-    // if (import.meta.env.VITE_DEBUG == 'true') console.log('instance:', instance);
-    // const locale = computed( () => instance.appContext.config.globalProperties.$i18n.locale );
-    // if (import.meta.env.VITE_DEBUG == 'true') console.log('locale:', locale);
 
     const MainStore = useMainStore();
     const ParcelsStore = useParcelsStore();
