@@ -1,22 +1,19 @@
 import { defineStore } from 'pinia';
 import { useGeocodeStore } from '@/stores/GeocodeStore.js'
 
-export const useBallotsStore = defineStore("BallotsStore", {
+export const useElectedOfficialsStore = defineStore("ElectedOfficialsStore", {
   state: () => {
     return {
       electedOfficials: {},
-      nextElection: {},
-      loadingBallotsData: true,
+      loadingElectedOfficialsData: true,
     };
   },
   actions: {
-    async fillAllBallotsData() {
+    async fillAllElectedOfficialsData() {
       this.fillElectedOfficials();
-      this.fillNextElection();
     },
-    async clearAllBallotsData() {
+    async clearAllElectedOfficialsData() {
       this.electedOfficials = {};
-      this.nextElection = {};
     },
     async fillElectedOfficials() {
       if (import.meta.env.VITE_DEBUG == 'true') console.log('fillElectedOfficials is running');
@@ -34,11 +31,5 @@ export const useBallotsStore = defineStore("BallotsStore", {
       const response = await fetch(url);
       this.electedOfficials = await response.json();
     },
-    async fillNextElection() {
-      if (import.meta.env.VITE_DEBUG == 'true') console.log('fillNextElection is running');
-      const url = 'https://admin-vote.phila.gov/wp-json/votes/v1/election';
-      const response = await fetch(url);
-      this.nextElection = await response.json();
-    }
   },
 });

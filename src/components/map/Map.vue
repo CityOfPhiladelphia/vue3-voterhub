@@ -26,8 +26,8 @@ import { useGeocodeStore } from '@/stores/GeocodeStore.js'
 const GeocodeStore = useGeocodeStore();
 import { useParcelsStore } from '@/stores/ParcelsStore.js'
 const ParcelsStore = useParcelsStore();
-import { useVotingStore } from '@/stores/VotingStore.js'
-const VotingStore = useVotingStore();
+import { usePollingPlaceStore } from '@/stores/PollingPlaceStore.js'
+const PollingPlaceStore = usePollingPlaceStore();
 import { useNearbyActivityStore } from '@/stores/NearbyActivityStore';
 const NearbyActivityStore = useNearbyActivityStore();
 
@@ -515,21 +515,21 @@ const handleStormwaterOpacityChange = (opacity) => {
 }
 
 const votingDivision = computed(() => { 
-  if (VotingStore.divisions.features) {
-    return VotingStore.divisions.features[0].geometry.coordinates[0];
+  if (PollingPlaceStore.divisions.features) {
+    return PollingPlaceStore.divisions.features[0].geometry.coordinates[0];
   } else {
     return [[0,0], [0,1], [1,1], [1,0], [0,0]];
   }
 });
 const pollingPlaceCoordinates = computed(() => {
-  if (VotingStore.pollingPlaces.rows) {
-    return [ VotingStore.pollingPlaces.rows[0].lng, VotingStore.pollingPlaces.rows[0].lat] ;
+  if (PollingPlaceStore.pollingPlaces.rows) {
+    return [ PollingPlaceStore.pollingPlaces.rows[0].lng, PollingPlaceStore.pollingPlaces.rows[0].lat] ;
   } else {
     return [];
   }
 });
 watchEffect(() => {
-  if (VotingStore.divisions.features && VotingStore.pollingPlaces.rows) {
+  if (PollingPlaceStore.divisions.features && PollingPlaceStore.pollingPlaces.rows) {
     const newDivision = polygon([votingDivision.value]);
     map.getSource('votingDivision').setData(newDivision);
     $config.votingDrawnMapStyle.sources.votingDivision.data = newDivision;

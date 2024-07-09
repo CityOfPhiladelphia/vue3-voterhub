@@ -8,7 +8,9 @@ import { useParcelsStore } from '@/stores/ParcelsStore.js'
 import { useOpaStore } from '@/stores/OpaStore.js'
 import { useDorStore } from '@/stores/DorStore.js'
 import { useBallotsStore } from '@/stores/BallotsStore.js'
-import { useVotingStore } from '@/stores/VotingStore.js'
+import { usePollingPlaceStore } from '@/stores/PollingPlaceStore.js'
+import { useMailinVotingStore } from '@/stores/MailinVotingStore.js'
+import { useElectedOfficialsStore } from '@/stores/ElectedOfficialsStore'
 import { useNearbyActivityStore } from '@/stores/NearbyActivityStore.js'
 import { useMainStore } from '@/stores/MainStore.js'
 
@@ -25,8 +27,15 @@ const getGeocodeAndPutInStore = async(address) => {
   OpaStore.clearAllOpaData();
   const DorStore = useDorStore();
   DorStore.clearAllDorData();
-  const VotingStore = useVotingStore();
-  VotingStore.clearAllVotingData();
+  const BallotsStore = useBallotsStore();
+  BallotsStore.clearAllBallotsData();
+  const PollingPlaceStore = usePollingPlaceStore();
+  PollingPlaceStore.clearAllPollingPlaceData();
+  const MailinVotingStore = useMailinVotingStore();
+  MailinVotingStore.clearAllMailinVotingData();
+  const ElectedOfficialsStore = useElectedOfficialsStore();
+  ElectedOfficialsStore.clearAllElectedOfficialsData();
+
   const NearbyActivityStore = useNearbyActivityStore();
   NearbyActivityStore.clearAllNearbyActivityData();
 
@@ -178,9 +187,21 @@ const topicDataFetch = async (topic, data) => {
   }
 
   if (topic === 'Polling-Place') {
-    const VotingStore = useVotingStore();
-    await VotingStore.fillAllVotingData();
-    VotingStore.loadingVotingData = false;
+    const PollingPlaceStore = usePollingPlaceStore();
+    await PollingPlaceStore.fillAllPollingPlaceData();
+    PollingPlaceStore.loadingPollingPlaceData = false;
+  }
+
+  if (topic === 'Mail-in-Voting') {
+    const MailInPollingPlaceStore = useMailinVotingStore();
+    await MailInPollingPlaceStore.fillAllMailinVotingData();
+    MailInPollingPlaceStore.loadingMailinVotingData = false;
+  }
+
+  if (topic === 'Elected-Officials') {
+    const ElectedOfficialsStore = useElectedOfficialsStore();
+    await ElectedOfficialsStore.fillAllElectedOfficialsData();
+    ElectedOfficialsStore.loadingElectedOfficialsData = false;
   }
 
   // if (topic === 'Nearby Activity') {

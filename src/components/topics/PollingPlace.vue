@@ -1,56 +1,17 @@
 <script setup>
 
-import { parseISO, format } from 'date-fns';
-
 import useTransforms from '@/composables/useTransforms';
-const { nth, phoneNumber, titleCase } = useTransforms();
+const { titleCase } = useTransforms();
 
-import { useVotingStore } from '@/stores/VotingStore';
+import { usePollingPlaceStore } from '@/stores/PollingPlaceStore';
 import { computed } from 'vue';
-const VotingStore = useVotingStore();
+const PollingPlaceStore = usePollingPlaceStore();
 
 import VerticalTable from '@/components/VerticalTable.vue';
 
-const electedOfficials = computed(() => {
-  if (!VotingStore.electedOfficials.rows || !VotingStore.electedOfficials.rows.length) return null;
-  return VotingStore.electedOfficials.rows;
-});
-
-const council = computed(() => {
-  if (electedOfficials.value) {
-    return electedOfficials.value.filter((item) => {
-      return item.office_label == "City Council";
-    });
-  } else {
-    return null;
-  }
-});
-
-const councilMember = computed(() => {
-  if (council.value && council.value[0]) {
-    return '<a href="http://' + council.value[0].website + '" target="_blank">' +
-      council.value[0].first_name +" " +council.value[0].last_name + " - " + nth(council.value[0].district) + " Council District </a>";
-  }
-});
-
-const office = computed(() => {
-  if (council.value && council.value[0]) {
-    return council.value[0].main_contact_address_2 + '<br>' +
-      phoneNumber(council.value[0].main_contact_phone_1) + ", " + phoneNumber(council.value[0].main_contact_phone_2) + '<br>\
-      F: '+ phoneNumber(council.value[0].main_contact_fax) + ' <br>\
-      <b><a href=mailto:"' + council.value[0].email + '">' + council.value[0].email + '</a></b>';
-  }
-});
-
-const term = computed(() => {
-  if (council.value && council.value[0]) {
-    return council.value[0].next_election - 4 + ' - ' + council.value[0].next_election;
-  }
-});
-
 const accessibility = computed(() => {
-  if (VotingStore.pollingPlaces.rows && VotingStore.pollingPlaces.rows.length) {
-    const code = VotingStore.pollingPlaces.rows[0].accessibility_code;
+  if (PollingPlaceStore.pollingPlaces.rows && PollingPlaceStore.pollingPlaces.rows.length) {
+    const code = PollingPlaceStore.pollingPlaces.rows[0].accessibility_code;
     const answer = code== "F" ? 'Building Fully Accessible' :
       code== "B" ? 'Building Substantially Accessible' :
       code== "M" ? 'Building Accessibility Modified' :
@@ -63,8 +24,8 @@ const accessibility = computed(() => {
 });
 
 const parking = computed(() => {
-  if (VotingStore.pollingPlaces.rows && VotingStore.pollingPlaces.rows.length) {
-    const code = VotingStore.pollingPlaces.rows[0].parking_info;
+  if (PollingPlaceStore.pollingPlaces.rows && PollingPlaceStore.pollingPlaces.rows.length) {
+    const code = PollingPlaceStore.pollingPlaces.rows[0].parking_info;
     const parking = code == "N" ? 'No Parking' :
       code == "G" ? 'General Parking' :
       code == "L" ? 'Loading Zone' :
@@ -74,13 +35,13 @@ const parking = computed(() => {
 });
 
 const pollingPlaceData = computed(() => {
-  if (VotingStore.pollingPlaces.rows && VotingStore.pollingPlaces.rows.length) {
+  if (PollingPlaceStore.pollingPlaces.rows && PollingPlaceStore.pollingPlaces.rows.length) {
     return [
       {
         label: 'Location',
-        value: '<b>Ward ' + VotingStore.pollingPlaces.rows[0].ward + ', Division ' + VotingStore.pollingPlaces.rows[0].division + '</b><br>' +
-            titleCase(VotingStore.pollingPlaces.rows[0].placename) + '<br>' +
-            titleCase(VotingStore.pollingPlaces.rows[0].street_address)
+        value: '<b>Ward ' + PollingPlaceStore.pollingPlaces.rows[0].ward + ', Division ' + PollingPlaceStore.pollingPlaces.rows[0].division + '</b><br>' +
+            titleCase(PollingPlaceStore.pollingPlaces.rows[0].placename) + '<br>' +
+            titleCase(PollingPlaceStore.pollingPlaces.rows[0].street_address)
       },
       {
         label: 'Hours',
@@ -95,27 +56,6 @@ const pollingPlaceData = computed(() => {
         value: parking.value,
       },
     ];
-  }
-});
-
-const electedRepsData = computed(() => [
-  {
-    label: 'District Council Member',
-    value: councilMember.value,
-  },
-  {
-    label: 'City Hall Office',
-    value: office.value,
-  },
-  {
-    label: 'Current Term',
-    value: term.value,
-  }
-]);
-
-const nextElectionDate = computed(() => {
-  if (VotingStore.nextElection.election_count_down_settings) {
-    return format(parseISO(VotingStore.nextElection.election_count_down_settings.election_day), 'MMMM d, yyyy');
   }
 });
 

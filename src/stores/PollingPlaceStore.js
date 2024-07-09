@@ -3,31 +3,22 @@ import axios from 'axios';
 import { defineStore } from 'pinia';
 import { useGeocodeStore } from '@/stores/GeocodeStore.js'
 
-export const useVotingStore = defineStore("VotingStore", {
+export const usePollingPlaceStore = defineStore("PollingPlaceStore", {
   state: () => {
     return {
       divisions: {},
       pollingPlaces: {},
-      electedOfficials: {},
-      nextElection: {},
-      loadingVotingData: true,
+      loadingPollingPlaceData: true,
     };
   },
   actions: {
-    // setLoadingData(loading) {
-    //   this.loadingData = loading;
-    // },
-    async fillAllVotingData() {
+    async fillAllPollingPlaceData() {
       this.fillDivisions();
       this.fillPollingPlaces();
-      this.fillElectedOfficials();
-      this.fillNextElection();
     },
-    async clearAllVotingData() {
+    async clearAllPollingPlaceData() {
       this.divisions = {};
       this.pollingPlaces = {};
-      this.electedOfficials = {};
-      this.nextElection = {};
     },
     async fillDivisions() {
       if (import.meta.env.VITE_DEBUG == 'true') console.log('fillDivisions is running');
@@ -59,27 +50,5 @@ export const useVotingStore = defineStore("VotingStore", {
       const response = await fetch(url);
       this.pollingPlaces = await response.json();
     },
-    async fillElectedOfficials() {
-      if (import.meta.env.VITE_DEBUG == 'true') console.log('fillElectedOfficials is running');
-      const GeocodeStore = useGeocodeStore();
-      const feature = GeocodeStore.aisData.features[0];
-      let baseUrl = 'https://phl.carto.com/api/v2/sql?q=';
-      const url = baseUrl += `WITH split AS (SELECT * FROM splits WHERE precinct = '${feature.properties.election_precinct}') \
-      SELECT eo.*, s.ballot_file_id\
-      FROM elected_officials eo, split s \
-      WHERE eo.office = 'city_council' AND eo.district = '${feature.properties.council_district_2024}' \
-                OR eo.office = 'state_house' AND eo.district = s.state_house \
-                OR eo.office = 'state_senate' AND eo.district = s.state_senate \
-                OR eo.office = 'us_house' AND eo.district = s.federal_house \
-      `;
-      const response = await fetch(url);
-      this.electedOfficials = await response.json();
-    },
-    async fillNextElection() {
-      if (import.meta.env.VITE_DEBUG == 'true') console.log('fillNextElection is running');
-      const url = 'https://admin-vote.phila.gov/wp-json/votes/v1/election';
-      const response = await fetch(url);
-      this.nextElection = await response.json();
-    }
   },
 });
