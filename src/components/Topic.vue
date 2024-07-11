@@ -138,7 +138,7 @@ const handleTopicClick = () => {
 
 .topic-name {
   width: 100%;
-  font-size: 1.75em;
+  font-size: 1.75em !important;
 }
 
 .inside-topic {
