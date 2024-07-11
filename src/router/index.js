@@ -63,16 +63,26 @@ const getParcelsAndPutInStore = async(lng, lat) => {
   const MainStore = useMainStore();
   let currentTopic = MainStore.currentTopic;
   const parcelLayer = $config.parcelLayerForTopic[currentTopic] || 'pwd';
+  // const otherLayer = parcelLayer === 'pwd' ? 'dor' : 'pwd';
   const ParcelsStore = useParcelsStore();
-  await ParcelsStore.fillParcelDataByLngLat(lng, lat, 'pwd');
-  await ParcelsStore.fillParcelDataByLngLat(lng, lat, 'dor');
-  if (!ParcelsStore.pwd.features[0] && !ParcelsStore.dor.features[0]) {
-    MainStore.selectedParcelId = null;
-    if (import.meta.env.VITE_DEBUG == 'true') console.log('getParcelsAndPutInStore, calling not-found');
-    router.push({ name: 'not-found' });
+  await ParcelsStore.checkParcelDataByLngLat(lng, lat, 'pwd');
+  await ParcelsStore.checkParcelDataByLngLat(lng, lat, 'dor');
+  if (parcelLayer === 'dor' && !Object.keys(ParcelsStore.dorChecked).length) {
+    return;
+  } else if (parcelLayer === 'pwd' && !Object.keys(ParcelsStore.pwdChecked).length) {
     return;
   }
+  ParcelsStore.pwd = ParcelsStore.pwdChecked;
+  ParcelsStore.dor = ParcelsStore.dorChecked;
+  
+  // if (!ParcelsStore.pwd.features[0] && !ParcelsStore.dor.features[0]) {
+  //   MainStore.selectedParcelId = null;
+  //   if (import.meta.env.VITE_DEBUG == 'true') console.log('getParcelsAndPutInStore, calling not-found');
+  //   router.push({ name: 'not-found' });
+  //   return;
+  // }
   const addressField = parcelLayer === 'pwd' ? 'ADDRESS' : 'ADDR_SOURCE';
+  // const otherAddressField = addressField === 'ADDRESS' ? 'ADDR_SOURCE' : 'ADDRESS';
   if (import.meta.env.VITE_DEBUG == 'true') console.log('parcelLayer:', parcelLayer);
   // if (import.meta.env.VITE_DEBUG == 'true') console.log('ParcelsStore[parcelLayer].features:', ParcelsStore[parcelLayer].features);
   if (ParcelsStore[parcelLayer].features) {
@@ -83,7 +93,17 @@ const getParcelsAndPutInStore = async(lng, lat) => {
       }
     }
   }
-  if (import.meta.env.VITE_DEBUG == 'true') console.log('end of getParcelAndPutInStore, currentAddress:', currentAddress, 'parcelLayer:', parcelLayer, 'addressField', addressField, 'ParcelsStore[parcelLayer].features[0].properties:', ParcelsStore[parcelLayer].features[0].properties, 'ParcelsStore[parcelLayer].features[0].properties[addressField]:', ParcelsStore[parcelLayer].features[0].properties[addressField]);
+  // if (import.meta.env.VITE_DEBUG == 'true') console.log('end of getParcelAndPutInStore, currentAddress:', currentAddress, 'parcelLayer:', parcelLayer, 'addressField', addressField, 'ParcelsStore[parcelLayer].features[0].properties:', ParcelsStore[parcelLayer].features[0].properties, 'ParcelsStore[parcelLayer].features[0].properties[addressField]:', ParcelsStore[parcelLayer].features[0].properties[addressField]);
+  // if (!currentAddress) {
+  //   if (ParcelsStore[otherLayer].features) {
+  //     for (let i = 0; i < ParcelsStore[otherLayer].features.length; i++) {
+  //       if (ParcelsStore[otherLayer].features[i].properties[otherAddressField] !== ' ') {
+  //         currentAddress = ParcelsStore[otherLayer].features[i].properties[addressField];
+  //         break;
+  //       }
+  //     }
+  //   }
+  // }
   if (currentAddress) MainStore.setCurrentAddress(currentAddress);
 }
 
@@ -117,7 +137,8 @@ const dataFetch = async(to, from) => {
     if (import.meta.env.VITE_DEBUG == 'true') console.log('aisNeeded:', aisNeeded, 'address:', address, 'typeof address:', typeof address);
     if (ParcelsStore.dor.features) {
       // if (import.meta.env.VITE_DEBUG == 'true') console.log('ParcelsStore.dor.features[0].properties.BASEREG:', ParcelsStore.dor.features[0].properties.BASEREG);
-      await ParcelsStore.fillParcelDataByLngLat(MainStore.lastClickCoords.lng, MainStore.lastClickCoords.lat, 'pwd')
+      await ParcelsStore.checkParcelDataByLngLat(MainStore.lastClickCoords.lng, MainStore.lastClickCoords.lat, 'pwd')
+      ParcelsStore.pwd = ParcelsStore.pwdChecked;
       await getGeocodeAndPutInStore(ParcelsStore.pwd.features[0].properties.PARCELID);
     }
   } else if (aisNeeded) {
