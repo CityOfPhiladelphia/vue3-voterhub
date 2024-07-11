@@ -168,6 +168,7 @@ const dataFetch = async(to, from) => {
       return
     }
   }
+  MainStore.lastSearchMethod = null;
   await topicDataFetch(to.params.topic, to.params.data);
   if (to.params.topic !== 'Nearby Activity') {
     MainStore.addToDataSourcesLoadedArray(to.params.topic);
@@ -178,7 +179,6 @@ const dataFetch = async(to, from) => {
     MainStore.addToDataSourcesLoadedArray(MainStore.currentNearbyDataType);
   }
   MainStore.initialDatafetchComplete = true;
-  MainStore.lastSearchMethod = null;
 }
 
 const topicDataFetch = async (topic, data) => {
