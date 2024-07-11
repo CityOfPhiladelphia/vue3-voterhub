@@ -72,9 +72,9 @@ const handleTopicClick = () => {
         <div class="icon-holder">
           <font-awesome-icon :icon="props.topicIcon" />
         </div>
-        <div class="name-holder">
+        <h1 class="name-holder">
           {{ topicName }}
-        </div>
+        </h1>
         <div
           v-if="open && loading"
           class="mr-2 is-pulled-right"
@@ -121,9 +121,9 @@ const handleTopicClick = () => {
   height: 60px;
   background-color: #f0f0f0;
   color: #0f4d90;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-top: .25em;
+  border: 0px solid #cfcfcf;
+  /* border-radius: 2px; */
+  margin-top: .5em;
   padding: .25em;
   cursor: pointer;
   width: 100%;
@@ -131,13 +131,14 @@ const handleTopicClick = () => {
 }
 
 .topic:hover, .topic:active {
-  background-color: #fff;
+  background-color: #cfcfcf;
+  /* background-color: #fff; */
   color: #000
 }
 
 .topic-name {
   width: 100%;
-  font-size: 2em;
+  font-size: 1.75em;
 }
 
 .inside-topic {
