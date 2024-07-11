@@ -102,11 +102,14 @@ const handleTopicClick = () => {
   display: inline-block;
   margin-left: .25em;
   margin-right: .5em;
+  /* margin-bottom: .5em; */
   width: 1em;
 }
 
 .name-holder {
   display: inline-block;
+  font-size: 1.5rem !important;
+  /* font-size: 1.75em !important; */
 }
 
 .is-vcentered {
