@@ -108,7 +108,7 @@ const handleTopicClick = () => {
 
 .name-holder {
   display: inline-block;
-  font-size: 1.5rem !important;
+  font-size: 1.4rem !important;
   /* font-size: 1.75em !important; */
 }
 
