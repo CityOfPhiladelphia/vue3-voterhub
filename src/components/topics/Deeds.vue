@@ -217,7 +217,6 @@ const dorDocsTableData = computed(() => {
     id="Deeds-description"
     class="topic-info"
   >
-  <!-- class="box" -->
     Deed information and document transactions for this address. The map faithfully reflects property boundaries as described in recorded deeds including multiple types of easements. The property boundaries displayed on the map are for reference only and should not be used in place of the recorded deeds or land surveys. Source: Department of Records
   </div>
   <collection-summary
@@ -227,7 +226,7 @@ const dorDocsTableData = computed(() => {
   <div
     v-if="selectedParcel"
     id="parcel-div"
-    class="columns add-borders p-2"
+    class="columns add-borders p-2 mt-2"
   >
     <div class="column is-12">
       <div class="columns is-multiline is-mobile">
@@ -242,7 +241,7 @@ const dorDocsTableData = computed(() => {
         </button>
       </div>
 
-      <h2 class="subtitle mb-3 is-5">
+      <h2 class="subtitle is-5 vert-table-title">
         Parcel Details
       </h2>
       <vertical-table
@@ -255,7 +254,7 @@ const dorDocsTableData = computed(() => {
         v-if="deededCondosExist"
         class="mt-6 mb-4"
       >
-        <h2 class="subtitle mb-3 is-5">
+        <h2 class="subtitle is-5 table-title">
           Deeded Condominiums ({{ selectedCondosLength }})
         </h2>
         <vue-good-table
@@ -349,7 +348,7 @@ const dorDocsTableData = computed(() => {
     v-if="selectedParcel"
     class="mb-4"
   >
-    <h2 class="subtitle mb-3 is-5">
+    <h2 class="subtitle mb-5 is-5">
       Registry Maps
     </h2>
     <div class="columns is-multiline is-mobile">

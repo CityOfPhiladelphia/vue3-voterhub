@@ -96,7 +96,7 @@ const condosTableData = computed(() => {
       >
         <template #table-row="props">
           <span v-if="props.column.label == 'Address'">
-            <router-link :to="{ name: 'address-and-topic', params: { address: props.row.properties.opa_address, topic: 'Property'} }">{{ props.row.properties.opa_address }}</router-link>
+            <router-link :to="{ name: 'address-and-topic', params: { address: props.row.properties.opa_address, topic: 'Property-Assessments'} }">{{ props.row.properties.opa_address }}</router-link>
           </span>
         </template>
         <template #emptystate>
