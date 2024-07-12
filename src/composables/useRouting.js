@@ -34,9 +34,9 @@ export default function useRouting() {
       } else {
         router.push({ name: 'address', params: { address: MainStore.currentAddress } });
       }
-    } else if (MainStore.lastClickCoords == 'mapClick' && ParcelsStore.pwd.features && ParcelsStore.pwd.features.length > 0) {
+    } else if (MainStore.lastSearchMethod == 'mapClick' && ParcelsStore.pwd.features && ParcelsStore.pwd.features.length > 0) {
       if (import.meta.env.VITE_DEBUG) console.log('routeApp routing to address-and-topic because ParcelsStore has pwd features');
-      router.push({ name: 'address-and-topic', params: { address: ParcelsStore.pwd.features[0].properties.ADDRESS, topic: MainStore.currentTopic } })
+      router.push({ name: 'address-and-topic', params: { address: ParcelsStore.pwd.features[0].properties.ADDRESS, topic: slugify(MainStore.currentTopic) } })
     } else {
       router.push({ name: 'not-found' });
     }
