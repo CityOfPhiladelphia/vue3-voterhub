@@ -12,7 +12,6 @@ export const useMainStore = defineStore("MainStore", {
       addressSearchValue: '',
       lastClickCoords: [0,0],
       currentAddress: '',
-      // currentTopic: null,
       currentTopic: 'Elections-and-Ballots',
       currentLang: null,
       currentNearbyDataType: null,

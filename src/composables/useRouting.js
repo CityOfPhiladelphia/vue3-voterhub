@@ -2,8 +2,6 @@ import { useMainStore } from '@/stores/MainStore';
 import { useParcelsStore } from '@/stores/ParcelsStore';
 import slugify from 'slugify';
 
-// import { computed, getCurrentInstance } from 'vue';
-
 export default function useRouting() {
 
   const routeApp = (router) => {

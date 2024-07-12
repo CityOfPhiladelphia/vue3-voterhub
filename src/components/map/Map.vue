@@ -1,4 +1,5 @@
 <script setup>
+import slugify from 'slugify';
 
 import $config from '@/config';
 if (import.meta.env.VITE_DEBUG == 'true') console.log('Map.vue $config:', $config);
@@ -348,7 +349,7 @@ watch(
         }
         if (import.meta.env.VITE_DEBUG == 'true') console.log('2 map.layers:', map.getStyle().layers, map.getStyle().sources);
       }
-      if (newTopic === 'Licenses & Inspections') {
+      if (newTopic === slugify('Licenses & Inspections')) {
         if (selectedLiBuildingNumber.value) {
           map.setPaintProperty(
             'liBuildingFootprints',
