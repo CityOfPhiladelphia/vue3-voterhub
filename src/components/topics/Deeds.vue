@@ -242,9 +242,9 @@ const dorDocsTableData = computed(() => {
         </button>
       </div>
 
-      <h5 class="title is-5">
+      <h2 class="subtitle mb-3 is-5">
         Parcel Details
-      </h5>
+      </h2>
       <vertical-table
         v-if="selectedParcel"
         table-id="dorTable"
@@ -255,9 +255,9 @@ const dorDocsTableData = computed(() => {
         v-if="deededCondosExist"
         class="mt-6 mb-4"
       >
-        <h5 class="subtitle is-5">
+        <h2 class="subtitle mb-3 is-5">
           Deeded Condominiums ({{ selectedCondosLength }})
-        </h5>
+        </h2>
         <vue-good-table
           :columns="condosTableData.columns"
           :rows="condosTableData.rows"
@@ -349,9 +349,9 @@ const dorDocsTableData = computed(() => {
     v-if="selectedParcel"
     class="mb-4"
   >
-    <h5 class="subtitle is-5">
+    <h2 class="subtitle mb-3 is-5">
       Registry Maps
-    </h5>
+    </h2>
     <div class="columns is-multiline is-mobile">
       <button
         v-for="regmap in regmaps"

@@ -254,7 +254,7 @@ const rcosTableData = computed(() => {
       </div>
 
       <div class="data-section">
-        <h5 class="subtitle is-5 table-title">
+        <h2 class="subtitle mb-3 is-5 table-title">
           Pending Bills
           <font-awesome-icon
             v-if="ZoningStore.loadingPendingBills"
@@ -262,7 +262,7 @@ const rcosTableData = computed(() => {
             spin
           />
           <span v-else>({{ pendingBillsTableData.rows.length }})</span>
-        </h5>
+        </h2>
         <div class="horizontal-table">
           <vue-good-table
             id="pending-bills"
@@ -297,7 +297,7 @@ const rcosTableData = computed(() => {
       </div>
 
       <div class="data-section">
-        <h5 class="subtitle is-5 table-title">
+        <h2 class="subtitle mb-3 is-5 table-title">
           Overlays
           <font-awesome-icon
             v-if="ZoningStore.loadingZoningOverlays"
@@ -305,7 +305,7 @@ const rcosTableData = computed(() => {
             spin
           />
           <span v-else>({{ overlaysTableData.rows.length }})</span>
-        </h5>
+        </h2>
         <vue-good-table
           id="overlays"
           :columns="overlaysTableData.columns"
@@ -339,7 +339,7 @@ const rcosTableData = computed(() => {
     </div>
   </div>
 
-  <h5 class="subtitle is-5 table-title">
+  <h2 class="subtitle mb-3 is-5 table-title">
     Appeals
     <font-awesome-icon
       v-if="ZoningStore.loadingZoningAppeals"
@@ -347,7 +347,7 @@ const rcosTableData = computed(() => {
       spin
     />
     <span v-else>({{ zoningAppeals.length }})</span>
-  </h5>
+  </h2>
   <div class="horizontal-table">
     <vue-good-table
       id="appeals"
@@ -384,7 +384,7 @@ const rcosTableData = computed(() => {
     Looking for zoning documents? They are now located in the Licenses & Inspections tab under "Zoning Permit Documents".
   </div>
 
-  <h5 class="subtitle is-5 table-title">
+  <h2 class="subtitle mb-3 is-5 table-title">
     Registered Community Organizations (RCOs)
     <font-awesome-icon
       v-if="ZoningStore.loadingRcos"
@@ -392,7 +392,7 @@ const rcosTableData = computed(() => {
       spin
     />
     <span v-else>({{ rcosTableData.rows.length }})</span>
-  </h5>
+  </h2>
   <div
     id="rcos"
     class="horizontal-table"

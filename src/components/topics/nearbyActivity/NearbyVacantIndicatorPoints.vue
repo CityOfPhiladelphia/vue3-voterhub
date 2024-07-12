@@ -77,7 +77,7 @@ const nearbyVacantIndicatorsTableData = computed(() => {
 <template>
 
   <div class="mt-5">
-    <h5 class="subtitle is-5">
+    <h2 class="subtitle mb-3 is-5">
       Likely Vacant Properties
       <font-awesome-icon
         v-if="loadingData"
@@ -85,7 +85,7 @@ const nearbyVacantIndicatorsTableData = computed(() => {
         spin
       />
       <span v-else>({{ nearbyVacantIndicatorsTableData.rows.length }})</span>
-    </h5>
+    </h2>
     <!-- <div v-if="loadingData">Loading...</div> -->
     <div class="horizontal-table">
       <vue-good-table
