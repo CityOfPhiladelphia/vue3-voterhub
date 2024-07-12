@@ -123,8 +123,9 @@ const yPosition = computed(() => {
 }
 
 .address-input {
+  border-radius: 0px !important;
   border-style: solid;
-  border-width: 1px;
+  border-width: 2px;
   border-color: #0f4d90;
   background-color: white;
   border-radius: 3px;
@@ -132,22 +133,32 @@ const yPosition = computed(() => {
 }
 
 .address-input:hover {
-  border-color: #0f4d90;
+  border-color: #2176d2;
 }
 
 .address-clear-button {
+  background-color: #0f4d90 !important;
   height: 2.5em !important;
   z-index: 2;
   border-right: solid 3px white !important;
 }
 
+.address-clear-button:hover {
+  background-color: #2176d2 !important;
+}
+
 .address-search-button {
+  background-color: #0f4d90 !important;
   height: 2.5em !important;
   padding-left: 10px !important;
   padding-right: 10px !important;
-  border-top-right-radius: 4px !important;
-  border-bottom-right-radius: 4px !important;
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
   z-index: 2;
+}
+
+.address-search-button:hover {
+  background-color: #2176d2 !important;
 }
 
 </style>
