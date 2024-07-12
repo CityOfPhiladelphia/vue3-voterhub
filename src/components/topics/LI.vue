@@ -313,12 +313,12 @@ const businessLicensesTableData = computed(() => {
   <section>
     <div
       id="Licenses & Inspections-description"
-      class="box"
+      class="topic-info"
     >
       Licenses, inspections, permits, property maintenance violations, and zoning permit documents at your search address. Source: Department of Licenses & Inspections
     </div>
 
-    <h5 class="subtitle is-5">
+    <h2 class="subtitle mb-3 is-5">
       <span v-if="!LiStore.loadingLiBuildingFootprints">There {{ liBuildingFootprintsLength > 1 || liBuildingFootprintsLength == 0 ? 'are' : 'is' }} {{ liBuildingFootprintsLength }} {{ liBuildingFootprintsLength > 1 || liBuildingFootprintsLength == 0 ? 'buildings' : 'building' }} at this address</span>
       <span v-if="LiStore.loadingLiBuildingFootprints">Loading buildings </span>
       <font-awesome-icon
@@ -326,7 +326,7 @@ const businessLicensesTableData = computed(() => {
         icon="fa-solid fa-spinner"
         spin
       />
-    </h5>
+    </h2>
     <!-- Li Building Footprints Section -->
     <div
       v-if="selectedLiBuilding"
@@ -355,7 +355,7 @@ const businessLicensesTableData = computed(() => {
           <br>
 
           <!-- Building Certs Table -->
-          <h5 class="subtitle is-5 table-title">
+          <h2 class="subtitle mb-3 is-5 table-title">
             Building Certifications
             <font-awesome-icon
               v-if="LiStore.loadingLiBuildingCerts"
@@ -363,7 +363,7 @@ const businessLicensesTableData = computed(() => {
               spin
             />
             <span v-else>({{ buildingCertsTableData.rows.length }})</span>
-          </h5>
+          </h2>
           <div
             v-if="selectedBuildingCerts"
             class="horizontal-table"
@@ -413,7 +413,7 @@ const businessLicensesTableData = computed(() => {
 
     <!-- Li Permits Table -->
     <div class="data-section">
-      <h5 class="subtitle is-5 table-title">
+      <h2 class="subtitle mb-3 is-5 table-title">
         Permits
         <font-awesome-icon
           v-if="LiStore.loadingLiPermits"
@@ -421,7 +421,7 @@ const businessLicensesTableData = computed(() => {
           spin
         />
         <span v-else>({{ permitsLength }})</span>
-      </h5>
+      </h2>
       <div
         v-if="permitsTableData.rows"
         class="horizontal-table"
@@ -465,7 +465,7 @@ const businessLicensesTableData = computed(() => {
     
     <!-- liAisZoningDocs and liEclipseZoningDocs Table-->
     <div class="data-section">
-      <h5 class="subtitle is-5 table-title">
+      <h2 class="subtitle mb-3 is-5 table-title">
         Zoning Permit Documents
         <font-awesome-icon
           v-if="LiStore.loadingLiAisZoningDocs || LiStore.loadingLiEclipseZoningDocs"
@@ -473,7 +473,7 @@ const businessLicensesTableData = computed(() => {
           spin
         />
         <span v-else>({{ zoningDocsTableData.rows.length }})</span>
-      </h5>
+      </h2>
       <h6 class="subtitle is-6 table-subtitle">
         Formerly "Zoning Archive"
       </h6>
@@ -515,7 +515,7 @@ const businessLicensesTableData = computed(() => {
 
     <!-- Li Inspections Table -->
     <div class="data-section">
-      <h5 class="subtitle is-5 table-title">
+      <h2 class="subtitle mb-3 is-5 table-title">
         Inspections
         <font-awesome-icon
           v-if="LiStore.loadingLiInspections"
@@ -523,7 +523,7 @@ const businessLicensesTableData = computed(() => {
           spin
         />
         <span v-else>({{ inspectionsLength }})</span>
-      </h5>
+      </h2>
       <div
         v-if="inspectionsTableData.rows"
         class="horizontal-table"
@@ -567,7 +567,7 @@ const businessLicensesTableData = computed(() => {
     
     <!-- Li Violations Table -->
     <div class="data-section">
-      <h5 class="subtitle is-5 table-title">
+      <h2 class="subtitle mb-3 is-5 table-title">
         Violations
         <font-awesome-icon
           v-if="LiStore.loadingLiViolations"
@@ -575,7 +575,7 @@ const businessLicensesTableData = computed(() => {
           spin
         />
         <span v-else>({{ violationsLength }})</span>
-      </h5>
+      </h2>
       <div
         v-if="violationsTableData.rows"
         class="horizontal-table"
@@ -619,7 +619,7 @@ const businessLicensesTableData = computed(() => {
 
     <!-- Li Business Licenses Table -->
     <div class="data-section">
-      <h5 class="subtitle is-5 table-title">
+      <h2 class="subtitle mb-3 is-5 table-title">
         Business Licenses
         <font-awesome-icon
           v-if="LiStore.loadingLiBusinessLicenses"
@@ -627,7 +627,7 @@ const businessLicensesTableData = computed(() => {
           spin
         />
         <span v-else>({{ businessLicensesLength }})</span>
-      </h5>
+      </h2>
       <div
         v-if="businessLicensesTableData"
         class="horizontal-table"

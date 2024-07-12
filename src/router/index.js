@@ -154,7 +154,7 @@ const dataFetch = async(to, from) => {
   if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch is still going after address, aisNeeded:', aisNeeded);
   if (!MainStore.initialDatafetchComplete && aisNeeded || to.params.data === from.params.data && aisNeeded || to.params.topic === 'Condominiums' && aisNeeded) {
     // GET PARCELS AND DATA FOR TOPIC
-    if (MainStore.lastSearchMethod === 'address') { 
+    if (MainStore.lastSearchMethod !== 'mapClick') { 
       await ParcelsStore.fillPwdParcelData();
       await ParcelsStore.fillDorParcelData();
     } 
@@ -168,6 +168,7 @@ const dataFetch = async(to, from) => {
       return
     }
   }
+  MainStore.lastSearchMethod = null;
   await topicDataFetch(to.params.topic, to.params.data);
   if (to.params.topic !== 'Nearby Activity') {
     MainStore.addToDataSourcesLoadedArray(to.params.topic);

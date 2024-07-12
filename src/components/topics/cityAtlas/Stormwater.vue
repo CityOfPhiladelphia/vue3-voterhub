@@ -139,14 +139,14 @@ const accountsTableData = computed(() => {
   </div>
 
   <div class="data-section">
-    <h5 class="subtitle is-5 table-title">
+    <h2 class="subtitle mb-3 is-5 table-title">
       Parcel
       <font-awesome-icon
         v-if="StormwaterStore.loadingStormwaterData"
         icon="fa-solid fa-spinner"
         spin
       />
-    </h5>
+    </h2>
     <div v-if="StormwaterStore.loadingStormwaterData">
       <p>
         Loading stormwater data... <font-awesome-icon
@@ -166,7 +166,7 @@ const accountsTableData = computed(() => {
   </div>
 
   <!-- <div class="data-section"> -->
-    <h5 class="subtitle is-5 table-title">
+    <h2 class="subtitle mb-3 is-5 table-title">
       Accounts
       <font-awesome-icon
         v-if="StormwaterStore.loadingStormwaterData"
@@ -174,7 +174,7 @@ const accountsTableData = computed(() => {
         spin
       />
       <span v-else>({{ accountsLength }})</span>
-    </h5>
+    </h2>
     <div
       v-if="accountsTableData.rows"
       class="horizontal-table"

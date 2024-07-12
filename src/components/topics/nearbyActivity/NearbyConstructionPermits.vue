@@ -95,7 +95,7 @@ const nearbyConstructionPermitsTableData = computed(() => {
 
 <template>
   <div class="mt-5">
-    <h5 class="subtitle is-5">
+    <h2 class="subtitle mb-3 is-5">
       Construction Permits
       <font-awesome-icon
         v-if="loadingData"
@@ -103,7 +103,7 @@ const nearbyConstructionPermitsTableData = computed(() => {
         spin
       />
       <span v-else>({{ nearbyConstructionPermitsTableData.rows.length }})</span>
-    </h5>
+    </h2>
     <div class="horizontal-table">
       <vue-good-table
         id="nearbyConstructionPermits"

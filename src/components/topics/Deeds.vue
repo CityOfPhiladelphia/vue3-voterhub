@@ -215,8 +215,9 @@ const dorDocsTableData = computed(() => {
 <template>
   <div
     id="Deeds-description"
-    class="box"
+    class="topic-info"
   >
+  <!-- class="box" -->
     Deed information and document transactions for this address. The map faithfully reflects property boundaries as described in recorded deeds including multiple types of easements. The property boundaries displayed on the map are for reference only and should not be used in place of the recorded deeds or land surveys. Source: Department of Records
   </div>
   <collection-summary
@@ -241,9 +242,9 @@ const dorDocsTableData = computed(() => {
         </button>
       </div>
 
-      <h5 class="title is-5">
+      <h2 class="subtitle mb-3 is-5">
         Parcel Details
-      </h5>
+      </h2>
       <vertical-table
         v-if="selectedParcel"
         table-id="dorTable"
@@ -254,9 +255,9 @@ const dorDocsTableData = computed(() => {
         v-if="deededCondosExist"
         class="mt-6 mb-4"
       >
-        <h5 class="subtitle is-5">
+        <h2 class="subtitle mb-3 is-5">
           Deeded Condominiums ({{ selectedCondosLength }})
-        </h5>
+        </h2>
         <vue-good-table
           :columns="condosTableData.columns"
           :rows="condosTableData.rows"
@@ -276,7 +277,7 @@ const dorDocsTableData = computed(() => {
         </vue-good-table>
       </div>
 
-      <div class="box mt-4 mb-6">
+      <div class="topic-info mt-6">
         You can access a view-only, watermarked unofficial copy of the deeds below at
         no cost by clicking on the deeds below. In order to view and print non-watermarked 
         copies of the deeds below, you must purchase a subscription to 
@@ -291,15 +292,16 @@ const dorDocsTableData = computed(() => {
       <!-- DOR Docs Table -->
 
       <div class="mt-4">
-        <h5 class="subtitle mb-3 is-5">
+        <h2 class="subtitle mb-3 is-5">
           Documents <font-awesome-icon
           v-if="DorStore.loadingDorData"
           icon="fa-solid fa-spinner"
           spin
         /><span v-else>({{ selectedDocsLength }})</span>
-        </h5>
+        </h2>
         <TextFilter
           class="dor-docs-filter"
+          :search-label="'Search Documents'"
           v-model="textSearch"
         />
         <div class="horizontal-table">
@@ -337,7 +339,8 @@ const dorDocsTableData = computed(() => {
     </div>
   </div>
 
-  <div class="box">
+  <div class="topic-info" >
+    <!-- class="box" -->
     Use the buttons below to view images of hard-copy deed maps, some of which have handwritten information that may be useful for historical deed research.
   </div>
 
@@ -346,9 +349,9 @@ const dorDocsTableData = computed(() => {
     v-if="selectedParcel"
     class="mb-4"
   >
-    <h5 class="subtitle is-5">
+    <h2 class="subtitle mb-3 is-5">
       Registry Maps
-    </h5>
+    </h2>
     <div class="columns is-multiline is-mobile">
       <button
         v-for="regmap in regmaps"
