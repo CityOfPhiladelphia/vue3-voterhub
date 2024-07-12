@@ -149,7 +149,7 @@ const nextElectionDate = computed(() => {
 
   <div
     id="Voting-description"
-    class="box"
+    class="topic-info"
   >
     The deadline to register for the next election is 15 days prior to the election. You can confirm your registration and learn about registering to vote at <a
       target="_blank"

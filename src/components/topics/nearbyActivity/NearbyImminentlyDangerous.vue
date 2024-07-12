@@ -99,7 +99,7 @@ const nearbyImminentlyDangerousTableData = computed(() => {
 
   <div class="mt-5">
     <h5 class="subtitle is-5">
-      Imminently Dangerous
+      Imminently Dangerous Buildings
       <font-awesome-icon
         v-if="loadingData"
         icon="fa-solid fa-spinner"

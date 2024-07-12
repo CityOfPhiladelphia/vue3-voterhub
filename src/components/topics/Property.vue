@@ -231,7 +231,6 @@ const valuationHistoryTableData = computed(() => {
       id="Property-description"
       class="topic-info"
     >
-    <!-- class="box" -->
       Property assessment and sale information for this address. Source: Office of Property Assessments (OPA). OPA was formerly a part of the Bureau of Revision of Taxes (BRT) and some City records may still use that name.
     </div>
 

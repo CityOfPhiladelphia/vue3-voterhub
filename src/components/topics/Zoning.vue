@@ -164,7 +164,7 @@ const rcosTableData = computed(() => {
 <template>
   <div
     id="Zoning-description"
-    class="box"
+    class="topic-info"
   >
     Base district zoning maps, associated zoning overlays, and Registered Community Organizations applicable to your search address. If you notice a discrepancy, please contact <a href="mailto:planning@phila.gov">planning@phila.gov</a>. Source: Department of Planning and Development
   </div>
@@ -380,7 +380,7 @@ const rcosTableData = computed(() => {
     </vue-good-table>
   </div>
 
-  <div class="box">
+  <div class="topic-info mt-6 mb-2">
     Looking for zoning documents? They are now located in the Licenses & Inspections tab under "Zoning Permit Documents".
   </div>
 

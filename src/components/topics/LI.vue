@@ -313,7 +313,7 @@ const businessLicensesTableData = computed(() => {
   <section>
     <div
       id="Licenses & Inspections-description"
-      class="box"
+      class="topic-info"
     >
       Licenses, inspections, permits, property maintenance violations, and zoning permit documents at your search address. Source: Department of Licenses & Inspections
     </div>
