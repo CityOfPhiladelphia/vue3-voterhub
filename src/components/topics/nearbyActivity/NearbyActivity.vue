@@ -32,6 +32,16 @@ const dataTypes = {
   nearbyImminentlyDangerous: 'Imminently Dangerous',
 }
 
+const shortDataTypes = {
+  nearby311: 'Requests',
+  nearbyCrimeIncidents: 'Incidents',
+  nearbyZoningAppeals: 'Appeals',
+  nearbyVacantIndicatorPoints: 'Properties',
+  nearbyConstructionPermits: 'Permits',
+  nearbyDemolitionPermits: 'Permits',
+  nearbyImminentlyDangerous: 'Buildings',
+}
+
 const currentNearbyDataType = computed(() => {
   return MainStore.currentNearbyDataType;
 });
@@ -114,7 +124,7 @@ onMounted( () => {
   <section>
     <div
       id="Nearby Activity-description"
-      class="box"
+      class="topic-info"
     >
       See recent activity near your search address including 311 service requests, crimes, zoning appeals, and more. Hover over a record below to highlight it on the map.
     </div>
@@ -126,7 +136,7 @@ onMounted( () => {
         <dropdown
           id="data-dropdown"
           v-model="selectedDataType"
-          label="Which activity?"
+          label="Activity Type"
           :options="dataTypes"
         />
       </div>
@@ -138,12 +148,13 @@ onMounted( () => {
         <dropdown
           id="time-interval-dropdown"
           v-model="timeIntervalSelected"
-          label="When?"
+          label="Time Interval"
           :options="timeIntervals"
         />
       </div>
       <div class="column is-4 is-12-mobile">
         <TextFilter
+          :search-label="`Search ${ shortDataTypes[currentNearbyDataType] }`"
           v-model="textSearch"
         />
       </div>

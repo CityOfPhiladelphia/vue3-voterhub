@@ -229,7 +229,7 @@ const valuationHistoryTableData = computed(() => {
     <div
       v-if="!shouldShowCondosMessage"
       id="Property-description"
-      class="box"
+      class="topic-info"
     >
       Property assessment and sale information for this address. Source: Office of Property Assessments (OPA). OPA was formerly a part of the Bureau of Revision of Taxes (BRT) and some City records may still use that name.
     </div>
@@ -253,24 +253,24 @@ const valuationHistoryTableData = computed(() => {
         :data="cityatlasVertTable1Data"
       />
       <br>
-      <h5 class="subtitle is-5 table-title">
+      <h2 class="subtitle mb-3 is-5 table-title">
         Property Characteristics
-      </h5>
+      </h2>
       <vertical-table
         table-id="cityatlasTable2"
         :data="cityatlasVertTable2Data"
       />
       <br>
-      <h5 class="subtitle is-5 table-title">
+      <h2 class="subtitle mb-3 is-5 table-title">
         Sales Details
-      </h5>
+      </h2>
       <vertical-table
         table-id="cityatlasTable3"
         :data="cityatlasVertTable3Data"
       />
       <br>
       <div class="data-section">
-        <h5 class="subtitle is-5 table-title">
+        <h2 class="subtitle mb-3 is-5 table-title">
           Valuation History
           <font-awesome-icon
             v-if="OpaStore.loadingOpaData"
@@ -278,7 +278,7 @@ const valuationHistoryTableData = computed(() => {
             spin
           />
           <span v-else>({{ valuationHistoryLength }})</span>
-        </h5>
+        </h2>
         <div
           v-if="valuationHistoryTableData.rows"
           class="horizontal-table"
@@ -325,9 +325,9 @@ const valuationHistoryTableData = computed(() => {
     </div>
 
     <div v-if="shouldShowCondosMessage">
-      <h5 class="title is-5">
+      <h2 class="subtitle mb-3 is-5">
         There {{ CondosStore.condosData.total_size > 1 ? 'are':'is' }} {{ CondosStore.condosData.total_size }} condominium {{ CondosStore.condosData.total_size > 1 ? 'units':'unit' }} at this address.
-      </h5>
+      </h2>
       <p>You can use the Condominiums tab below to see information for an individual unit.</p>
     </div>
     <div v-else-if="OpaStore.loadingOpaData">

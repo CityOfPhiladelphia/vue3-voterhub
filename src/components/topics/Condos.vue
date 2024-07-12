@@ -80,9 +80,9 @@ const condosTableData = computed(() => {
       Condominium units at your search address, as recorded for property assessment purposes. Click one of the addresses below to see information for that unit. Use the back button to return to this list. Source: Office of Property Assessment
     </div>
 
-    <h5 class="subtitle is-5">
+    <h2 class="subtitle mb-3 is-5">
       Condominiums ({{ totalSize }})
-    </h5>
+    </h2>
 
     <div class="horizontal-table">
       <vue-good-table

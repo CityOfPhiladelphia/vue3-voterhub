@@ -11,6 +11,10 @@ defineProps({
     type: String,
     default: '',
   },
+  searchLabel: {
+    type: String,
+    default: 'Search'
+  }
 })
 
 const model = defineModel();
@@ -25,7 +29,7 @@ const clearText = () => model.value = '';
         id="searchBar"
         v-model="model"
         placeholder="text"
-        label="Search by text"
+        :label="searchLabel"
         :inner-label="false"
         class="search-box"
       />

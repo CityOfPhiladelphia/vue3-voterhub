@@ -130,9 +130,9 @@ const streetsVertTableData = computed(() => {
   <div v-if="hasData">
   
     <div class="data-section">
-      <h5 class="subtitle is-5 table-title">
+      <h2 class="subtitle mb-3 is-5 table-title">
         Districts
-      </h5>
+      </h2>
       <vertical-table
         table-id="districtsTable"
         :data="districtsVertTableData"
@@ -140,9 +140,9 @@ const streetsVertTableData = computed(() => {
     </div>
   
     <div class="data-section">
-      <h5 class="subtitle is-5 table-title">
+      <h2 class="subtitle mb-3 is-5 table-title">
         Public Safety
-      </h5>
+      </h2>
       <vertical-table
         table-id="publicSafetyTable"
         :data="publicSafetyVertTableData"
@@ -150,9 +150,9 @@ const streetsVertTableData = computed(() => {
     </div>
   
     <div class="data-section">
-      <h5 class="subtitle is-5 table-title">
+      <h2 class="subtitle mb-3 is-5 table-title">
         Streets
-      </h5>
+      </h2>
       <vertical-table
         table-id="streetsTable"
         :data="streetsVertTableData"

@@ -131,7 +131,7 @@ const nearby311TableData = computed(() => {
   </div>
 
   <div class="mt-5">
-    <h5 class="subtitle is-5">
+    <h2 class="subtitle mb-3 is-5">
       311 Requests
       <font-awesome-icon
         v-if="loadingNearby311"
@@ -139,7 +139,7 @@ const nearby311TableData = computed(() => {
         spin
       />
       <span v-else>({{ nearby311TableData.rows.length }})</span>
-    </h5>
+    </h2>
     <div class="horizontal-table">
       <vue-good-table
         id="nearby311"
