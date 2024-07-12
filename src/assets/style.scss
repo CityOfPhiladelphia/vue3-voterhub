@@ -387,12 +387,16 @@ only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
   margin-bottom: .5rem;
 }
 
+.vert-table-title {
+  margin-bottom: .5rem !important;
+}
+
 .table-title {
   margin-bottom: 0px !important;
 }
 
 .table-subtitle {
-  margin-bottom: .5rem !important;
+  margin-bottom: 0px !important;
 }
 
 .link-at-bottom {

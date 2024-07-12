@@ -318,7 +318,7 @@ const businessLicensesTableData = computed(() => {
       Licenses, inspections, permits, property maintenance violations, and zoning permit documents at your search address. Source: Department of Licenses & Inspections
     </div>
 
-    <h2 class="subtitle mb-3 is-5">
+    <h2 class="subtitle mb-5 is-5">
       <span v-if="!LiStore.loadingLiBuildingFootprints">There {{ liBuildingFootprintsLength > 1 || liBuildingFootprintsLength == 0 ? 'are' : 'is' }} {{ liBuildingFootprintsLength }} {{ liBuildingFootprintsLength > 1 || liBuildingFootprintsLength == 0 ? 'buildings' : 'building' }} at this address</span>
       <span v-if="LiStore.loadingLiBuildingFootprints">Loading buildings </span>
       <font-awesome-icon
@@ -474,9 +474,9 @@ const businessLicensesTableData = computed(() => {
         />
         <span v-else>({{ zoningDocsTableData.rows.length }})</span>
       </h2>
-      <h6 class="subtitle is-6 table-subtitle">
+      <h3 class="subtitle is-6 table-subtitle">
         Formerly "Zoning Archive"
-      </h6>
+      </h3>
       <div
         v-if="zoningDocsTableData.rows"
         class="horizontal-table"

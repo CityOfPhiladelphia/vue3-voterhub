@@ -175,7 +175,7 @@ const rcosTableData = computed(() => {
   <div
     v-if="selectedParcel"
     id="parcel-div"
-    class="section add-borders p-3"
+    class="section add-borders p-2"
   >
     <div class="column is-12">
       <div class="columns is-multiline is-mobile">

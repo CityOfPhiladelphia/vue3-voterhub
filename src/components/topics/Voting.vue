@@ -157,7 +157,7 @@ const nextElectionDate = computed(() => {
     >vote.phila.gov</a>.
   </div>
 
-  <h2 class="subtitle mb-3 is-5 table-title">
+  <h2 class="subtitle is-5 vert-table-title">
     Polling Place
   </h2>
   <vertical-table
@@ -166,7 +166,7 @@ const nextElectionDate = computed(() => {
   />
   <br>
 
-  <h2 class="subtitle mb-3 is-5 table-title">
+  <h2 class="subtitle is-5 vert-table-title">
     Elected Representatives
   </h2>
   <vertical-table

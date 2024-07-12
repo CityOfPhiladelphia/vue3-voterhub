@@ -18,10 +18,10 @@ export default {
     return {
       context: {
         singular: function(list){
-          return 'There is ' + list + ' at this address.';
+          return 'There is ' + list + ' at this address';
         },
         plural: function(list){
-          return 'There are ' + list + ' at this address.';
+          return 'There are ' + list + ' at this address';
         },
       },
       types: [
@@ -181,7 +181,7 @@ export default {
 </script>
 
 <template>
-  <div class="mb-4">
+  <div class="mb-2">
     {{ summary }}
   </div>
 </template>
