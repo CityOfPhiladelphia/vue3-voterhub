@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import App from '@/App.vue';
 import $config from '@/config';
+import slugify from 'slugify';
 
 import { useGeocodeStore } from '@/stores/GeocodeStore.js'
 import { useCondosStore } from '@/stores/CondosStore.js'
@@ -143,9 +144,9 @@ const dataFetch = async(to, from) => {
     }
   } else if (aisNeeded) {
     await getGeocodeAndPutInStore(address);
-  } else if (to.params.topic !== 'Nearby Activity' && dataSourcesLoadedArray.includes(topic)) {
+  } else if (to.params.topic !== 'Nearby-Activity' && dataSourcesLoadedArray.includes(topic)) {
     return;
-  } else if (to.params.topic === 'Nearby Activity' && dataSourcesLoadedArray.includes(to.params.data)) {
+  } else if (to.params.topic === 'Nearby-Activity' && dataSourcesLoadedArray.includes(to.params.data)) {
     MainStore.currentNearbyDataType = to.params.data;
     if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch is still going, MainStore.currentNearbyDataType:', MainStore.currentNearbyDataType, 'to.params.data:', to.params.data);
     return;
@@ -173,8 +174,8 @@ const dataFetch = async(to, from) => {
   if (to.params.topic !== 'Nearby Activity') {
     MainStore.addToDataSourcesLoadedArray(to.params.topic);
   } else {
-    if (!MainStore.dataSourcesLoadedArray.includes('Nearby Activity')) {
-      MainStore.addToDataSourcesLoadedArray('Nearby Activity');
+    if (!MainStore.dataSourcesLoadedArray.includes('Nearby-Activity')) {
+      MainStore.addToDataSourcesLoadedArray('Nearby-Activity');
     }
     MainStore.addToDataSourcesLoadedArray(MainStore.currentNearbyDataType);
   }
@@ -184,14 +185,14 @@ const dataFetch = async(to, from) => {
 const topicDataFetch = async (topic, data) => {
   if (import.meta.env.VITE_DEBUG == 'true') console.log('topicDataFetch is running, topic:', topic);
   
-  if (topic === 'Property') {
+  if (topic === slugify('Property Assessments')) {
     const OpaStore = useOpaStore();
     await OpaStore.fillOpaData();
     await OpaStore.fillAssessmentHistory();
     OpaStore.loadingOpaData = false;
   }
 
-  if (topic === 'Licenses & Inspections') {
+  if (topic === slugify('Licenses & Inspections')) {
     const LiStore = useLiStore();
     await LiStore.fillAllLiData();
     LiStore.loadingLiData = false;
@@ -233,7 +234,7 @@ const topicDataFetch = async (topic, data) => {
     StormwaterStore.loadingStormwaterData = false;
   }
 
-  if (topic === 'Nearby Activity') {
+  if (topic === slugify('Nearby Activity')) {
     const NearbyActivityStore = useNearbyActivityStore();
     await NearbyActivityStore.fetchData(data);
   }

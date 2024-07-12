@@ -1,4 +1,5 @@
 <script setup>
+import slugify from 'slugify';
 
 import { computed } from 'vue';
 import { useMainStore } from '@/stores/MainStore.js'
@@ -148,9 +149,9 @@ const zipCode = computed(() => {
     class="topics"
   >
     <topic
-      :topic-name="'Property'"
+      :topic-name="'Property Assessments'"
       :topic-icon="'fa-solid fa-home'"
-      :loading="!dataSourcesLoadedArray.includes('Property')"
+      :loading="!dataSourcesLoadedArray.includes('Property-Assessments')"
       :topic-index="1"
     >
       <Property />
@@ -178,7 +179,7 @@ const zipCode = computed(() => {
     <topic
       :topic-name="'Licenses & Inspections'"
       :topic-icon="'fa-solid fa-wrench'"
-      :loading="!dataSourcesLoadedArray.includes('Licenses & Inspections')"
+      :loading="!dataSourcesLoadedArray.includes(slugify('Licenses & Inspections'))"
       :topic-index="3"
     >
       <LI />
@@ -224,7 +225,7 @@ const zipCode = computed(() => {
     <topic
       :topic-name="'Nearby Activity'"
       :topic-icon="'fa-solid fa-map-marker-alt'"
-      :loading="!dataSourcesLoadedArray.includes('Nearby Activity')"
+      :loading="!dataSourcesLoadedArray.includes(slugify('Nearby Activity'))"
       :topic-index="7"
     >
       <KeepAlive>
