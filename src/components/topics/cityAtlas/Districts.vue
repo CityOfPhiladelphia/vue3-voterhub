@@ -120,7 +120,7 @@ const streetsVertTableData = computed(() => {
   
   <div
     id="Districts-description"
-    class="box"
+    class="topic-info"
   >
     Districts related to police, L&I, city planning, streets, census, and commerce for this address. Sources: Department of Streets, Licenses and Inspections, Planning and Development, & Philadelphia Police Dept.
   </div>
@@ -130,7 +130,7 @@ const streetsVertTableData = computed(() => {
   <div v-if="hasData">
   
     <div class="data-section">
-      <h2 class="subtitle mb-3 is-5 table-title">
+      <h2 class="subtitle mb-3 is-5 vert-table-title">
         Districts
       </h2>
       <vertical-table
@@ -140,7 +140,7 @@ const streetsVertTableData = computed(() => {
     </div>
   
     <div class="data-section">
-      <h2 class="subtitle mb-3 is-5 table-title">
+      <h2 class="subtitle mb-3 is-5 vert-table-title">
         Public Safety
       </h2>
       <vertical-table
@@ -150,7 +150,7 @@ const streetsVertTableData = computed(() => {
     </div>
   
     <div class="data-section">
-      <h2 class="subtitle mb-3 is-5 table-title">
+      <h2 class="subtitle mb-3 is-5 vert-table-title">
         Streets
       </h2>
       <vertical-table

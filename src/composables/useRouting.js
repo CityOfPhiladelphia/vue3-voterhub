@@ -1,6 +1,5 @@
 import { useMainStore } from '@/stores/MainStore';
 import { useParcelsStore } from '@/stores/ParcelsStore';
-import slugify from 'slugify';
 
 export default function useRouting() {
 
@@ -9,7 +8,7 @@ export default function useRouting() {
 
     const MainStore = useMainStore();
     const ParcelsStore = useParcelsStore();
-    if (MainStore.currentAddress && MainStore.currentTopic == 'Nearby Activity') {
+    if (MainStore.currentAddress && MainStore.currentTopic == 'nearby') {
       if (import.meta.env.VITE_DEBUG) console.log('routeApp routing to address-topic-and-data');
       router.push({ name: 'address-topic-and-data', params: { address: MainStore.currentAddress, topic: slugify("Nearby Activity"), data: MainStore.currentNearbyDataType || 'nearby311' } });
     } else if (!MainStore.currentAddress && MainStore.currentTopic){

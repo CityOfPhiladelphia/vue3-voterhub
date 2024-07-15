@@ -2,7 +2,6 @@
 
 import { computed } from 'vue';
 import { useMainStore } from '@/stores/MainStore.js';
-import slugify from 'slugify';
 
 const MainStore = useMainStore();
 
