@@ -54,8 +54,8 @@ const stormwaterCapData = computed(() => {
   return data;
 })
 
-const hasNoData = computed(() => {
-  return !Object.keys(StormwaterStore.stormwaterData) || !Object.keys(StormwaterStore.stormwaterData);
+const hasNoCapData = computed(() => {
+  return !Object.keys(StormwaterStore.stormwaterCapData).length;
 });
 
 const vertTableData = computed(() => {
@@ -129,7 +129,7 @@ const accountsTableData = computed(() => {
 <template>
   <div
     id="Stormwater-description"
-    class="box"
+    class="topic-info"
   >
     Stormwater billing accounts associated with your search address. 
     The property boundaries displayed on the map for reference only
@@ -139,7 +139,7 @@ const accountsTableData = computed(() => {
   </div>
 
   <div class="data-section">
-    <h2 class="subtitle mb-3 is-5 table-title">
+    <h2 class="subtitle mb-3 is-5 vert-table-title">
       Parcel
       <font-awesome-icon
         v-if="StormwaterStore.loadingStormwaterData"
@@ -155,8 +155,8 @@ const accountsTableData = computed(() => {
         />
       </p>
     </div>
-    <div v-else-if="hasNoData">
-      <p>There is no stormwater data for this address.</p>
+    <div v-else-if="hasNoCapData">
+      <p>Cannot currently find stormwater data for this address.</p>
     </div>
     <!-- v-if="!shouldShowCondosMessage" -->
     <vertical-table

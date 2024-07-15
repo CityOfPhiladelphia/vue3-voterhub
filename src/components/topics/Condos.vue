@@ -75,7 +75,7 @@ const condosTableData = computed(() => {
   <section>
     <div
       id="Condominiums-description"
-      class="box"
+      class="topic-info"
     >
       Condominium units at your search address, as recorded for property assessment purposes. Click one of the addresses below to see information for that unit. Use the back button to return to this list. Source: Office of Property Assessment
     </div>
@@ -96,7 +96,7 @@ const condosTableData = computed(() => {
       >
         <template #table-row="props">
           <span v-if="props.column.label == 'Address'">
-            <router-link :to="{ name: 'address-and-topic', params: { address: props.row.properties.opa_address, topic: 'Property-Assessments'} }">{{ props.row.properties.opa_address }}</router-link>
+            <router-link :to="{ name: 'address-and-topic', params: { address: props.row.properties.opa_address, topic: 'property'} }">{{ props.row.properties.opa_address }}</router-link>
           </span>
         </template>
         <template #emptystate>

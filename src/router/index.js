@@ -121,7 +121,7 @@ const dataFetch = async(to, from) => {
   if (to.name === 'address') {
     MainStore.currentTopic = '';
   } else {
-    if (!MainStore.currentTopic) {
+    if (!MainStore.currentTopic && to.params.topic) {
       MainStore.currentTopic = to.params.topic.toLowerCase();
     }
   }
@@ -129,7 +129,7 @@ const dataFetch = async(to, from) => {
   // GET PARAMS
   let address, topic;
   if (to.params.address) { address = to.params.address } else if (to.query.address) { address = to.query.address }
-  if (to.params.topic) { topic = to.params.topic }
+  if (to.params.topic) { topic = to.params.topic.toLowerCase() }
 
   if (import.meta.env.VITE_DEBUG == 'true') console.log('address:', address, 'to.params.address:', to.params.address, 'from.params.address:', from.params.address, 'GeocodeStore.aisData.normalized:', GeocodeStore.aisData.normalized);
   
@@ -144,9 +144,9 @@ const dataFetch = async(to, from) => {
     }
   } else if (aisNeeded) {
     await getGeocodeAndPutInStore(address);
-  } else if (to.params.topic !== 'Nearby-Activity' && dataSourcesLoadedArray.includes(topic)) {
+  } else if (to.params.topic !== 'nearby' && dataSourcesLoadedArray.includes(topic)) {
     return;
-  } else if (to.params.topic === 'Nearby-Activity' && dataSourcesLoadedArray.includes(to.params.data)) {
+  } else if (to.params.topic === 'nearby' && dataSourcesLoadedArray.includes(to.params.data)) {
     MainStore.currentNearbyDataType = to.params.data;
     if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch is still going, MainStore.currentNearbyDataType:', MainStore.currentNearbyDataType, 'to.params.data:', to.params.data);
     return;
@@ -163,9 +163,9 @@ const dataFetch = async(to, from) => {
     CondosStore.loadingCondosData = true;
     await CondosStore.fillCondoData(address);
     CondosStore.loadingCondosData = false;
-    if (to.params.topic == "Condominiums" && !CondosStore.condosData.pages.page_1.features.length) {
-      MainStore.currentTopic = "elections-and-ballots";
-      router.push({ name: 'address-and-topic', params: { address: to.params.address, topic: 'elections-and-ballots' } });
+    if (to.params.topic == "condos" && !CondosStore.condosData.pages.page_1.features.length) {
+      MainStore.currentTopic = "property";
+      router.push({ name: 'address-and-topic', params: { address: to.params.address, topic: 'property' } });
       return
     }
   }
@@ -186,7 +186,7 @@ const dataFetch = async(to, from) => {
 const topicDataFetch = async (topic, data) => {
   if (import.meta.env.VITE_DEBUG == 'true') console.log('topicDataFetch is running, topic:', topic);
   
-  if (topic === slugify('Property Assessments')) {
+  if (topic === 'property') {
     const OpaStore = useOpaStore();
     await OpaStore.fillOpaData();
     await OpaStore.fillAssessmentHistory();

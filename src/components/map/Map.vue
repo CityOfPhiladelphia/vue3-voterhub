@@ -349,7 +349,7 @@ watch(
         }
         if (import.meta.env.VITE_DEBUG == 'true') console.log('2 map.layers:', map.getStyle().layers, map.getStyle().sources);
       }
-      if (newTopic === slugify('Licenses & Inspections')) {
+      if (newTopic === 'li') {
         if (selectedLiBuildingNumber.value) {
           map.setPaintProperty(
             'liBuildingFootprints',
