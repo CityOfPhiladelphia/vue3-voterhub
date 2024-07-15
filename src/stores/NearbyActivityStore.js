@@ -179,19 +179,19 @@ export const useNearbyActivityStore = defineStore('NearbyActivityStore', {
     },
     async fetchData(dataType) {
       if (import.meta.env.VITE_DEBUG == 'true') console.log("fetchData is runnning, dataType:", dataType);
-      if (dataType === 'nearby311') {
+      if (dataType === '311') {
         await this.fillNearby311();
-      } else if (dataType === 'nearbyCrimeIncidents') {
+      } else if (dataType === 'crimeIncidents') {
         await this.fillNearbyCrimeIncidents();
-      } else if (dataType === 'nearbyZoningAppeals') {
+      } else if (dataType === 'zoningAppeals') {
         await this.fillNearbyZoningAppeals();
-      } else if (dataType === 'nearbyVacantIndicatorPoints') {
+      } else if (dataType === 'vacantIndicatorPoints') {
         await this.fillNearbyVacantIndicatorPoints();
-      } else if (dataType === 'nearbyConstructionPermits') {
+      } else if (dataType === 'constructionPermits') {
         await this.fillNearbyConstructionPermits();
-      } else if (dataType === 'nearbyDemolitionPermits') {
+      } else if (dataType === 'demolitionPermits') {
         await this.fillNearbyDemolitionPermits();
-      } else if (dataType === 'nearbyImminentlyDangerous') {
+      } else if (dataType === 'imminentlyDangerous') {
         await this.fillNearbyImminentlyDangerous();
       }
     },

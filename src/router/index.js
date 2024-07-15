@@ -121,15 +121,15 @@ const dataFetch = async(to, from) => {
   if (to.name === 'address') {
     MainStore.currentTopic = '';
   } else {
-    if (!MainStore.currentTopic) {
-      MainStore.currentTopic = to.params.topic;
+    if (!MainStore.currentTopic && to.params.topic) {
+      MainStore.currentTopic = to.params.topic.toLowerCase();
     }
   }
   
   // GET PARAMS
   let address, topic;
   if (to.params.address) { address = to.params.address } else if (to.query.address) { address = to.query.address }
-  if (to.params.topic) { topic = to.params.topic }
+  if (to.params.topic) { topic = to.params.topic.toLowerCase() }
 
   if (import.meta.env.VITE_DEBUG == 'true') console.log('address:', address, 'to.params.address:', to.params.address, 'from.params.address:', from.params.address, 'GeocodeStore.aisData.normalized:', GeocodeStore.aisData.normalized);
   
@@ -144,9 +144,9 @@ const dataFetch = async(to, from) => {
     }
   } else if (aisNeeded) {
     await getGeocodeAndPutInStore(address);
-  } else if (to.params.topic !== 'Nearby-Activity' && dataSourcesLoadedArray.includes(topic)) {
+  } else if (to.params.topic !== 'nearby' && dataSourcesLoadedArray.includes(topic)) {
     return;
-  } else if (to.params.topic === 'Nearby-Activity' && dataSourcesLoadedArray.includes(to.params.data)) {
+  } else if (to.params.topic === 'nearby' && dataSourcesLoadedArray.includes(to.params.data)) {
     MainStore.currentNearbyDataType = to.params.data;
     if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch is still going, MainStore.currentNearbyDataType:', MainStore.currentNearbyDataType, 'to.params.data:', to.params.data);
     return;
@@ -163,19 +163,19 @@ const dataFetch = async(to, from) => {
     CondosStore.loadingCondosData = true;
     await CondosStore.fillCondoData(address);
     CondosStore.loadingCondosData = false;
-    if (to.params.topic == "Condominiums" && !CondosStore.condosData.pages.page_1.features.length) {
-      MainStore.currentTopic = "Property";
-      router.push({ name: 'address-and-topic', params: { address: to.params.address, topic: 'Property' } });
+    if (to.params.topic == "condos" && !CondosStore.condosData.pages.page_1.features.length) {
+      MainStore.currentTopic = "property";
+      router.push({ name: 'address-and-topic', params: { address: to.params.address, topic: 'property' } });
       return
     }
   }
   MainStore.lastSearchMethod = null;
   await topicDataFetch(to.params.topic, to.params.data);
-  if (to.params.topic !== 'Nearby Activity') {
+  if (to.params.topic !== 'nearby') {
     MainStore.addToDataSourcesLoadedArray(to.params.topic);
   } else {
-    if (!MainStore.dataSourcesLoadedArray.includes('Nearby-Activity')) {
-      MainStore.addToDataSourcesLoadedArray('Nearby-Activity');
+    if (!MainStore.dataSourcesLoadedArray.includes('nearby')) {
+      MainStore.addToDataSourcesLoadedArray('nearby');
     }
     MainStore.addToDataSourcesLoadedArray(MainStore.currentNearbyDataType);
   }
@@ -185,20 +185,20 @@ const dataFetch = async(to, from) => {
 const topicDataFetch = async (topic, data) => {
   if (import.meta.env.VITE_DEBUG == 'true') console.log('topicDataFetch is running, topic:', topic);
   
-  if (topic === slugify('Property Assessments')) {
+  if (topic === 'property') {
     const OpaStore = useOpaStore();
     await OpaStore.fillOpaData();
     await OpaStore.fillAssessmentHistory();
     OpaStore.loadingOpaData = false;
   }
 
-  if (topic === slugify('Licenses & Inspections')) {
+  if (topic === 'li') {
     const LiStore = useLiStore();
     await LiStore.fillAllLiData();
     LiStore.loadingLiData = false;
   }
 
-  if (topic === 'Deeds') {
+  if (topic === 'deeds') {
     const DorStore = useDorStore();
     if (import.meta.env.VITE_DEBUG == 'true') console.log('topic deeds before promise')
     await Promise.all([DorStore.fillDorDocuments(),
@@ -209,13 +209,13 @@ const topicDataFetch = async (topic, data) => {
     DorStore.loadingDorData = false;
   }
 
-  if (topic === 'Zoning') {
+  if (topic === 'zoning') {
     const ZoningStore = useZoningStore();
     await ZoningStore.fillAllZoningData();
     ZoningStore.loadingZoningData = false;
   }
 
-  if (topic === 'Voting') {
+  if (topic === 'voting') {
     const VotingStore = useVotingStore();
     await VotingStore.fillAllVotingData();
     VotingStore.loadingVotingData = false;
@@ -227,14 +227,14 @@ const topicDataFetch = async (topic, data) => {
     await Nearby311Store.fillNearby311(data);
   }
 
-  if (topic === 'Stormwater') {
+  if (topic === 'stormwater') {
     const StormwaterStore = useStormwaterStore();
     await StormwaterStore.fillStormwaterData();
     await StormwaterStore.fillStormwaterCapData();
     StormwaterStore.loadingStormwaterData = false;
   }
 
-  if (topic === slugify('Nearby Activity')) {
+  if (topic === 'nearby') {
     const NearbyActivityStore = useNearbyActivityStore();
     await NearbyActivityStore.fetchData(data);
   }

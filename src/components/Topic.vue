@@ -2,12 +2,15 @@
 
 import { computed } from 'vue';
 import { useMainStore } from '@/stores/MainStore.js';
-import slugify from 'slugify';
 
 const MainStore = useMainStore();
 
 const props = defineProps({
   topicName: {
+    type: String,
+    default: '',
+  },
+  topicSlug: {
     type: String,
     default: '',
   },
@@ -33,14 +36,14 @@ import useRouting from '@/composables/useRouting';
 const { routeApp } = useRouting();
 
 const open = computed(() => {
-  return route.params.topic == slugify(props.topicName) ? true : false;
+  return route.params.topic == props.topicSlug ? true : false;
 });
 
 const handleTopicClick = () => {
-  if (slugify(props.topicName) == route.params.topic) {
+  if (props.topicSlug == route.params.topic) {
     MainStore.currentTopic = '';
   } else {
-    MainStore.currentTopic = props.topicName;
+    MainStore.currentTopic = props.topicSlug;
   }
   if (import.meta.env.VITE_DEBUG == 'true') console.log('topic clicked:', props.topicName);
   routeApp(router);

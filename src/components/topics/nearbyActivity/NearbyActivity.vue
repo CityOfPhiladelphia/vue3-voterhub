@@ -23,23 +23,23 @@ import TextFilter from '@/components/TextFilter.vue';
 const textSearch = ref('');
 
 const dataTypes = {
-  nearby311: '311 Requests',
-  nearbyCrimeIncidents: 'Crime Incidents',
-  nearbyZoningAppeals: 'Zoning Appeals',
-  nearbyVacantIndicatorPoints: 'Vacant Properties',
-  nearbyConstructionPermits: 'Construction Permits',
-  nearbyDemolitionPermits: 'Demolition Permits',
-  nearbyImminentlyDangerous: 'Imminently Dangerous',
+  '311': '311 Requests',
+  crimeIncidents: 'Crime Incidents',
+  zoningAppeals: 'Zoning Appeals',
+  vacantIndicatorPoints: 'Vacant Properties',
+  constructionPermits: 'Construction Permits',
+  demolitionPermits: 'Demolition Permits',
+  imminentlyDangerous: 'Imminently Dangerous',
 }
 
 const shortDataTypes = {
-  nearby311: 'Requests',
-  nearbyCrimeIncidents: 'Incidents',
-  nearbyZoningAppeals: 'Appeals',
-  nearbyVacantIndicatorPoints: 'Properties',
-  nearbyConstructionPermits: 'Permits',
-  nearbyDemolitionPermits: 'Permits',
-  nearbyImminentlyDangerous: 'Buildings',
+  '311': 'Requests',
+  crimeIncidents: 'Incidents',
+  zoningAppeals: 'Appeals',
+  vacantIndicatorPoints: 'Properties',
+  constructionPermits: 'Permits',
+  demolitionPermits: 'Permits',
+  imminentlyDangerous: 'Buildings',
 }
 
 const currentNearbyDataType = computed(() => {
@@ -55,18 +55,18 @@ const selectedDataType = ref('nearby311');
 const timeIntervalSelected = ref('30');
 const timeIntervals = computed(() => {
   let values;
-  if (['nearby311', 'nearbyConstructionPermits', 'nearbyDemolitionPermits', 'nearbyImminentlyDangerous'].includes(currentNearbyDataType.value)) {
+  if (['311', 'constructionPermits', 'demolitionPermits', 'imminentlyDangerous'].includes(currentNearbyDataType.value)) {
     values = {
       30: 'last 30 days',
       90: 'last 90 days',
       365: 'last 1 year',
     };
-  } else if (currentNearbyDataType.value == 'nearbyCrimeIncidents') {
+  } else if (currentNearbyDataType.value == 'crimeIncidents') {
     values = {
       30: 'last 30 days',
       90: 'last 90 days',
     };
-  } else if (currentNearbyDataType.value == 'nearbyZoningAppeals') {
+  } else if (currentNearbyDataType.value == 'zoningAppeals') {
     values = {
       '0': 'any time',
       '-90': 'last 90 days',
@@ -161,13 +161,13 @@ onMounted( () => {
     </div>
 
 
-    <Nearby311 v-if="currentNearbyDataType == 'nearby311'" :time-interval-selected="timeIntervalSelected" :text-search="textSearch" />
-    <NearbyCrimeIncidents v-if="currentNearbyDataType == 'nearbyCrimeIncidents'" :time-interval-selected="timeIntervalSelected" :text-search="textSearch" />
-    <NearbyZoningAppeals v-if="currentNearbyDataType == 'nearbyZoningAppeals'" :time-interval-selected="timeIntervalSelected" :text-search="textSearch" />
-    <NearbyVacantIndicatorPoints v-if="currentNearbyDataType == 'nearbyVacantIndicatorPoints'" :time-interval-selected="timeIntervalSelected" :text-search="textSearch" />
-    <NearbyConstructionPermits v-if="currentNearbyDataType == 'nearbyConstructionPermits'" :time-interval-selected="timeIntervalSelected" :text-search="textSearch" />
-    <NearbyDemolitionPermits v-if="currentNearbyDataType == 'nearbyDemolitionPermits'" :time-interval-selected="timeIntervalSelected" :text-search="textSearch" />
-    <NearbyImminentlyDangerous v-if="currentNearbyDataType == 'nearbyImminentlyDangerous'" :time-interval-selected="timeIntervalSelected" :text-search="textSearch" />
+    <Nearby311 v-if="currentNearbyDataType == '311'" :time-interval-selected="timeIntervalSelected" :text-search="textSearch" />
+    <NearbyCrimeIncidents v-if="currentNearbyDataType == 'crimeIncidents'" :time-interval-selected="timeIntervalSelected" :text-search="textSearch" />
+    <NearbyZoningAppeals v-if="currentNearbyDataType == 'zoningAppeals'" :time-interval-selected="timeIntervalSelected" :text-search="textSearch" />
+    <NearbyVacantIndicatorPoints v-if="currentNearbyDataType == 'vacantIndicatorPoints'" :time-interval-selected="timeIntervalSelected" :text-search="textSearch" />
+    <NearbyConstructionPermits v-if="currentNearbyDataType == 'constructionPermits'" :time-interval-selected="timeIntervalSelected" :text-search="textSearch" />
+    <NearbyDemolitionPermits v-if="currentNearbyDataType == 'demolitionPermits'" :time-interval-selected="timeIntervalSelected" :text-search="textSearch" />
+    <NearbyImminentlyDangerous v-if="currentNearbyDataType == 'imminentlyDangerous'" :time-interval-selected="timeIntervalSelected" :text-search="textSearch" />
   </section>
 </template>
 

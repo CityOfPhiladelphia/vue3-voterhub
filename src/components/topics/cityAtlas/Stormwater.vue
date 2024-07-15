@@ -54,8 +54,8 @@ const stormwaterCapData = computed(() => {
   return data;
 })
 
-const hasNoData = computed(() => {
-  return !Object.keys(StormwaterStore.stormwaterData) || !Object.keys(StormwaterStore.stormwaterData);
+const hasNoCapData = computed(() => {
+  return !Object.keys(StormwaterStore.stormwaterCapData).length;
 });
 
 const vertTableData = computed(() => {
@@ -155,8 +155,8 @@ const accountsTableData = computed(() => {
         />
       </p>
     </div>
-    <div v-else-if="hasNoData">
-      <p>There is no stormwater data for this address.</p>
+    <div v-else-if="hasNoCapData">
+      <p>Cannot currently find stormwater data for this address.</p>
     </div>
     <!-- v-if="!shouldShowCondosMessage" -->
     <vertical-table

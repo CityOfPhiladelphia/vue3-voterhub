@@ -150,8 +150,9 @@ const zipCode = computed(() => {
   >
     <topic
       :topic-name="'Property Assessments'"
+      :topic-slug="'property'"
       :topic-icon="'fa-solid fa-home'"
-      :loading="!dataSourcesLoadedArray.includes('Property-Assessments')"
+      :loading="!dataSourcesLoadedArray.includes('property')"
       :topic-index="1"
     >
       <Property />
@@ -160,17 +161,19 @@ const zipCode = computed(() => {
     <topic
       v-show="CondosStore.condosData.pages.page_1.features && CondosStore.condosData.pages.page_1.features.length"
       :topic-name="'Condominiums'"
+      :topic-slug="'condos'"
       :topic-icon="'fa-solid fa-building'"
-      :loading="!dataSourcesLoadedArray.includes('Condominiums')"
+      :loading="!dataSourcesLoadedArray.includes('condos')"
       :topic-index="2"
     >
-      <Condos v-if="dataSourcesLoadedArray.includes('Condominiums')" />
+      <Condos v-if="dataSourcesLoadedArray.includes('condos')" />
     </topic>
 
     <topic
       :topic-name="'Deeds'"
+      :topic-slug="'deeds'"
       :topic-icon="'fa-solid fa-book'"
-      :loading="!dataSourcesLoadedArray.includes('Deeds')"
+      :loading="!dataSourcesLoadedArray.includes('deeds')"
       :topic-index="2"
     >
       <Deeds />
@@ -178,8 +181,9 @@ const zipCode = computed(() => {
 
     <topic
       :topic-name="'Licenses & Inspections'"
+      :topic-slug="'li'"
       :topic-icon="'fa-solid fa-wrench'"
-      :loading="!dataSourcesLoadedArray.includes(slugify('Licenses & Inspections'))"
+      :loading="!dataSourcesLoadedArray.includes('li')"
       :topic-index="3"
     >
       <LI />
@@ -187,8 +191,9 @@ const zipCode = computed(() => {
 
     <topic
       :topic-name="'Zoning'"
+      :topic-slug="'zoning'"
       :topic-icon="'fa-solid fa-university'"
-      :loading="!dataSourcesLoadedArray.includes('Zoning')"
+      :loading="!dataSourcesLoadedArray.includes('zoning')"
       :topic-index="4"
     >
       <Zoning />
@@ -197,8 +202,9 @@ const zipCode = computed(() => {
     <topic
       v-if="MainStore.appVersion == 'atlas'"
       :topic-name="'Voting'"
+      :topic-slug="'voting'"
       :topic-icon="'fa-solid fa-gavel'"
-      :loading="!dataSourcesLoadedArray.includes('Voting')"
+      :loading="!dataSourcesLoadedArray.includes('voting')"
       :topic-index="5"
     >
       <Voting />
@@ -207,7 +213,9 @@ const zipCode = computed(() => {
     <topic
       v-if="MainStore.appVersion == 'cityatlas'"
       :topic-name="'311'"
+      :topic-slug="'311'"
       :topic-icon="'fa-solid fa-phone'"
+      :loading="!dataSourcesLoadedArray.includes('311')"
       :topic-index="5"
     >
       <ThreeOneOne />
@@ -216,7 +224,9 @@ const zipCode = computed(() => {
     <topic
       v-if="MainStore.appVersion == 'cityatlas'"
       :topic-name="'Stormwater'"
+      :topic-slug="'stormwater'"
       :topic-icon="'fa-solid fa-tint'"
+      :loading="!dataSourcesLoadedArray.includes('stormwater')"
       :topic-index="6"
     >
       <Stormwater />
@@ -224,8 +234,9 @@ const zipCode = computed(() => {
 
     <topic
       :topic-name="'Nearby Activity'"
+      :topic-slug="'nearby'"
       :topic-icon="'fa-solid fa-map-marker-alt'"
-      :loading="!dataSourcesLoadedArray.includes(slugify('Nearby Activity'))"
+      :loading="!dataSourcesLoadedArray.includes('nearby')"
       :topic-index="7"
     >
       <KeepAlive>
@@ -236,7 +247,9 @@ const zipCode = computed(() => {
     <topic
       v-if="MainStore.appVersion == 'cityatlas'"
       :topic-name="'Districts'"
+      :topic-slug="'districts'"
       :topic-icon="'fa-solid fa-clone'"
+      :loading="!dataSourcesLoadedArray.includes('districts')"
       :topic-index="8"
     >
       <Districts />

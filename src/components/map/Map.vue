@@ -162,7 +162,7 @@ onMounted(async () => {
   map.on('click', 'nearby', (e) => {
     const properties = e.features[0].properties;
     let idField, infoField, row;
-    if (MainStore.currentTopic == slugify('Nearby Activity')) {
+    if (MainStore.currentTopic == 'nearby') {
       idField = NearbyActivityStore.dataFields[properties.type].id_field;
       infoField = NearbyActivityStore.dataFields[properties.type].info_field;
       row = NearbyActivityStore[properties.type].rows.filter(row => row[idField] === properties.id)[0];
@@ -363,7 +363,7 @@ watch(
         }
         if (import.meta.env.VITE_DEBUG == 'true') console.log('2 map.layers:', map.getStyle().layers, map.getStyle().sources);
       }
-      if (newTopic === slugify('Licenses & Inspections')) {
+      if (newTopic === 'li') {
         if (selectedLiBuildingNumber.value) {
           map.setPaintProperty(
             'liBuildingFootprints',
@@ -591,7 +591,7 @@ watch(
     // if (import.meta.env.VITE_DEBUG == 'true') console.log('Map.vue clickedRow watch, newClickedRow:', newClickedRow);
     if (newClickedRow) map.flyTo({ center: newClickedRow.lngLat });
     let idField, infoField, row;
-    if (MainStore.currentTopic == slugify('Nearby Activity')) {
+    if (MainStore.currentTopic == 'nearby') {
       idField = NearbyActivityStore.dataFields[newClickedRow.type].id_field;
       infoField = NearbyActivityStore.dataFields[newClickedRow.type].info_field;
       row = NearbyActivityStore[newClickedRow.type].rows.filter(row => row[idField] === newClickedRow.id)[0];
