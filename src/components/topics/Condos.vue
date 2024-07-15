@@ -75,7 +75,7 @@ const condosTableData = computed(() => {
   <section>
     <div
       id="Condominiums-description"
-      class="box"
+      class="topic-info"
     >
       Condominium units at your search address, as recorded for property assessment purposes. Click one of the addresses below to see information for that unit. Use the back button to return to this list. Source: Office of Property Assessment
     </div>
