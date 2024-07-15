@@ -90,7 +90,7 @@ watch(() => clickedMarkerId.value, (newClickedMarkerId) => {
 <template>
   
   <div class="mt-5">
-    <h5 class="subtitle is-5">
+    <h5 class="subtitle is-5 mb-2">
       Nearby mail-in ballot drop-off locations
       <font-awesome-icon
         v-if="loadingData"

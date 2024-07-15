@@ -60,10 +60,10 @@ export default {
         "p5": "If you are planning on voting in person, please confirm your polling place and make voting arrangements prior to the election.",
       },
       "badge1": {
-        "header": "Next Eligible Election Is",
+        "header": "Spanish Next Eligible Election Is",
         "content": "November 3, 2020",
       },
-      "previewBallot": "Preview ballot ",
+      "previewBallot": "Spanish Preview ballot ",
       "cityCouncilRedistricting": "City Council Redistricting",
       "redistrictingSubtitle": "Some addresses will be represented by a new city council district starting in 2024. Residents will vote in the new district in the 2023 primary and general elections.",
       "oldCityCouncilDistrict": "Old City Council District",

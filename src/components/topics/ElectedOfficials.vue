@@ -66,7 +66,7 @@ const electedRepsData = computed(() => [
 
 <template>
 
-  <h5 class="subtitle is-5 table-title">
+  <h5 class="subtitle is-5 vert-table-title">
     Elected Representatives
   </h5>
   <vertical-table

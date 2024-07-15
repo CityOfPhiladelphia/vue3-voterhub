@@ -31,7 +31,7 @@ const nextElectionDate = computed(() => {
   <section>
     <div class="columns is-multiline column is-8 is-offset-2 has-text-centered badge">
       <div class="column is-12 badge-title">
-        <b>Next Eligible Election Is</b>
+        <b>{{ $t('ballot.topic.badge1.header') }}</b>
       </div>
       <div class="column is-12 election">
         {{ nextElectionDate }}
@@ -42,12 +42,12 @@ const nextElectionDate = computed(() => {
     <a
       target="_blank"
       :href="ballotFileId"
-    >Preview ballot <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
+    >{{ $t('ballot.topic.previewBallot') }} <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
   </div>
 
   <div
     id="Voting-description"
-    class="box"
+    class="topic-info"
   >
     The deadline to register for the next election is 15 days prior to the election. You can confirm your registration and learn about registering to vote at <a
       target="_blank"
