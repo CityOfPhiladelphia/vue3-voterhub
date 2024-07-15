@@ -6,7 +6,7 @@ name: dev Push to S3 dev2 bucket
 on:
   push:
     branches:
-      - main
+      - setup-test-deploy
 
 jobs:
   build:
@@ -35,6 +35,12 @@ jobs:
         VITE_CYCLOMEDIA_USERNAME: ${{ secrets.VITE_CYCLOMEDIA_USERNAME }}
         VITE_EAGLEVIEW_CLIENT_ID: ${{ secrets.VITE_EAGLEVIEW_CLIENT_ID }}
         VITE_EAGLEVIEW_CLIENT_SECRET: ${{ secrets.VITE_EAGLEVIEW_CLIENT_SECRET }}
+
+    - name: Test
+      run: |
+        cd automationtests
+        npm install
+        npm test
 
     - name: Deploy to Dev s3, Set index headers, and Invalidate Cloudfront
       env:
