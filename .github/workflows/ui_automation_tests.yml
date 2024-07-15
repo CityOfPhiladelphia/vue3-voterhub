@@ -19,21 +19,6 @@ jobs:
         with:
           node-version: '20.x'
 
-      - name: Atlas - npm install and build
-        run: |
-          printf "@fortawesome:registry=https://npm.fontawesome.com/\n//npm.fontawesome.com/:_authToken=${FA_AUTH_TOKEN}" >> ~/.npmrc
-          npm install
-          npm run dev
-        env:
-          VITE_VERSION: 'atlas'
-          FA_AUTH_TOKEN: ${{ secrets.FA_AUTH_TOKEN }}
-          VITE_GATEKEEPER_KEY: ${{ secrets.VITE_GATEKEEPER_KEY }}
-          VITE_CYCLOMEDIA_API_KEY: ${{ secrets.VITE_CYCLOMEDIA_API_KEY }}
-          VITE_CYCLOMEDIA_PASSWORD: ${{ secrets.VITE_CYCLOMEDIA_PASSWORD }}
-          VITE_CYCLOMEDIA_USERNAME: ${{ secrets.VITE_CYCLOMEDIA_USERNAME }}
-          VITE_EAGLEVIEW_CLIENT_ID: ${{ secrets.VITE_EAGLEVIEW_CLIENT_ID }}
-          VITE_EAGLEVIEW_CLIENT_SECRET: ${{ secrets.VITE_EAGLEVIEW_CLIENT_SECRET }}
-
       - name: Install dependencies and run automation tests
         run: |
           cd automationtests
