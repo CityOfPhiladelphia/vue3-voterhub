@@ -21,9 +21,9 @@ export default function useRouting() {
     } else if (MainStore.currentAddress && MainStore.currentTopic) {
       if (import.meta.env.VITE_DEBUG) console.log('routeApp routing to address-and-topic because MainStore has address and topic');
       if (MainStore.currentLang) {
-        router.push({ name: 'address-and-topic', params: { address: MainStore.currentAddress, topic: slugify(MainStore.currentTopic) }, query: { lang: MainStore.currentLang } });
+        router.push({ name: 'address-and-topic', params: { address: MainStore.currentAddress, topic: slugify(MainStore.currentTopic).toLowerCase() }, query: { lang: MainStore.currentLang } });
       } else {
-        router.push({ name: 'address-and-topic', params: { address: MainStore.currentAddress, topic: slugify(MainStore.currentTopic) } });
+        router.push({ name: 'address-and-topic', params: { address: MainStore.currentAddress, topic: slugify(MainStore.currentTopic).toLowerCase() } });
       }
     } else if (MainStore.currentAddress) {
       if (import.meta.env.VITE_DEBUG) console.log('routeApp routing to address because MainStore has address');
@@ -34,7 +34,7 @@ export default function useRouting() {
       }
     } else if (MainStore.lastSearchMethod == 'mapClick' && ParcelsStore.pwd.features && ParcelsStore.pwd.features.length > 0) {
       if (import.meta.env.VITE_DEBUG) console.log('routeApp routing to address-and-topic because ParcelsStore has pwd features');
-      router.push({ name: 'address-and-topic', params: { address: ParcelsStore.pwd.features[0].properties.ADDRESS, topic: slugify(MainStore.currentTopic) } })
+      router.push({ name: 'address-and-topic', params: { address: ParcelsStore.pwd.features[0].properties.ADDRESS, topic: slugify(MainStore.currentTopic).toLowerCase() } })
     } else {
       router.push({ name: 'not-found' });
     }

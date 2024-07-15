@@ -44,8 +44,8 @@ import ImageryToggleControl from '@/components/map/ImageryToggleControl.vue';
 import ImageryDropdownControl from '@/components/map/ImageryDropdownControl.vue';
 import CyclomediaControl from '@/components/map/CyclomediaControl.vue';
 import EagleviewControl from '@/components/map/EagleviewControl.vue';
-import OpacitySlider from '@/components/map/OpacitySlider.vue';
-import OverlayLegend from '@/components/map/OverlayLegend.vue';
+// import OpacitySlider from '@/components/map/OpacitySlider.vue';
+// import OverlayLegend from '@/components/map/OverlayLegend.vue';
 import EagleviewPanel from '@/components/map/EagleviewPanel.vue';
 import CyclomediaPanel from '@/components/map/CyclomediaPanel.vue';
 import CyclomediaRecordingsClient from '@/components/map/recordings-client.js';
@@ -67,7 +67,7 @@ onMounted(async () => {
   // if (import.meta.env.VITE_DEBUG == 'true') console.log('Map.vue onMounted route.params.topic:', route.params.topic, 'route.params.address:', route.params.address);
   
   // create the maplibre map
-  let currentTopicMapStyle = route.params.topic ? $config.topicStyles[route.params.topic] : 'pwdDrawnMapStyle';
+  let currentTopicMapStyle = route.params.topic ? $config.topicStyles[route.params.topic.toLowerCase()] : 'pwdDrawnMapStyle';
   let zoom = route.params.address ? 17 : 12;
 
   map = new maplibregl.Map({
@@ -151,7 +151,7 @@ onMounted(async () => {
   map.on('click', 'nearby', (e) => {
     const properties = e.features[0].properties;
     let idField, infoField, row;
-    if (MainStore.currentTopic == 'Mail-in-Voting') {
+    if (MainStore.currentTopic == 'mail-in-voting') {
       idField = MailinVotingStore.dataFields[properties.type].id_field;
       infoField = MailinVotingStore.dataFields[properties.type].info_field;
       row = MailinVotingStore[properties.type].rows.filter(row => row[idField] === properties.id)[0];
@@ -550,7 +550,7 @@ watch(
     // if (import.meta.env.VITE_DEBUG == 'true') console.log('Map.vue clickedRow watch, newClickedRow:', newClickedRow);
     if (newClickedRow) map.flyTo({ center: newClickedRow.lngLat });
     let idField, infoField, row;
-    if (MainStore.currentTopic == 'Mail-in-Voting') {
+    if (MainStore.currentTopic == 'mail-in-voting') {
       idField = MailinVotingStore.dataFields[newClickedRow.type].id_field;
       infoField = MailinVotingStore.dataFields[newClickedRow.type].info_field;
       row = MailinVotingStore[newClickedRow.type].rows.filter(row => row[idField] === newClickedRow.id)[0];
@@ -905,7 +905,7 @@ const toggleEagleview = () => {
     />
     <EagleviewControl @toggle-eagleview="toggleEagleview" />
     <CyclomediaControl @toggle-cyclomedia="toggleCyclomedia" />
-    <OpacitySlider
+    <!-- <OpacitySlider
       v-if="MainStore.currentTopic == 'Deeds' && selectedRegmap"
       :initial-opacity="MapStore.regmapOpacity"
       @opacity-change="handleRegmapOpacityChange"
@@ -919,14 +919,14 @@ const toggleEagleview = () => {
       v-if="MainStore.currentTopic == 'Stormwater'"
       :initial-opacity="MapStore.stormwaterOpacity"
       @opacity-change="handleStormwaterOpacityChange"
-    />
+    /> -->
     <!-- the distance measure control uses a ref, so that functions within the component can be called from this file -->
     <DistanceMeasureControl
       ref="distanceMeasureControlRef"
       @drawDelete="drawDelete"
       @drawCancel="drawCancel"
     />
-    <OverlayLegend
+    <!-- <OverlayLegend
       v-show="!MapStore.imageryOn && ['Stormwater'].includes(MainStore.currentTopic)"
       :items="$config.stormwaterLegendData"
       :options="{ shape: 'square' }"
@@ -935,7 +935,7 @@ const toggleEagleview = () => {
       v-show="!MapStore.imageryOn && ['Deeds', 'Zoning'].includes(MainStore.currentTopic)"
       :items="$config.dorLegendData"
       :options="{ shape: 'square' }"
-    />
+    /> -->
   </div>
   <KeepAlive>
     <CyclomediaPanel

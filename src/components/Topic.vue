@@ -11,6 +11,10 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  topicSlug: {
+    type: String,
+    default: '',
+  },
   topicIcon: {
     type: String,
     default: '',
@@ -33,14 +37,14 @@ import useRouting from '@/composables/useRouting';
 const { routeApp } = useRouting();
 
 const open = computed(() => {
-  return route.params.topic == slugify(props.topicName) ? true : false;
+  return route.params.topic == props.topicSlug ? true : false;
 });
 
 const handleTopicClick = () => {
-  if (slugify(props.topicName) == route.params.topic) {
+  if (route.params.topic && props.topicSlug == route.params.topic.toLowerCase()) {
     MainStore.currentTopic = '';
   } else {
-    MainStore.currentTopic = props.topicName;
+    MainStore.currentTopic = props.topicSlug;
   }
   if (import.meta.env.VITE_DEBUG == 'true') console.log('topic clicked:', props.topicName);
   routeApp(router);

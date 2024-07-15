@@ -122,7 +122,7 @@ const dataFetch = async(to, from) => {
     MainStore.currentTopic = '';
   } else {
     if (!MainStore.currentTopic) {
-      MainStore.currentTopic = to.params.topic;
+      MainStore.currentTopic = to.params.topic.toLowerCase();
     }
   }
   
@@ -164,21 +164,22 @@ const dataFetch = async(to, from) => {
     await CondosStore.fillCondoData(address);
     CondosStore.loadingCondosData = false;
     if (to.params.topic == "Condominiums" && !CondosStore.condosData.pages.page_1.features.length) {
-      MainStore.currentTopic = "Elections-and-Ballots";
-      router.push({ name: 'address-and-topic', params: { address: to.params.address, topic: 'Elections-and-Ballots' } });
+      MainStore.currentTopic = "elections-and-ballots";
+      router.push({ name: 'address-and-topic', params: { address: to.params.address, topic: 'elections-and-ballots' } });
       return
     }
   }
   MainStore.lastSearchMethod = null;
   await topicDataFetch(to.params.topic, to.params.data);
-  if (to.params.topic !== 'Nearby Activity') {
-    MainStore.addToDataSourcesLoadedArray(to.params.topic);
-  } else {
-    if (!MainStore.dataSourcesLoadedArray.includes('Nearby-Activity')) {
-      MainStore.addToDataSourcesLoadedArray('Nearby-Activity');
-    }
-    MainStore.addToDataSourcesLoadedArray(MainStore.currentNearbyDataType);
+  if (to.params.topic) {
+    MainStore.addToDataSourcesLoadedArray(to.params.topic.toLowerCase());
   }
+  // } else {
+  //   if (!MainStore.dataSourcesLoadedArray.includes('Nearby-Activity')) {
+  //     MainStore.addToDataSourcesLoadedArray('Nearby-Activity');
+  //   }
+  //   MainStore.addToDataSourcesLoadedArray(MainStore.currentNearbyDataType);
+  // }
   MainStore.initialDatafetchComplete = true;
 }
 
@@ -203,25 +204,25 @@ const topicDataFetch = async (topic, data) => {
   //   DorStore.loadingDorData = false;
   // }
 
-  if (topic === 'Elections-and-Ballots') {
+  if (topic && topic.toLowerCase() === 'elections-and-ballots') {
     const BallotsStore = useBallotsStore();
     await BallotsStore.fillAllBallotsData();
     BallotsStore.loadingBallotsData = false;
   }
 
-  if (topic === 'Polling-Place') {
+  if (topic && topic.toLowerCase() === 'polling-place') {
     const PollingPlaceStore = usePollingPlaceStore();
     await PollingPlaceStore.fillAllPollingPlaceData();
     PollingPlaceStore.loadingPollingPlaceData = false;
   }
 
-  if (topic === 'Mail-in-Voting') {
+  if (topic && topic.toLowerCase() === 'mail-in-voting') {
     const MailInPollingPlaceStore = useMailinVotingStore();
     await MailInPollingPlaceStore.fillAllMailinVotingData();
     MailInPollingPlaceStore.loadingData = false;
   }
 
-  if (topic === 'Elected-Officials') {
+  if (topic && topic.toLowerCase() === 'elected-officials') {
     const ElectedOfficialsStore = useElectedOfficialsStore();
     await ElectedOfficialsStore.fillAllElectedOfficialsData();
     ElectedOfficialsStore.loadingElectedOfficialsData = false;
@@ -249,14 +250,16 @@ const router = createRouter({
       name: 'address-or-topic',
       component: App,
       beforeEnter: async (to, from) => {
-        console.log('address-or-topic route beforeEnter, to:', to, 'from:', from);
+        if (import.meta.env.VITE_DEBUG === 'true') console.log('address-or-topic route beforeEnter, to:', to, 'from:', from, to.params.addressOrTopic.toLowerCase());
         const MainStore = useMainStore();
-        const topics = [ 'Elections-and-Ballots', 'Polling-Place', 'Mail-in-Voting', 'Elected-Officials' ];
-        if (topics.includes(to.params.addressOrTopic)) {
+        const topics = [ 'elections-and-ballots', 'polling-place', 'mail-in-voting', 'elected-officials' ];
+        if (topics.includes(to.params.addressOrTopic.toLowerCase())) {
+          if (import.meta.env.VITE_DEBUG === 'true') console.log('inside if, routing to topic');
           MainStore.currentTopic = to.params.addressOrTopic;
           MainStore.currentLang = to.query.lang;
           routeApp(router);
         } else {
+          if (import.meta.env.VITE_DEBUG === 'true') console.log('inside else, routing to address');
           MainStore.currentTopic = null;
           MainStore.currentAddress = to.params.addressOrTopic;
           MainStore.currentLang = to.query.lang;
@@ -333,7 +336,7 @@ router.afterEach(async (to, from) => {
     await dataFetch(to, from);
   } else if (to.name == 'not-found') {
     const MainStore = useMainStore();
-    MainStore.currentTopic = "Elections-and-Ballots"
+    MainStore.currentTopic = "elections-and-ballots"
   }
 });
 

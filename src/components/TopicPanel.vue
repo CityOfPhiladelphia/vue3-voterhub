@@ -49,10 +49,10 @@ const zipCode = computed(() => {
       
   <!-- FRONT PAGE CONTENT -->
   <DefaultIntro v-if="route.name == 'home'" />
-  <BallotsIntro v-if="route.name == 'topic' && route.params.topic == 'Elections-and-Ballots'" />
-  <PollingPlaceIntro v-if="route.name == 'topic' && route.params.topic == 'Polling-Place'" />
-  <MailInVotingIntro v-if="route.name == 'topic' && route.params.topic == 'Mail-in-Voting'" />
-  <ElectedOfficialsIntro v-if="route.name == 'topic' && route.params.topic == 'Elected-Officials'" />
+  <BallotsIntro v-if="route.name == 'topic' && route.params.topic.toLowerCase() == 'elections-and-ballots'" />
+  <PollingPlaceIntro v-if="route.name == 'topic' && route.params.topic.toLowerCase() == 'polling-place'" />
+  <MailInVotingIntro v-if="route.name == 'topic' && route.params.topic.toLowerCase() == 'mail-in-voting'" />
+  <ElectedOfficialsIntro v-if="route.name == 'topic' && route.params.topic.toLowerCase() == 'elected-officials'" />
 
   <!-- ADDRESS NOT FOUND CONTENT -->
   <div
@@ -102,8 +102,9 @@ const zipCode = computed(() => {
   >
     <topic
       :topic-name="'Elections & Ballots'"
+      :topic-slug="'elections-and-ballots'"
       :topic-icon="'fa-solid fa-star'"
-      :loading="!dataSourcesLoadedArray.includes('Elections-and-Ballots')"
+      :loading="!dataSourcesLoadedArray.includes('elections-and-ballots')"
       :topic-index="5"
     >
       <Ballots />
@@ -111,8 +112,9 @@ const zipCode = computed(() => {
 
     <topic
       :topic-name="'Polling Place'"
+      :topic-slug="'polling-place'"
       :topic-icon="'fa-solid fa-building'"
-      :loading="!dataSourcesLoadedArray.includes('Polling-Place')"
+      :loading="!dataSourcesLoadedArray.includes('polling-place')"
       :topic-index="5"
     >
       <PollingPlace />
@@ -120,8 +122,9 @@ const zipCode = computed(() => {
 
     <topic
       :topic-name="'Mail-in Voting'"
+      :topic-slug="'mail-in-voting'"
       :topic-icon="'fa-solid fa-envelope'"
-      :loading="!dataSourcesLoadedArray.includes('Mail-in-Voting')"
+      :loading="!dataSourcesLoadedArray.includes('mail-in-voting')"
       :topic-index="5"
     >
       <MailInVoting />
@@ -129,8 +132,9 @@ const zipCode = computed(() => {
 
     <topic
       :topic-name="'Elected Officials'"
+      :topic-slug="'elected-officials'"
       :topic-icon="'fa-solid fa-flag-usa'"
-      :loading="!dataSourcesLoadedArray.includes('Elected-Officials')"
+      :loading="!dataSourcesLoadedArray.includes('elected-officials')"
       :topic-index="5"
     >
       <ElectedOfficials />

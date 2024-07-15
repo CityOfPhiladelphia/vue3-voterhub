@@ -51,7 +51,7 @@ onMounted(async () => {
     router.push({ name: 'home' });
   }
   if (route.params.topic) {
-    MainStore.currentTopic = route.params.topic;
+    MainStore.currentTopic = route.params.topic.toLowerCase();
   } else {
     MainStore.currentTopic = null;
   }
