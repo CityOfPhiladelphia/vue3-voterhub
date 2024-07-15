@@ -65,7 +65,7 @@ module.exports = {
   condoAddressData,
   pwdAddressData,
   dorAddressData,
-  URL:"https://d1dycpzd1ntl2z.cloudfront.net/",
-  HEADLESS_MODE: "true",
+  URL:"http://localhost:5174/",
+  HEADLESS_MODE: true,
   BROWSER:"chrome",
 };
