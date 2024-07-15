@@ -129,7 +129,7 @@ const accountsTableData = computed(() => {
 <template>
   <div
     id="Stormwater-description"
-    class="box"
+    class="topic-info"
   >
     Stormwater billing accounts associated with your search address. 
     The property boundaries displayed on the map for reference only
@@ -139,7 +139,7 @@ const accountsTableData = computed(() => {
   </div>
 
   <div class="data-section">
-    <h2 class="subtitle mb-3 is-5 table-title">
+    <h2 class="subtitle mb-3 is-5 vert-table-title">
       Parcel
       <font-awesome-icon
         v-if="StormwaterStore.loadingStormwaterData"
