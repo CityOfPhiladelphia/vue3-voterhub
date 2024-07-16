@@ -297,10 +297,11 @@ const router = createRouter({
 router.afterEach(async (to, from) => {
   const MainStore = useMainStore();
   if (import.meta.env.VITE_DEBUG == 'true') console.log('router afterEach to:', to, 'from:', from);
-  if (to.query !== from.query && to.path === from.path) {
+  // if (to.query.lang !== from.query.lang && to.path === from.path) {
+  if (to.query.lang !== from.query.lang) {
     MainStore.currentLang = to.query.lang;
-  } else if (to.path === from.path) {
-    return;
+  // } else if (to.path === from.path) {
+  //   return;
   } else if (to.name === 'address-or-topic') {
     return;
   } else if (to.name !== 'not-found' && to.name !== 'search') {
