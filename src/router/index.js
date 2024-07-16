@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import App from '@/App.vue';
 import $config from '@/config';
-import slugify from 'slugify';
 
 import { useGeocodeStore } from '@/stores/GeocodeStore.js'
 import { useCondosStore } from '@/stores/CondosStore.js'
@@ -158,16 +157,16 @@ const dataFetch = async(to, from) => {
     if (MainStore.lastSearchMethod !== 'mapClick') { 
       await ParcelsStore.fillPwdParcelData();
       await ParcelsStore.fillDorParcelData();
-    } 
-    const CondosStore = useCondosStore();
-    CondosStore.loadingCondosData = true;
-    await CondosStore.fillCondoData(address);
-    CondosStore.loadingCondosData = false;
-    if (to.params.topic == "condos" && !CondosStore.condosData.pages.page_1.features.length) {
-      MainStore.currentTopic = "property";
-      router.push({ name: 'address-and-topic', params: { address: to.params.address, topic: 'property' } });
-      return
     }
+  }
+  const CondosStore = useCondosStore();
+  CondosStore.loadingCondosData = true;
+  await CondosStore.fillCondoData(address);
+  CondosStore.loadingCondosData = false;
+  if (to.params.topic == "condos" && !CondosStore.condosData.pages.page_1.features.length) {
+    MainStore.currentTopic = "property";
+    router.push({ name: 'address-and-topic', params: { address: to.params.address, topic: 'property' } });
+    return
   }
   MainStore.lastSearchMethod = null;
   await topicDataFetch(to.params.topic, to.params.data);
