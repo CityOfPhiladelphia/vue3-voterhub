@@ -338,7 +338,10 @@ const valuationHistoryTableData = computed(() => {
         />
       </p>
     </div>
-    <div v-else-if="hasNoData">
+    <div
+      v-else-if="hasNoData"
+      class="summary"
+    >
       <p>There is no property assessment record for this address.</p>
     </div>
     
@@ -347,6 +350,9 @@ const valuationHistoryTableData = computed(() => {
 
 <style>
 
+.summary {
+  font-weight: bold;
+}
 
 @media 
 only screen and (max-width: 760px),

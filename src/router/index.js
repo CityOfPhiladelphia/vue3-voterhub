@@ -93,6 +93,7 @@ const getParcelsAndPutInStore = async(lng, lat) => {
 const dataFetch = async(to, from) => {
   if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch is starting, to:', to, 'from:', from, 'to.params.address:', to.params.address, 'from.params.address:', from.params.address, 'to.params.topic:', to.params.topic, 'from.params.topic:', from.params.topic);
   const MainStore = useMainStore();
+  MainStore.datafetchRunning = true
   const GeocodeStore = useGeocodeStore();
   const ParcelsStore = useParcelsStore();
   const dataSourcesLoadedArray = MainStore.dataSourcesLoadedArray;
@@ -140,16 +141,16 @@ const dataFetch = async(to, from) => {
     if (MainStore.lastSearchMethod !== 'mapClick') { 
       await ParcelsStore.fillPwdParcelData();
       await ParcelsStore.fillDorParcelData();
-    } 
-    const CondosStore = useCondosStore();
-    CondosStore.loadingCondosData = true;
-    await CondosStore.fillCondoData(address);
-    CondosStore.loadingCondosData = false;
-    if (to.params.topic == "condos" && !CondosStore.condosData.pages.page_1.features.length) {
-      MainStore.currentTopic = "property";
-      router.push({ name: 'address-and-topic', params: { address: to.params.address, topic: 'property' } });
-      return
     }
+  }
+  const CondosStore = useCondosStore();
+  CondosStore.loadingCondosData = true;
+  await CondosStore.fillCondoData(address);
+  CondosStore.loadingCondosData = false;
+  if (to.params.topic == "condos" && !CondosStore.condosData.pages.page_1.features.length) {
+    MainStore.currentTopic = "property";
+    router.push({ name: 'address-and-topic', params: { address: to.params.address, topic: 'property' } });
+    return
   }
   MainStore.lastSearchMethod = null;
   if (to.name !== 'topic') {
@@ -159,6 +160,7 @@ const dataFetch = async(to, from) => {
     }
   }
   MainStore.initialDatafetchComplete = true;
+  MainStore.datafetchRunning = false;
 }
 
 const topicDataFetch = async (topic, data) => {
@@ -273,7 +275,9 @@ const router = createRouter({
         const { address, lat, lng } = to.query;
         if (import.meta.env.VITE_DEBUG == 'true') console.log('search route beforeEnter, to.query:', to.query, 'from:', from, 'address:', address);
         const MainStore = useMainStore();
-        if (address && address !== '') {
+        if (MainStore.datafetchRunning) {
+          return false;
+        } else if (address && address !== '') {
           if (import.meta.env.VITE_DEBUG == 'true') console.log('search route beforeEnter, address:', address);
           MainStore.setLastSearchMethod('address');
           await getGeocodeAndPutInStore(address);

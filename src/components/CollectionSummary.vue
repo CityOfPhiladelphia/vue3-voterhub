@@ -181,11 +181,15 @@ export default {
 </script>
 
 <template>
-  <div class="mb-2">
+  <div class="summary mb-2">
     {{ summary }}
   </div>
 </template>
 
 <style scoped>
+
+.summary {
+  font-weight: bold;
+}
 
 </style>
