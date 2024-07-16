@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import App from '@/App.vue';
 import $config from '@/config';
-import slugify from 'slugify';
 
 import { useGeocodeStore } from '@/stores/GeocodeStore.js'
 import { useCondosStore } from '@/stores/CondosStore.js'
@@ -76,12 +75,6 @@ const getParcelsAndPutInStore = async(lng, lat) => {
   ParcelsStore.pwd = ParcelsStore.pwdChecked;
   ParcelsStore.dor = ParcelsStore.dorChecked;
   
-  // if (!ParcelsStore.pwd.features[0] && !ParcelsStore.dor.features[0]) {
-  //   MainStore.selectedParcelId = null;
-  //   if (import.meta.env.VITE_DEBUG == 'true') console.log('getParcelsAndPutInStore, calling not-found');
-  //   router.push({ name: 'not-found' });
-  //   return;
-  // }
   const addressField = parcelLayer === 'pwd' ? 'ADDRESS' : 'ADDR_SOURCE';
   // const otherAddressField = addressField === 'ADDRESS' ? 'ADDR_SOURCE' : 'ADDRESS';
   if (import.meta.env.VITE_DEBUG == 'true') console.log('parcelLayer:', parcelLayer);
@@ -94,17 +87,6 @@ const getParcelsAndPutInStore = async(lng, lat) => {
       }
     }
   }
-  // if (import.meta.env.VITE_DEBUG == 'true') console.log('end of getParcelAndPutInStore, currentAddress:', currentAddress, 'parcelLayer:', parcelLayer, 'addressField', addressField, 'ParcelsStore[parcelLayer].features[0].properties:', ParcelsStore[parcelLayer].features[0].properties, 'ParcelsStore[parcelLayer].features[0].properties[addressField]:', ParcelsStore[parcelLayer].features[0].properties[addressField]);
-  // if (!currentAddress) {
-  //   if (ParcelsStore[otherLayer].features) {
-  //     for (let i = 0; i < ParcelsStore[otherLayer].features.length; i++) {
-  //       if (ParcelsStore[otherLayer].features[i].properties[otherAddressField] !== ' ') {
-  //         currentAddress = ParcelsStore[otherLayer].features[i].properties[addressField];
-  //         break;
-  //       }
-  //     }
-  //   }
-  // }
   if (currentAddress) MainStore.setCurrentAddress(currentAddress);
 }
 
@@ -170,16 +152,12 @@ const dataFetch = async(to, from) => {
     }
   }
   MainStore.lastSearchMethod = null;
-  await topicDataFetch(to.params.topic, to.params.data);
-  if (to.params.topic) {
-    MainStore.addToDataSourcesLoadedArray(to.params.topic.toLowerCase());
+  if (to.name !== 'topic') {
+    await topicDataFetch(to.params.topic, to.params.data);
+    if (to.params.topic) {
+      MainStore.addToDataSourcesLoadedArray(to.params.topic.toLowerCase());
+    }
   }
-  // } else {
-  //   if (!MainStore.dataSourcesLoadedArray.includes('Nearby-Activity')) {
-  //     MainStore.addToDataSourcesLoadedArray('Nearby-Activity');
-  //   }
-  //   MainStore.addToDataSourcesLoadedArray(MainStore.currentNearbyDataType);
-  // }
   MainStore.initialDatafetchComplete = true;
 }
 
@@ -192,17 +170,6 @@ const topicDataFetch = async (topic, data) => {
     await OpaStore.fillAssessmentHistory();
     OpaStore.loadingOpaData = false;
   }
-
-  // if (topic === 'Deeds') {
-  //   const DorStore = useDorStore();
-  //   if (import.meta.env.VITE_DEBUG == 'true') console.log('topic deeds before promise')
-  //   await Promise.all([DorStore.fillDorDocuments(),
-  //     DorStore.fillRegmaps(),
-  //     DorStore.fillDorCondos()
-  //   ]);
-  //   if (import.meta.env.VITE_DEBUG == 'true') console.log('topic deeds after promise')
-  //   DorStore.loadingDorData = false;
-  // }
 
   if (topic && topic.toLowerCase() === 'elections-and-ballots') {
     const BallotsStore = useBallotsStore();

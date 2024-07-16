@@ -66,8 +66,13 @@ const cameraSrc = computed(() => {
 onMounted(async () => {
   // if (import.meta.env.VITE_DEBUG == 'true') console.log('Map.vue onMounted route.params.topic:', route.params.topic, 'route.params.address:', route.params.address);
   
+  let currentTopicMapStyle;
   // create the maplibre map
-  let currentTopicMapStyle = route.params.topic ? $config.topicStyles[route.params.topic.toLowerCase()] : 'pwdDrawnMapStyle';
+  if (route.params.topic) {
+    currentTopicMapStyle = route.params.topic.toLowerCase() ? $config.topicStyles[route.params.topic.toLowerCase()] : 'pwdDrawnMapStyle';
+  } else {
+    currentTopicMapStyle = 'pwdDrawnMapStyle';
+  }
   let zoom = route.params.address ? 17 : 12;
 
   map = new maplibregl.Map({
@@ -325,6 +330,7 @@ watch(
       popup[0].remove();
     }
     if (newTopic) {
+      newTopic = newTopic.toLowerCase();
       map.setStyle($config[$config.topicStyles[newTopic]]);
       if (MapStore.imageryOn) {
         map.addLayer($config.mapLayers[imagerySelected.value], 'cyclomediaRecordings')

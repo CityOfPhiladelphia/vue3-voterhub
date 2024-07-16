@@ -31,7 +31,7 @@ import AddressSearchControl from '@/components/AddressSearchControl.vue';
     <br>
 
     <div 
-      class="box"
+      class="topic-info"
       v-html="$t('default.introPage.p5')"
     />
 

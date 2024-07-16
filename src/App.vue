@@ -52,9 +52,9 @@ onMounted(async () => {
   }
   if (route.params.topic) {
     MainStore.currentTopic = route.params.topic.toLowerCase();
-  } else {
-    MainStore.currentTopic = null;
-  }
+  } //else {
+  //   MainStore.currentTopic = null;
+  // }
   if (route.query.lang) {
     // const instance = getCurrentInstance();
     if (import.meta.env.VITE_DEBUG == 'true') console.log('instance:', instance);
