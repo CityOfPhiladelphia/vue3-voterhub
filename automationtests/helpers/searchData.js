@@ -66,6 +66,6 @@ module.exports = {
   pwdAddressData,
   dorAddressData,
   URL:"https://d1dycpzd1ntl2z.cloudfront.net/",
-  HEADLESS_MODE: "true",
+  HEADLESS_MODE: true,
   BROWSER:"chrome",
 };

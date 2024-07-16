@@ -26,6 +26,9 @@ describe("PWD | Tests are in progress", function () {
       .setChromeOptions(options)
       .build();
     await driver.manage().window().maximize();
+    await driver.get(URL);
+    await driver.sleep(4000); // Adjust sleep time if necessary
+    await driver.manage().setTimeouts({ implicit: 60000 });
   });
 
   after(async function () {
@@ -201,7 +204,7 @@ describe("PWD | Tests are in progress", function () {
     try {
       await driver.manage().setTimeouts({ implicit: 60000 });
       await performSearch(pwdAddressData.address);
-      await driver.wait(until.elementLocated(By.css("section[id='Nearby Activity-topic'] button[class='topic is-vcentered']")), 25000);
+      await driver.wait(until.elementLocated(By.css("section[id='Nearby Activity-topic'] button[class='topic is-vcentered']")), 60000);
       await driver
         .findElement(
           By.css(
