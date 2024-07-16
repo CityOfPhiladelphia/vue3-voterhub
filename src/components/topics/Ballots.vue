@@ -33,8 +33,20 @@ const nextElectionDate = computed(() => {
       <div class="column is-12 badge-title">
         <b>{{ $t('ballot.topic.badge1.header') }}</b>
       </div>
-      <div class="column is-12 election">
+      <div
+        v-if="nextElectionDate"
+        class="column is-12 election"
+      >
         {{ nextElectionDate }}
+      </div>
+      <div
+        v-else
+        class="column"
+      >
+        <font-awesome-icon
+          icon="fa-solid fa-spinner fa-2x"
+          spin
+        />
       </div>
     </div>
   </section>
@@ -48,11 +60,14 @@ const nextElectionDate = computed(() => {
   <div
     id="Voting-description"
     class="topic-info"
+    v-html="$t('ballot.topic.callout1.text')"
   >
-    The deadline to register for the next election is 15 days prior to the election. You can confirm your registration and learn about registering to vote at <a
-      target="_blank"
-      href="vote.phila.gov"
-    >vote.phila.gov</a>.
+  </div>
+  <div
+    id="dates-description"
+    class="topic-info"
+    v-html="$t('ballot.topic.paragraph1.text')"
+  >
   </div>
 
 </template>

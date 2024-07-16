@@ -70,7 +70,7 @@ export default {
       "newCityCouncilDistrict": "New City Council District",
       "redistrictingProcess": "Read more about the redistricting process ",
       "callout1": {
-        "text": "The deadline to register for the next election is 15 days prior to the election. You can confirm your registration and learn about registering to vote at <a target='_blank' href='https://vote.phila.gov/'>vote.phila.gov</a>.",
+        "text": "Spanish The deadline to register for the next election is 15 days prior to the election. You can confirm your registration and learn about registering to vote at <a target='_blank' href='https://vote.phila.gov/'>vote.phila.gov</a>.",
       },
       "table1": {
         "title": "Important dates for voters 2023",
