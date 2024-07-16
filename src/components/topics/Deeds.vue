@@ -338,8 +338,10 @@ const dorDocsTableData = computed(() => {
     </div>
   </div>
 
-  <div class="topic-info" >
-    <!-- class="box" -->
+  <div
+    v-if="selectedParcel"
+    class="topic-info"
+  >
     Use the buttons below to view images of hard-copy deed maps, some of which have handwritten information that may be useful for historical deed research.
   </div>
 
