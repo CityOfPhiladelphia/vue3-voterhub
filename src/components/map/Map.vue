@@ -334,6 +334,7 @@ watch(
 watch(
   () => route.params.topic,
   async newTopic => {
+    MainStore.currentTopic = route.params.topic;
     // if (import.meta.env.VITE_DEBUG == 'true') console.log('Map route.params.topic watch, newTopic:', newTopic);
     const popup = document.getElementsByClassName('maplibregl-popup');
     if (popup.length) {

@@ -110,11 +110,12 @@ const getParcelsAndPutInStore = async(lng, lat) => {
 const dataFetch = async(to, from) => {
   if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch is starting, to:', to, 'from:', from, 'to.params.address:', to.params.address, 'from.params.address:', from.params.address, 'to.params.topic:', to.params.topic, 'from.params.topic:', from.params.topic);
   const MainStore = useMainStore();
-  MainStore.datafetchRunning = true
+  MainStore.datafetchRunning = true;
   const GeocodeStore = useGeocodeStore();
   const ParcelsStore = useParcelsStore();
   const dataSourcesLoadedArray = MainStore.dataSourcesLoadedArray;
   if (to.name === 'not-found') {
+    MainStore.datafetchRunning = false;
     return;
   }
 
@@ -145,10 +146,12 @@ const dataFetch = async(to, from) => {
   } else if (aisNeeded) {
     await getGeocodeAndPutInStore(address);
   } else if (to.params.topic !== 'nearby' && dataSourcesLoadedArray.includes(topic)) {
+    MainStore.datafetchRunning = false;
     return;
   } else if (to.params.topic === 'nearby' && dataSourcesLoadedArray.includes(to.params.data)) {
     MainStore.currentNearbyDataType = to.params.data;
     if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch is still going, MainStore.currentNearbyDataType:', MainStore.currentNearbyDataType, 'to.params.data:', to.params.data);
+    MainStore.datafetchRunning = false;
     return;
   }
   
@@ -167,7 +170,8 @@ const dataFetch = async(to, from) => {
   if (to.params.topic == "condos" && !CondosStore.condosData.pages.page_1.features.length) {
     MainStore.currentTopic = "property";
     router.push({ name: 'address-and-topic', params: { address: to.params.address, topic: 'property' } });
-    return
+    MainStore.datafetchRunning = false;
+    return;
   }
   MainStore.lastSearchMethod = null;
   await topicDataFetch(to.params.topic, to.params.data);
