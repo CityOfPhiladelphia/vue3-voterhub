@@ -6,8 +6,8 @@ import router from './router';
 
 import isMac from './util/is-mac';
 
-// import 'vue-good-table-next/dist/vue-good-table-next.css'
-// import "bulma";
+import 'vue-good-table-next/dist/vue-good-table-next.css'
+import "bulma";
 // import "../node_modules/bulma/bulma.sass";
 // import "@fortawesome/fontawesome-pro/css/fontawesome.min.css";
 // import "@fortawesome/fontawesome-pro/css/solid.min.css";
