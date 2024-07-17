@@ -1,5 +1,4 @@
 <script setup>
-import slugify from 'slugify';
 
 import $config from '@/config';
 if (import.meta.env.VITE_DEBUG == 'true') console.log('Map.vue $config:', $config);

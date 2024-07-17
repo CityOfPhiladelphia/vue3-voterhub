@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import { useMainStore } from '@/stores/MainStore.js'
 
 export const useGeocodeStore = defineStore("GeocodeStore", {
   state: () => {

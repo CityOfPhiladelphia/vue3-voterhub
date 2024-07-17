@@ -5,6 +5,8 @@ import { useMapStore } from '@/stores/MapStore.js'
 
 import axios from 'axios';
 import { point, polygon, lineString } from '@turf/helpers';
+import explode from '@turf/explode';
+import nearest from '@turf/nearest';
 import distance from '@turf/distance';
 import qs from 'qs';
 

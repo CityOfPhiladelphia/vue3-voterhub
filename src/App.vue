@@ -14,10 +14,6 @@ if (!import.meta.env.VITE_PUBLICPATH) {
   MainStore.publicPath = import.meta.env.VITE_PUBLICPATH;
 }
 if (import.meta.env.VITE_DEBUG == 'true') console.log('import.meta.env.VITE_PUBLICPATH:', import.meta.env.VITE_PUBLICPATH, 'MainStore.publicPath:', MainStore.publicPath);
-// import { getCurrentInstance } from 'vue'
-// const app = getCurrentInstance()
-// const $config = app.appContext.config.globalProperties.$config;
-// import $config from '@/config';
 
 // ROUTER
 import { useRouter, useRoute } from 'vue-router';

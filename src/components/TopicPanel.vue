@@ -1,5 +1,4 @@
 <script setup>
-import slugify from 'slugify';
 
 import { computed } from 'vue';
 import { useMainStore } from '@/stores/MainStore.js'
