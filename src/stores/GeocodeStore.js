@@ -9,10 +9,10 @@ export const useGeocodeStore = defineStore("GeocodeStore", {
   },
 
   actions: {
-    async fillaisData(address) {
+    async fillAisData(address) {
       // const MainStore = useMainStore();
       try {
-        if (import.meta.env.VITE_DEBUG == 'true') console.log('Address - fillaisData is running, address:', address)
+        if (import.meta.env.VITE_DEBUG == 'true') console.log('Address - fillAisData is running, address:', address)
         // const aisDataLoadedFlag = false;
         // on a new address search, clear all of the loaded data sources
         // const dataSourcesLoadedArray.value = [];

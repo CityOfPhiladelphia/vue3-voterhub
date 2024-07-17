@@ -43,7 +43,7 @@ const getGeocodeAndPutInStore = async(address) => {
   CondosStore.lastPageUsed = 1;
   CondosStore.condosData.pages = { page_1: { features: [] } };
   const GeocodeStore = useGeocodeStore();
-  await GeocodeStore.fillaisData(address);
+  await GeocodeStore.fillAisData(address);
   if (MainStore.lastSearchMethod == 'address' && !GeocodeStore.aisData.features) {
     MainStore.currentAddress = null;
     if (import.meta.env.VITE_DEBUG == 'true') console.log('getGeocodeAndPutInStore, calling not-found');
