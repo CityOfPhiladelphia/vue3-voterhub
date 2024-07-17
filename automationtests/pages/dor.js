@@ -16,16 +16,19 @@ describe("DOR | Tests are in progress", function () {
 
     if (isHeadless) {
       options.addArguments("--headless");
+      options.addArguments("--disable-gpu");
+      options.addArguments("--no-sandbox");
+      options.addArguments("--disable-dev-shm-usage");
+      options.windowSize({ width: 1920, height: 1080 });
     }
 
     driver = await new Builder()
       .forBrowser(browserSelect)
       .setChromeOptions(options)
       .build();
-
     await driver.manage().window().maximize();
     await driver.get(URL);
-    await driver.sleep(4000);
+    await driver.sleep(4000); // Adjust sleep time if necessary
     await driver.manage().setTimeouts({ implicit: 60000 });
   });
 
@@ -34,6 +37,7 @@ describe("DOR | Tests are in progress", function () {
       await driver.quit();
     }
   });
+
 
   async function captureScreenshot(error) {
     console.error("Error occurred during the test:", error);
