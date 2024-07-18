@@ -15,9 +15,10 @@ export default function useRouting() {
     } else if (MainStore.currentAddress) {
       if (import.meta.env.VITE_DEBUG) console.log('routeApp routing to address because MainStore has address');
       router.push({ name: 'address', params: { address: MainStore.currentAddress } });
-    } else if (MainStore.lastClickCoords == 'mapClick' && ParcelsStore.pwd.features && ParcelsStore.pwd.features.length > 0) {
-      if (import.meta.env.VITE_DEBUG) console.log('routeApp routing to address-and-topic because ParcelsStore has pwd features');
-      router.push({ name: 'address-and-topic', params: { address: ParcelsStore.pwd.features[0].properties.ADDRESS, topic: MainStore.currentTopic } })
+    // this was from a convoluted plan to use pwd parcels here - not necessary
+      // } else if (MainStore.lastClickCoords == 'mapClick' && ParcelsStore.pwd.features && ParcelsStore.pwd.features.length > 0) {
+    //   if (import.meta.env.VITE_DEBUG) console.log('routeApp routing to address-and-topic because ParcelsStore has pwd features');
+    //   router.push({ name: 'address-and-topic', params: { address: ParcelsStore.pwd.features[0].properties.ADDRESS, topic: MainStore.currentTopic } })
     } else {
       router.push({ name: 'not-found' });
     }
