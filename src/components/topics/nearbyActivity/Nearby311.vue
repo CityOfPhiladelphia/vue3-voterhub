@@ -95,7 +95,6 @@ const nearby311TableData = computed(() => {
 </script>
 
 <template>
-
   <div class="mt-5">
     <h2 class="subtitle mb-3 is-5">
       311 Requests

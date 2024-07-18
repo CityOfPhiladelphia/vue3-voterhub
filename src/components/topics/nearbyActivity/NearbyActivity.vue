@@ -154,8 +154,8 @@ onMounted( () => {
       </div>
       <div class="column is-4 is-12-mobile">
         <TextFilter
-          :search-label="`Search ${ shortDataTypes[currentNearbyDataType] }`"
           v-model="textSearch"
+          :search-label="`Search ${ shortDataTypes[currentNearbyDataType] }`"
         />
       </div>
     </div>
