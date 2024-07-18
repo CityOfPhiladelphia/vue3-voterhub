@@ -152,27 +152,22 @@ const dataFetch = async(to, from) => {
     router.push({ name: 'address-and-topic', params: { address: to.params.address, topic: 'property' } });
     return
   }
+
   MainStore.lastSearchMethod = null;
+  MainStore.initialDatafetchComplete = true;
+  MainStore.datafetchRunning = false;
+
   if (to.name !== 'topic') {
     await topicDataFetch(to.params.topic, to.params.data);
     if (to.params.topic) {
       MainStore.addToDataSourcesLoadedArray(to.params.topic.toLowerCase());
     }
   }
-  MainStore.initialDatafetchComplete = true;
-  MainStore.datafetchRunning = false;
 }
 
 const topicDataFetch = async (topic, data) => {
   if (import.meta.env.VITE_DEBUG == 'true') console.log('topicDataFetch is running, topic:', topic);
   
-  if (topic === 'property') {
-    const OpaStore = useOpaStore();
-    await OpaStore.fillOpaData();
-    await OpaStore.fillAssessmentHistory();
-    OpaStore.loadingOpaData = false;
-  }
-
   if (topic && topic.toLowerCase() === 'elections-and-ballots') {
     const BallotsStore = useBallotsStore();
     await BallotsStore.fillAllBallotsData();
@@ -272,8 +267,8 @@ const router = createRouter({
       name: 'search',
       component: App,
       beforeEnter: async (to, from) => {
-        const { address, lat, lng } = to.query;
-        if (import.meta.env.VITE_DEBUG == 'true') console.log('search route beforeEnter, to.query:', to.query, 'from:', from, 'address:', address);
+        const { address, lat, lng, lang } = to.query;
+        if (import.meta.env.VITE_DEBUG == 'true') console.log('search route beforeEnter, to.query:', to.query, 'to:', to, 'from:', from, 'address:', address);
         const MainStore = useMainStore();
         if (MainStore.datafetchRunning) {
           return false;
@@ -302,7 +297,8 @@ router.afterEach(async (to, from) => {
     MainStore.currentLang = to.query.lang;
   // } else if (to.path === from.path) {
   //   return;
-  } else if (to.name === 'address-or-topic') {
+  }
+  if (to.name === 'address-or-topic') {
     return;
   } else if (to.name !== 'not-found' && to.name !== 'search') {
     await dataFetch(to, from);

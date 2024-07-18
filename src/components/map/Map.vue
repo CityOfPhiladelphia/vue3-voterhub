@@ -207,7 +207,7 @@ onMounted(async () => {
     // if (import.meta.env.VITE_DEBUG == 'true') console.log('Map.vue handleMapClick, e:', e, 'drawLayers:', drawLayers, 'drawMode:', drawMode, 'e:', e, 'map.getStyle():', map.getStyle(), 'MapStore.drawStart:', MapStore.drawStart);
     if (!drawLayers.length && draw.getMode() !== 'draw_polygon') {
       MainStore.lastClickCoords = [e.lngLat.lng, e.lngLat.lat];
-      router.push({ name: 'search', query: { lng: e.lngLat.lng, lat: e.lngLat.lat }})
+      router.replace({ name: 'search', query: { lng: e.lngLat.lng, lat: e.lngLat.lat, lang: MainStore.currentLang }})
     }
     if (draw.getMode() === 'draw_polygon') {
       distanceMeasureControlRef.value.getDrawDistances(e);

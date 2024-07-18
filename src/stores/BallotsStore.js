@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { useGeocodeStore } from '@/stores/GeocodeStore.js'
+import { useGeocodeStore } from './GeocodeStore';
 
 export const useBallotsStore = defineStore("BallotsStore", {
   state: () => {
