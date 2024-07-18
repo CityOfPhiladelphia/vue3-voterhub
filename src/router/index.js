@@ -110,7 +110,6 @@ const dataFetch = async(to, from) => {
     }
   }
   
-  // GET PARAMS
   let address, topic;
   if (to.params.address) { address = to.params.address } else if (to.query.address) { address = to.query.address }
   if (to.params.topic) { topic = to.params.topic.toLowerCase() }
@@ -120,7 +119,16 @@ const dataFetch = async(to, from) => {
   let addressChanged = to.params.address !== from.params.address;
 
   if (addressChanged) {
-    await getGeocodeAndPutInStore(address);
+    if (!GeocodeStore.aisData.normalized || GeocodeStore.aisData.normalized && GeocodeStore.aisData.normalized !== address) {
+      await getGeocodeAndPutInStore(address);
+    }
+    // if this was NOT started by a map click, get the parcels
+    if (MainStore.lastSearchMethod !== 'mapClick') {
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch, inside if addressChanged:', addressChanged);
+      await ParcelsStore.fillPwdParcelData();
+      await ParcelsStore.fillDorParcelData();
+    }
+
   } else if (to.params.topic !== 'nearby' && dataSourcesLoadedArray.includes(topic)) {
     MainStore.datafetchRunning = false;
     return;
@@ -131,16 +139,6 @@ const dataFetch = async(to, from) => {
     return;
   }
   
-  // if there are no parcels, get them
-  if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch is still going after address, addressChanged:', addressChanged);
-  if (!MainStore.initialDatafetchComplete && addressChanged || to.params.data === from.params.data && addressChanged || to.params.topic === 'Condominiums' && addressChanged) {
-    // if this was NOT started by a map click, get the parcels
-    if (MainStore.lastSearchMethod !== 'mapClick') { 
-      await ParcelsStore.fillPwdParcelData();
-      await ParcelsStore.fillDorParcelData();
-    }
-  }
-
   // check for condos
   const CondosStore = useCondosStore();
   CondosStore.loadingCondosData = true;
@@ -156,7 +154,6 @@ const dataFetch = async(to, from) => {
   }
 
   MainStore.lastSearchMethod = null;
-  MainStore.initialDatafetchComplete = true;
   MainStore.datafetchRunning = false;
 
   await topicDataFetch(to.params.topic, to.params.data);

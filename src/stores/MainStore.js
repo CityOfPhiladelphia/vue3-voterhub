@@ -5,7 +5,7 @@ export const useMainStore = defineStore("MainStore", {
     return {
       appVersion: 'atlas',
       datafetchRunning: false,
-      initialDatafetchComplete: false,
+      // initialDatafetchComplete: false,
       publicPath: null,
       isMobileDevice: null,
       isMac: null,
