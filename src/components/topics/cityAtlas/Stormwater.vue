@@ -158,66 +158,59 @@ const accountsTableData = computed(() => {
     <div v-else-if="hasNoCapData">
       <p>Cannot currently find stormwater data for this address.</p>
     </div>
-    <!-- v-if="!shouldShowCondosMessage" -->
     <vertical-table
       table-id="stormwaterTable"
       :data="vertTableData"
     />
   </div>
 
-  <!-- <div class="data-section"> -->
-    <h2 class="subtitle mb-3 is-5 table-title">
-      Accounts
-      <font-awesome-icon
-        v-if="StormwaterStore.loadingStormwaterData"
-        icon="fa-solid fa-spinner"
-        spin
-      />
-      <span v-else>({{ accountsLength }})</span>
-    </h2>
-    <div
-      v-if="accountsTableData.rows"
-      class="horizontal-table"
+  <h2 class="subtitle mb-3 is-5 table-title">
+    Accounts
+    <font-awesome-icon
+      v-if="StormwaterStore.loadingStormwaterData"
+      icon="fa-solid fa-spinner"
+      spin
+    />
+    <span v-else>({{ accountsLength }})</span>
+  </h2>
+  <div
+    v-if="accountsTableData.rows"
+    class="horizontal-table"
+  >
+    <vue-good-table
+      id="accounts"
+      :columns="accountsTableData.columns"
+      :rows="accountsTableData.rows"
+      :pagination-options="paginationOptions"
+      style-class="table"
     >
-
-      <vue-good-table
-        id="accounts"
-        :columns="accountsTableData.columns"
-        :rows="accountsTableData.rows"
-        :pagination-options="paginationOptions"
-        style-class="table"
-      >
-        <template #emptystate>
-          <div v-if="StormwaterStore.loadingStormwaterData">
-            Loading accounts... <font-awesome-icon
-              icon="fa-solid fa-spinner"
-              spin
-            />
-          </div>
-          <div v-else>
-            No accounts found
-          </div>
-        </template>
-        <template #pagination-top="props">
-          <custom-pagination-labels
-            :mode="'pages'"
-            :total="props.total"
-            :perPage="5"
-            @page-changed="props.pageChanged"
-            @per-page-changed="props.perPageChanged"
-          >
-          </custom-pagination-labels>
-        </template>
-      </vue-good-table>
-    </div>
-    <a
-      class="table-link"
-      target="_blank"
-      :href="`https://stormwater.phila.gov/parcelviewer/parcel/${parcelId}`"
-    >See more at Stormwater Billing <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
-
-  <!-- </div> -->
-
+      <template #emptystate>
+        <div v-if="StormwaterStore.loadingStormwaterData">
+          Loading accounts... <font-awesome-icon
+            icon="fa-solid fa-spinner"
+            spin
+          />
+        </div>
+        <div v-else>
+          No accounts found
+        </div>
+      </template>
+      <template #pagination-top="props">
+        <custom-pagination-labels
+          :mode="'pages'"
+          :total="props.total"
+          :perPage="5"
+          @page-changed="props.pageChanged"
+          @per-page-changed="props.perPageChanged"
+        />
+      </template>
+    </vue-good-table>
+  </div>
+  <a
+    class="table-link"
+    target="_blank"
+    :href="`https://stormwater.phila.gov/parcelviewer/parcel/${parcelId}`"
+  >See more at Stormwater Billing <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
 </template>
 
 <style>
