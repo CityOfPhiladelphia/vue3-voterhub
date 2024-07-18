@@ -108,7 +108,7 @@ export const useDorStore = defineStore("DorStore", {
       this.dorCondos = {};
     },
     async fillDorCondos() {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         (async () => {
           this.dorCondos = {};
           if (import.meta.env.VITE_DEBUG == 'true') console.log('fillRegmaps is running');
@@ -143,7 +143,7 @@ export const useDorStore = defineStore("DorStore", {
       });
     },
     async fillRegmaps() {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         (async () => {
           if (import.meta.env.VITE_DEBUG == 'true') console.log('fillRegmaps is running');
           this.regmaps = {};
@@ -241,7 +241,7 @@ export const useDorStore = defineStore("DorStore", {
       });
     },
     async fillDorDocuments() {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         (async () => {
           if (import.meta.env.VITE_DEBUG == 'true') console.log('fillDorDocuments is running');
 

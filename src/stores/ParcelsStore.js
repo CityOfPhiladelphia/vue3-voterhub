@@ -1,4 +1,3 @@
-
 import { defineStore } from 'pinia';
 import { useGeocodeStore } from '@/stores/GeocodeStore.js'
 import { useMainStore } from '@/stores/MainStore.js'
@@ -132,65 +131,12 @@ export const useParcelsStore = defineStore('ParcelsStore', {
           this[`${parcelLayer}Checked`] = processedData;
         } else {
           if (import.meta.env.VITE_DEBUG == 'true') console.log('in else, parcelLayer:', parcelLayer, '$config.parcelLayerForTopic[MainStore.currentTopic]:', $config.parcelLayerForTopic[MainStore.currentTopic]);
-          // if (parcelLayer === 'dor' && $config.parcelLayerForTopic[MainStore.currentTopic] === 'pwd') {
-          // if (parcelLayer === 'dor') {
-          //   this[parcelLayer] = {};
-          // }
           this[`${parcelLayer}Checked`] = {};
         }
       } catch {
         if (import.meta.env.VITE_DEBUG == 'true') console.error(`checkParcelDataByLngLat await never resolved, failed to fetch ${parcelLayer} parcel data by lng/lat`)
-        // if (parcelLayer === 'dor' && $config.parcelLayerForTopic[MainStore.currentTopic] === 'pwd') {
-        //   this[parcelLayer] = {};
-        // }
         this[`${parcelLayer}Checked`] = {};
       }
     },
-
-    // async fillParcelDataByLngLat(lng, lat, parcelLayer) {
-    //   if (import.meta.env.VITE_DEBUG == 'true') console.log('fillParcelDataByLngLat, lng:', lng, 'lat:', lat, 'parcelLayer:', parcelLayer);
-    //   let ESRILayer = parcelLayer === 'pwd' ? 'PWD_PARCELS' : 'DOR_Parcel';
-    //   let params = {
-    //     'where': '1=1',
-    //     'outSR': 4326,
-    //     'f': 'geojson',
-    //     'outFields': '*',
-    //     'returnGeometry': true,
-    //     'geometry': `{ "x": ${lng}, "y": ${lat}, "spatialReference":{ "wkid":4326 }}`,
-    //     'geometryType': 'esriGeometryPoint',
-    //     'spatialRel': 'esriSpatialRelWithin',
-    //   };
-    //   const MainStore = useMainStore();
-    //   try {
-    //     const response = await axios(`https://services.arcgis.com/fLeGjb7u4uXqeF9q/ArcGIS/rest/services/${ESRILayer}/FeatureServer/0/query`, { params });
-    //     if (response.status !== 200) {
-    //       if (import.meta.env.VITE_DEBUG == 'true') console.warn('fillParcelDataByLngLat - await resolved but HTTP status was not successful')
-    //     }
-    //     if (response.data.features.length > 0) {
-    //       let data = await response.data;
-    //       let processedData;
-
-    //       if (parcelLayer === 'dor') {
-    //         processedData = await processParcels(data);
-    //         MainStore.selectedParcelId = processedData.features[0].properties.OBJECTID;
-    //       } else {
-    //         processedData = data;
-    //       }
-    //       this[parcelLayer] = processedData;
-    //     } else {
-    //       if (import.meta.env.VITE_DEBUG == 'true') console.log('in else, parcelLayer:', parcelLayer, '$config.parcelLayerForTopic[MainStore.currentTopic]:', $config.parcelLayerForTopic[MainStore.currentTopic]);
-    //       // if (parcelLayer === 'dor' && $config.parcelLayerForTopic[MainStore.currentTopic] === 'pwd') {
-    //       if (parcelLayer === 'dor') {
-    //         this[parcelLayer] = {};
-    //       }
-    //     }
-    //   } catch {
-    //     if (import.meta.env.VITE_DEBUG == 'true') console.error(`fillParcelDataByLngLat await never resolved, failed to fetch ${parcelLayer} parcel data by lng/lat`)
-    //     if (parcelLayer === 'dor' && $config.parcelLayerForTopic[MainStore.currentTopic] === 'pwd') {
-    //       this[parcelLayer] = {};
-    //     }
-    //   }
-    // },
-
-  }
+  },
 })

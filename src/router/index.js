@@ -15,9 +15,9 @@ import { useNearbyActivityStore } from '@/stores/NearbyActivityStore.js'
 import { useMainStore } from '@/stores/MainStore.js'
 
 import useRouting from '@/composables/useRouting';
-// import Condos from '@/components/topics/Condos.vue';
 const { routeApp } = useRouting();
 
+// this runs on address search and as part of datafetch()
 const getGeocodeAndPutInStore = async(address) => {
   if (import.meta.env.VITE_DEBUG == 'true') console.log('getGeocodeAndPutInStore is running, address:', address);
   const MainStore = useMainStore();
@@ -43,7 +43,7 @@ const getGeocodeAndPutInStore = async(address) => {
   CondosStore.lastPageUsed = 1;
   CondosStore.condosData.pages = { page_1: { features: [] } };
   const GeocodeStore = useGeocodeStore();
-  await GeocodeStore.fillaisData(address);
+  await GeocodeStore.fillAisData(address);
   if (MainStore.lastSearchMethod == 'address' && !GeocodeStore.aisData.features) {
     MainStore.currentAddress = null;
     if (import.meta.env.VITE_DEBUG == 'true') console.log('getGeocodeAndPutInStore, calling not-found');
@@ -52,11 +52,11 @@ const getGeocodeAndPutInStore = async(address) => {
   } else if (!GeocodeStore.aisData.features) {
     return;
   }
-  // if there is a value, add the value for the street_address in the MainStore
   const currentAddress = GeocodeStore.aisData.features[0].properties.street_address;
   MainStore.setCurrentAddress(currentAddress);
 }
 
+// this ONLY runs on map click
 const getParcelsAndPutInStore = async(lng, lat) => {
   if (import.meta.env.VITE_DEBUG == 'true') console.log('getParcelsAndPutInStore is running');
   let currentAddress;
@@ -76,9 +76,7 @@ const getParcelsAndPutInStore = async(lng, lat) => {
   ParcelsStore.dor = ParcelsStore.dorChecked;
   
   const addressField = parcelLayer === 'pwd' ? 'ADDRESS' : 'ADDR_SOURCE';
-  // const otherAddressField = addressField === 'ADDRESS' ? 'ADDR_SOURCE' : 'ADDRESS';
   if (import.meta.env.VITE_DEBUG == 'true') console.log('parcelLayer:', parcelLayer);
-  // if (import.meta.env.VITE_DEBUG == 'true') console.log('ParcelsStore[parcelLayer].features:', ParcelsStore[parcelLayer].features);
   if (ParcelsStore[parcelLayer].features) {
     for (let i = 0; i < ParcelsStore[parcelLayer].features.length; i++) {
       if (ParcelsStore[parcelLayer].features[i].properties[addressField] !== ' ') {
@@ -90,14 +88,17 @@ const getParcelsAndPutInStore = async(lng, lat) => {
   if (currentAddress) MainStore.setCurrentAddress(currentAddress);
 }
 
+// this is called on every route change, including address searches, topic changes, initial app load, and back button clicks
+// when it is called, it may have some of the data it needs already in the store (after a geocode), or it may need to fetch everything (e.g. initial app load)
 const dataFetch = async(to, from) => {
   if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch is starting, to:', to, 'from:', from, 'to.params.address:', to.params.address, 'from.params.address:', from.params.address, 'to.params.topic:', to.params.topic, 'from.params.topic:', from.params.topic);
   const MainStore = useMainStore();
-  MainStore.datafetchRunning = true
+  MainStore.datafetchRunning = true;
   const GeocodeStore = useGeocodeStore();
   const ParcelsStore = useParcelsStore();
   const dataSourcesLoadedArray = MainStore.dataSourcesLoadedArray;
   if (to.name === 'not-found') {
+    MainStore.datafetchRunning = false;
     return;
   }
 
@@ -116,41 +117,42 @@ const dataFetch = async(to, from) => {
 
   if (import.meta.env.VITE_DEBUG == 'true') console.log('address:', address, 'to.params.address:', to.params.address, 'from.params.address:', from.params.address, 'GeocodeStore.aisData.normalized:', GeocodeStore.aisData.normalized);
   
-  let aisNeeded = to.params.address !== from.params.address;
-  if (aisNeeded && !address) {
-    if (import.meta.env.VITE_DEBUG == 'true') console.log('aisNeeded:', aisNeeded, 'address:', address, 'typeof address:', typeof address);
-    if (ParcelsStore.dor.features) {
-      // if (import.meta.env.VITE_DEBUG == 'true') console.log('ParcelsStore.dor.features[0].properties.BASEREG:', ParcelsStore.dor.features[0].properties.BASEREG);
-      await ParcelsStore.checkParcelDataByLngLat(MainStore.lastClickCoords.lng, MainStore.lastClickCoords.lat, 'pwd')
-      ParcelsStore.pwd = ParcelsStore.pwdChecked;
-      await getGeocodeAndPutInStore(ParcelsStore.pwd.features[0].properties.PARCELID);
-    }
-  } else if (aisNeeded) {
+  let addressChanged = to.params.address !== from.params.address;
+
+  if (addressChanged) {
     await getGeocodeAndPutInStore(address);
   } else if (to.params.topic !== 'nearby' && dataSourcesLoadedArray.includes(topic)) {
+    MainStore.datafetchRunning = false;
     return;
   } else if (to.params.topic === 'nearby' && dataSourcesLoadedArray.includes(to.params.data)) {
     MainStore.currentNearbyDataType = to.params.data;
     if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch is still going, MainStore.currentNearbyDataType:', MainStore.currentNearbyDataType, 'to.params.data:', to.params.data);
+    MainStore.datafetchRunning = false;
     return;
   }
   
-  if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch is still going after address, aisNeeded:', aisNeeded);
-  if (!MainStore.initialDatafetchComplete && aisNeeded || to.params.data === from.params.data && aisNeeded || to.params.topic === 'Condominiums' && aisNeeded) {
-    // GET PARCELS AND DATA FOR TOPIC
+  // if there are no parcels, get them
+  if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch is still going after address, addressChanged:', addressChanged);
+  if (!MainStore.initialDatafetchComplete && addressChanged || to.params.data === from.params.data && addressChanged || to.params.topic === 'Condominiums' && addressChanged) {
+    // if this was NOT started by a map click, get the parcels
     if (MainStore.lastSearchMethod !== 'mapClick') { 
       await ParcelsStore.fillPwdParcelData();
       await ParcelsStore.fillDorParcelData();
     }
   }
+
+  // check for condos
   const CondosStore = useCondosStore();
   CondosStore.loadingCondosData = true;
   await CondosStore.fillCondoData(address);
   CondosStore.loadingCondosData = false;
+
+  // if the topic is condos and the address changes and there are no condos, reroute to property
   if (to.params.topic == "condos" && !CondosStore.condosData.pages.page_1.features.length) {
     MainStore.currentTopic = "property";
     router.push({ name: 'address-and-topic', params: { address: to.params.address, topic: 'property' } });
-    return
+    MainStore.datafetchRunning = false;
+    return;
   }
 
   MainStore.lastSearchMethod = null;

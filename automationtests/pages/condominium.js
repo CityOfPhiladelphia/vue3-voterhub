@@ -70,16 +70,17 @@ describe("Condominiums | Tests are in progress", function () {
     try {
       await driver.manage().setTimeouts({ implicit: 60000 });
       await performSearch(condoAddressData.address);
-      await driver.wait(until.elementLocated(By.css("section[id='Property Assessments-topic'] h1[class='name-holder']")), 60000);
+      await driver.wait(until.elementLocated(By.xpath("//h1[normalize-space()='Property Assessments']")), 60000);
       await driver
         .findElement(
-          By.css("section[id='Property Assessments-topic'] div[class='topic-name']")
+          By.xpath("//h1[normalize-space()='Property Assessments']")
         )
         .click();
-      //await driver.wait(until.elementLocated(By.css("section[id='Condominiums-topic'] div[class='name-holder']")), 60000);
+        driver.sleep(30000);
+      await driver.wait(until.elementLocated(By.xpath("//*[contains(text(),'Condominiums')]")), 60000);
       await driver
         .findElement(
-          By.css("section[id='Condominiums-topic'] h1[class='name-holder']")
+          By.xpath("//*[contains(text(),'Condominiums')]")
         )
         .click();
       await driver.wait(until.elementLocated(By.xpath("//table")), 60000);
