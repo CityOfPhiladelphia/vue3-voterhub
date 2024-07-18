@@ -10,7 +10,6 @@ import { useMapStore} from '@/stores/MapStore.js';
 // import MapboxDraw from './mapbox-gl-draw.min.js';
 // import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 // import './mapbox-gl-draw.css';
-import destination from '@turf/destination';
 import distance from '@turf/distance';
 import midpoint from '@turf/midpoint';
 import area from '@turf/area';
@@ -311,7 +310,7 @@ export default {
       }
     },
 
-    handleDrawCancel(e){
+    handleDrawCancel(){
       if (import.meta.env.VITE_DEBUG == 'true') console.log('handleDrawCancel is running, this.currentShape:', this.$data.currentShape);
       const MapStore = useMapStore();
       this.$emit('drawCancel', this.currentShape);

@@ -75,7 +75,6 @@ const nearbyVacantIndicatorsTableData = computed(() => {
 </script>
 
 <template>
-
   <div class="mt-5">
     <h2 class="subtitle mb-3 is-5">
       Likely Vacant Properties

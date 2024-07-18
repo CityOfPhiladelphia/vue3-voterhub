@@ -111,7 +111,6 @@ const nearby311TableData = computed(() => {
 </script>
 
 <template>
-
   <div class="filter-div columns is-multiline">
     <div
       class="dropdown nearby-dropdown column is-3 is-12-mobile pt-0 pb-0"

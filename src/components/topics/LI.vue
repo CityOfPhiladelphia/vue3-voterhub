@@ -58,7 +58,7 @@ const setLiBuildingFootprints = async(footprints) => {
   const map = MapStore.map;
   if (map.getSource) {
     await map.getSource('liBuildingFootprints').setData(geojson)
-  };
+  }
 };
 
 const selectedLiBuildingNumber = computed(() => LiStore.selectedLiBuildingNumber);
@@ -160,7 +160,7 @@ const buildingCertsTableData = ref({
       dateOutputFormat: 'MM/dd/yyyy',
     }
   ],
-  rows: selectedBuildingCerts || [],
+  rows: selectedBuildingCerts.value || [],
 })
 
 const permitsTableData = computed(() => {

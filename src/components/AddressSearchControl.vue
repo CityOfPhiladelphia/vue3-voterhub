@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { useMainStore } from '@/stores/MainStore.js'
@@ -18,10 +18,6 @@ const clearAddress = () => {
   if (import.meta.env.VITE_DEBUG == 'true') console.log('clearAddress is running');
   MainStore.addressSearchValue = '';
 }
-
-const hasAddress = computed(() => {
-  return MainStore.currentAddress != '';
-});
 
 const fullScreenTopicsEnabled = computed(() => {
   return MainStore.fullScreenTopicsEnabled;

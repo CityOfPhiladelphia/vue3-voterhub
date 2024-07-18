@@ -9,9 +9,11 @@ import isMac from './util/is-mac';
 
 import 'vue-good-table-next/dist/vue-good-table-next.css'
 import "bulma";
-import "@fortawesome/fontawesome-pro/css/fontawesome.min.css";
-import "@fortawesome/fontawesome-pro/css/solid.min.css";
-import "@phila/phila-ui-core/dist/styles/scss/all.scss";
+// import "../node_modules/bulma/bulma.sass";
+// import "@fortawesome/fontawesome-pro/css/fontawesome.min.css";
+// import "@fortawesome/fontawesome-pro/css/solid.min.css";
+// import "@phila/phila-ui-core/dist/styles/scss/all.scss";
+import './assets/main.scss'
 import './assets/style.scss'
 if (isMac()) {
   import('./assets/mac-style.scss')

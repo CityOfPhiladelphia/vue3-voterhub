@@ -1,5 +1,4 @@
 <script setup>
-import slugify from 'slugify';
 
 import $config from '@/config';
 if (import.meta.env.VITE_DEBUG == 'true') console.log('Map.vue $config:', $config);
@@ -324,6 +323,7 @@ watch(
 watch(
   () => route.params.topic,
   async newTopic => {
+    // maybe should set store currentTopic from route here
     if (import.meta.env.VITE_DEBUG == 'true') console.log('Map route.params.topic watch, newTopic:', newTopic);
     const popup = document.getElementsByClassName('maplibregl-popup');
     if (popup.length) {
