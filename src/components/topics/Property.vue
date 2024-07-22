@@ -152,13 +152,19 @@ const opaAccountNumber = computed(() => {
 
 const shouldShowCondosMessage = computed(() => {
   if (OpaStore.opaData.rows) {
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('shouldShowCondosMessage 1');
     if (!CondosStore.condosData.pages.page_1.features) {
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('shouldShowCondosMessage 2');
       return false;
     } else if (CondosStore.condosData.pages.page_1.features.length == 1) {
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('shouldShowCondosMessage 3');
       if (CondosStore.condosData.pages.page_1.features[0].match_type == 'has_base_no_suffix_unit_child') {
         return false;
+      } else {
+        return true;
       }
     } else {
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('shouldShowCondosMessage 4');
       return CondosStore.condosData.pages.page_1.features.length > 1;
     }
   }
@@ -227,27 +233,30 @@ const valuationHistoryTableData = computed(() => {
 <template>
   <section>
     <div
-      v-if="!shouldShowCondosMessage"
+      v-if="!hasNoData"
       id="Property-description"
       class="topic-info"
     >
       Property assessment and sale information for this address. Source: Office of Property Assessments (OPA). OPA was formerly a part of the Bureau of Revision of Taxes (BRT) and some City records may still use that name.
     </div>
 
-    <div v-if="!shouldShowCondosMessage && MainStore.appVersion == 'atlas' && !hasNoData">
+    <div
+      v-if="MainStore.appVersion == 'atlas' && !hasNoData"
+      class="mb-2"
+    >
       <vertical-table
         table-id="opaTable"
         :data="atlasVertTableData"
       />
       <a
-        v-if="!shouldShowCondosMessage"
+        v-if="!hasNoData"
         class="table-link"
         target="_blank"
         :href="`https://property.phila.gov/?p=${opaAccountNumber}`"
       >See more at Property Search <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
     </div>
 
-    <div v-if="!shouldShowCondosMessage && MainStore.appVersion == 'cityatlas' && !hasNoData">
+    <div v-if="MainStore.appVersion == 'cityatlas' && !hasNoData">
       <vertical-table
         table-id="cityatlasTable1"
         :data="cityatlasVertTable1Data"
@@ -325,7 +334,7 @@ const valuationHistoryTableData = computed(() => {
     </div>
 
     <div v-if="shouldShowCondosMessage">
-      <h2 class="subtitle mb-3 is-5">
+      <h2 class="subtitle mt-3 mb-3 is-5">
         There {{ CondosStore.condosData.total_size > 1 ? 'are':'is' }} {{ CondosStore.condosData.total_size }} condominium {{ CondosStore.condosData.total_size > 1 ? 'units':'unit' }} at this address.
       </h2>
       <p>You can use the Condominiums tab below to see information for an individual unit.</p>
