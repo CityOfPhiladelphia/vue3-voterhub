@@ -14,9 +14,9 @@ export const useVotingStore = defineStore("VotingStore", {
     };
   },
   actions: {
-    setLoadingData(loading) {
-      this.loadingData = loading;
-    },
+    // setLoadingData(loading) {
+    //   this.loadingVotingData = loading;
+    // },
     async fillAllVotingData() {
       this.fillDivisions();
       this.fillPollingPlaces();
@@ -28,6 +28,7 @@ export const useVotingStore = defineStore("VotingStore", {
       this.pollingPlaces = {};
       this.electedOfficials = {};
       this.nextElection = {};
+      this.loadingVotingData = true;
     },
     async fillDivisions() {
       if (import.meta.env.VITE_DEBUG == 'true') console.log('fillDivisions is running');
