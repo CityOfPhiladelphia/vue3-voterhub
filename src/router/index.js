@@ -116,15 +116,16 @@ const dataFetch = async(to, from) => {
 
   if (import.meta.env.VITE_DEBUG == 'true') console.log('address:', address, 'to.params.address:', to.params.address, 'from.params.address:', from.params.address, 'GeocodeStore.aisData.normalized:', GeocodeStore.aisData.normalized);
   
-  let addressChanged = to.params.address !== from.params.address;
+  let routeAddressChanged = to.params.address !== from.params.address;
 
-  if (addressChanged) {
+  if (routeAddressChanged) {
+    // if there is no geocode or the geocode does not match the address in the route, get the geocode
     if (!GeocodeStore.aisData.normalized || GeocodeStore.aisData.normalized && GeocodeStore.aisData.normalized !== address) {
       await getGeocodeAndPutInStore(address);
     }
     // if this was NOT started by a map click, get the parcels
     if (MainStore.lastSearchMethod !== 'mapClick') {
-      if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch, inside if addressChanged:', addressChanged);
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch, inside if routeAddressChanged:', routeAddressChanged);
       await ParcelsStore.fillPwdParcelData();
       await ParcelsStore.fillDorParcelData();
     }
