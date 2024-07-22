@@ -6,8 +6,7 @@ name: dev Push to S3 dev2 bucket
 on:
   push:
     branches:
-      - small-fixes
-
+      - main
 jobs:
   build:
 

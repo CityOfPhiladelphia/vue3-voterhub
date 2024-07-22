@@ -86,7 +86,12 @@ const nearby311TableData = computed(() => {
       {
         label: 'Distance',
         field: 'distance_ft',
-      }
+        sortFn: (x, y) => {
+          const xSplit = parseInt(x.split(' ')[0]);
+          const ySplit = parseInt(y.split(' ')[0]);
+          return (xSplit < ySplit ? -1 : (xSplit > ySplit ? 1 : 0));
+        },
+      },
     ],
     rows: nearby311.value || [],
   }
@@ -115,6 +120,7 @@ const nearby311TableData = computed(() => {
         @row-mouseenter="handleRowMouseover($event, 'service_request_id')"
         @row-mouseleave="handleRowMouseleave"
         @row-click="handleRowClick($event, 'service_request_id', 'nearby311')"
+        :sort-options="{ initialSortBy: {field: 'distance_ft', type: 'asc'}}"
       >
         <template #emptystate>
           <div v-if="loadingData">

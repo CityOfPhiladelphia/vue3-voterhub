@@ -66,7 +66,12 @@ const nearbyVacantIndicatorsTableData = computed(() => {
       {
         label: 'Distance',
         field: 'properties.distance_ft',
-      }
+        sortFn: (x, y) => {
+          const xSplit = parseInt(x.split(' ')[0]);
+          const ySplit = parseInt(y.split(' ')[0]);
+          return (xSplit < ySplit ? -1 : (xSplit > ySplit ? 1 : 0));
+        },
+      },
     ],
     rows: nearbyVacantIndicatorPoints.value || [],
   }
@@ -85,7 +90,6 @@ const nearbyVacantIndicatorsTableData = computed(() => {
       />
       <span v-else>({{ nearbyVacantIndicatorsTableData.rows.length }})</span>
     </h2>
-    <!-- <div v-if="loadingData">Loading...</div> -->
     <div class="horizontal-table">
       <vue-good-table
         id="nearbyVacantIndicators"
@@ -96,6 +100,7 @@ const nearbyVacantIndicatorsTableData = computed(() => {
         @row-mouseenter="handleRowMouseover($event, 'id')"
         @row-mouseleave="handleRowMouseleave"
         @row-click="handleRowClick($event, 'id', 'nearbyVacantIndicatorPoints')"
+        :sort-options="{ initialSortBy: {field: 'properties.distance_ft', type: 'asc'}}"
       >
         <template #emptystate>
           <div v-if="loadingData">
