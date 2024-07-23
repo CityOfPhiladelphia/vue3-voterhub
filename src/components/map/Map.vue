@@ -32,8 +32,8 @@ import { useVotingStore } from '@/stores/VotingStore.js'
 const VotingStore = useVotingStore();
 import { useNearbyActivityStore } from '@/stores/NearbyActivityStore';
 const NearbyActivityStore = useNearbyActivityStore();
-import { use311Store } from '@/stores/311Store';
-const Nearby311Store = use311Store();
+import { useCity311Store } from '@/stores/City311Store';
+const City311Store = useCity311Store();
 
 // ROUTER
 import { useRouter, useRoute } from 'vue-router';
@@ -166,9 +166,9 @@ onMounted(async () => {
       infoField = NearbyActivityStore.dataFields[properties.type].info_field;
       row = NearbyActivityStore[properties.type].rows.filter(row => row[idField] === properties.id)[0];
     } else if (MainStore.currentTopic == '311') {
-      idField = Nearby311Store.dataFields[properties.type].id_field;
-      infoField = Nearby311Store.dataFields[properties.type].info_field;
-      row = Nearby311Store[properties.type].rows.filter(row => row[idField] === properties.id)[0];
+      idField = City311Store.dataFields[properties.type].id_field;
+      infoField = City311Store.dataFields[properties.type].info_field;
+      row = City311Store[properties.type].rows.filter(row => row[idField] === properties.id)[0];
     }
     if (import.meta.env.VITE_DEBUG == 'true') console.log('nearby click, e:', e, 'properties:', properties, 'idField:', idField, 'infoField:', infoField, 'e.features[0]:', e.features[0], 'row:', row);
     // if (import.meta.env.VITE_DEBUG == 'true') console.log('nearby click, e:', e, 'properties:', properties, 'idField:', idField, 'e.features[0]:', e.features[0], 'type:', type, 'row:', row);
@@ -596,9 +596,9 @@ watch(
       infoField = NearbyActivityStore.dataFields[newClickedRow.type].info_field;
       row = NearbyActivityStore[newClickedRow.type].rows.filter(row => row[idField] === newClickedRow.id)[0];
     } else if (MainStore.currentTopic == '311') {
-      idField = Nearby311Store.dataFields[newClickedRow.type].id_field;
-      infoField = Nearby311Store.dataFields[newClickedRow.type].info_field;
-      row = Nearby311Store[newClickedRow.type].rows.filter(row => row[idField] === newClickedRow.id)[0];
+      idField = City311Store.dataFields[newClickedRow.type].id_field;
+      infoField = City311Store.dataFields[newClickedRow.type].info_field;
+      row = City311Store[newClickedRow.type].rows.filter(row => row[idField] === newClickedRow.id)[0];
     }
     // if (import.meta.env.VITE_DEBUG == 'true') console.log('nearby click, idField:', idField, 'row:', row);
     if (row.properties) row[infoField] = row.properties[infoField];
@@ -650,6 +650,8 @@ watch(
         ['get', 'type'],
         'nearby311',
         '#FF0000',
+        'city311',
+        '#FF0000',
         'nearbyCrimeIncidents',
         '#0096FF',
         'nearbyZoningAppeals',
@@ -678,6 +680,8 @@ watch(
         ['match',
         ['get', 'type'],
         'nearby311',
+        '#FF0000',
+        'city311',
         '#FF0000',
         'nearbyCrimeIncidents',
         '#0096FF',

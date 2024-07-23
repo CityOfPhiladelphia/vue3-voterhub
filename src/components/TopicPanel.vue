@@ -19,7 +19,7 @@ import LI from '@/components/topics/LI.vue';
 import Zoning from '@/components/topics/Zoning.vue';
 import Voting from '@/components/topics/Voting.vue';
 import NearbyActivity from '@/components/topics/nearbyActivity/NearbyActivity.vue';
-import ThreeOneOne from '@/components/topics/cityAtlas/ThreeOneOne.vue';
+import City311 from '@/components/topics/cityAtlas/City311.vue';
 import Stormwater from '@/components/topics/cityAtlas/Stormwater.vue';
 import Districts from '@/components/topics/cityAtlas/Districts.vue';
 
@@ -212,12 +212,12 @@ const zipCode = computed(() => {
     <topic
       v-if="MainStore.appVersion == 'cityatlas'"
       :topic-name="'311'"
-      :topic-slug="'311'"
+      :topic-slug="'city311'"
       :topic-icon="'fa-solid fa-phone'"
-      :loading="!dataSourcesLoadedArray.includes('311')"
+      :loading="!dataSourcesLoadedArray.includes('city311')"
       :topic-index="5"
     >
-      <ThreeOneOne />
+      <City311 />
     </topic>
 
     <topic

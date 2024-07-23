@@ -141,7 +141,7 @@ const nextElectionDate = computed(() => {
       >
         {{ nextElectionDate }}
       </div>
-      <div v-else class="column">
+      <div v-else class="column election">
         <p>
           <font-awesome-icon
             icon="fa-solid fa-spinner"

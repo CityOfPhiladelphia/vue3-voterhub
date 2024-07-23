@@ -14,14 +14,14 @@ import { format } from 'date-fns';
 
 if (import.meta.env.VITE_DEBUG == 'true') console.log('import.meta.env.VITE_AGO_USERNAME:', import.meta.env.VITE_AGO_USERNAME, 'import.meta.env.VITE_AGO_PASSWORD:', import.meta.env.VITE_AGO_PASSWORD);
 
-export const use311Store = defineStore('311Store', {
+export const useCity311Store = defineStore('City311Store', {
   state: () => {
     return {
       agoToken: null,
-      nearby311: {},
-      loadingNearby311: true,
+      city311: {},
+      loadingCity311: true,
       dataFields: {
-        nearby311: {
+        city311: {
           title: '311 Requests',
           id_field: 'id',
           info_field: 'SERVICE_NAME',
@@ -58,9 +58,9 @@ export const use311Store = defineStore('311Store', {
         console.log(error);
       });
     },
-    async fillNearby311() {
+    async fillCity311() {
       try {
-        this.loadingNearby311 = true;
+        this.loadingCity311 = true;
         const GeocodeStore = useGeocodeStore();
         const coordinates = GeocodeStore.aisData.features[0].geometry.coordinates;
         const MapStore = useMapStore();
@@ -142,8 +142,8 @@ export const use311Store = defineStore('311Store', {
             }
           });
 
-          this.nearby311.rows = features;
-          this.loadingNearby311 = false;
+          this.city311.rows = features;
+          this.loadingCity311 = false;
         } else {
           if (import.meta.env.VITE_DEBUG == 'true') console.warn('311 - await resolved but HTTP status was not successful');
         }

@@ -10,7 +10,7 @@ import { useLiStore } from '@/stores/LiStore.js'
 import { useDorStore } from '@/stores/DorStore.js'
 import { useZoningStore } from '@/stores/ZoningStore.js'
 import { useVotingStore } from '@/stores/VotingStore.js'
-import { use311Store } from '@/stores/311Store.js'
+import { useCity311Store } from '@/stores/City311Store.js'
 import { useStormwaterStore } from '@/stores/StormwaterStore.js'
 import { useNearbyActivityStore } from '@/stores/NearbyActivityStore.js'
 import { useMainStore } from '@/stores/MainStore.js'
@@ -209,16 +209,16 @@ const topicDataFetch = async (topic, data) => {
     VotingStore.loadingVotingData = false;
   }
 
-  if (topic === '311') {
-    const Nearby311Store = use311Store();
-    await Nearby311Store.getAgoToken();
-    await Nearby311Store.fillNearby311(data);
+  if (topic === 'city311') {
+    const City311Store = useCity311Store();
+    await City311Store.getAgoToken();
+    await City311Store.fillCity311(data);
   }
 
   if (topic === 'stormwater') {
     const StormwaterStore = useStormwaterStore();
     await StormwaterStore.fillStormwaterData();
-    await StormwaterStore.fillStormwaterCapData();
+    // await StormwaterStore.fillStormwaterCapData();
     StormwaterStore.loadingStormwaterData = false;
   }
 

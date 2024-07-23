@@ -2,8 +2,8 @@
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
 import { point, featureCollection } from '@turf/helpers';
 
-import { use311Store } from '@/stores/311Store';
-const Nearby311Store = use311Store();
+import { useCity311Store } from '@/stores/City311Store';
+const City311Store = useCity311Store();
 import { useMainStore } from '@/stores/MainStore';
 const MainStore = useMainStore();
 import { useMapStore } from '@/stores/MapStore';
@@ -18,7 +18,7 @@ const { isElementInViewport, handleRowClick, handleRowMouseover, handleRowMousel
 import TextFilter from '@/components/TextFilter.vue';
 const textSearch = ref('');
 
-const loadingNearby311 = computed(() => Nearby311Store.loadingNearby311 );
+const loadingCity311 = computed(() => City311Store.loadingCity311 );
 
 const timeIntervalSelected = ref('30');
 const timeIntervals = computed(() => {
@@ -29,10 +29,10 @@ const timeIntervals = computed(() => {
   };
 })
 
-const nearby311 = computed(() => {
+const city311 = computed(() => {
   let data;
-  if (Nearby311Store.nearby311.rows) {
-    data = [ ...Nearby311Store.nearby311.rows]
+  if (City311Store.city311.rows) {
+    data = [ ...City311Store.city311.rows]
       .filter(item => {
       // if (import.meta.env.VITE_DEBUG == 'true') console.log('in filter, item:', item);
       let timeDiff = new Date() - new Date(item.properties.REQUESTED_DATETIME);
@@ -47,11 +47,11 @@ const nearby311 = computed(() => {
   }
   return data;
 });
-const nearby311Geojson = computed(() => {
-  if (!nearby311.value) return [point([0,0])];
-  return nearby311.value.map(item => point([item.geometry.coordinates[0], item.geometry.coordinates[1]], { id: item.id, type: 'nearby311' }));
+const city311Geojson = computed(() => {
+  if (!city311.value) return [point([0,0])];
+  return city311.value.map(item => point([item.geometry.coordinates[0], item.geometry.coordinates[1]], { id: item.id, type: 'city311' }));
 })
-watch (() => nearby311Geojson.value, async(newGeojson) => {
+watch (() => city311Geojson.value, async(newGeojson) => {
   const map = MapStore.map;
   if (map.getSource) map.getSource('nearby').setData(featureCollection(newGeojson));
 });
@@ -72,14 +72,14 @@ watch(() => clickedMarkerId.value, (newClickedMarkerId) => {
 
 onMounted(() => {
   const map = MapStore.map;
-  if (!Nearby311Store.loadingNearby311 && nearby311Geojson.value.length > 0) { map.getSource('nearby').setData(featureCollection(nearby311Geojson.value)) }
+  if (!City311Store.loadingCity311 && city311Geojson.value.length > 0) { map.getSource('nearby').setData(featureCollection(city311Geojson.value)) }
 });
 onBeforeUnmount(() => {
   const map = MapStore.map;
   if (map.getSource('nearby')) { map.getSource('nearby').setData(featureCollection([point([0,0])])) }
 });
 
-const nearby311TableData = computed(() => {
+const city311TableData = computed(() => {
   return {
     columns: [
       {
@@ -102,9 +102,14 @@ const nearby311TableData = computed(() => {
       {
         label: 'Distance',
         field: 'properties.distance_ft',
-      }
+        sortFn: (x, y) => {
+          const xSplit = parseInt(x.split(' ')[0]);
+          const ySplit = parseInt(y.split(' ')[0]);
+          return (xSplit < ySplit ? -1 : (xSplit > ySplit ? 1 : 0));
+        },
+      },
     ],
-    rows: nearby311.value || [],
+    rows: city311.value || [],
   }
 });
 
@@ -133,31 +138,32 @@ const nearby311TableData = computed(() => {
     <h2 class="subtitle mb-3 is-5">
       311 Requests
       <font-awesome-icon
-        v-if="loadingNearby311"
+        v-if="loadingCity311"
         icon="fa-solid fa-spinner"
         spin
       />
-      <span v-else>({{ nearby311TableData.rows.length }})</span>
+      <span v-else>({{ city311TableData.rows.length }})</span>
     </h2>
     <div class="horizontal-table">
       <vue-good-table
-        id="nearby311"
-        :columns="nearby311TableData.columns"
-        :rows="nearby311TableData.rows"
+        id="city311"
+        :columns="city311TableData.columns"
+        :rows="city311TableData.rows"
         :row-style-class="row => hoveredStateId === row.id ? 'active-hover ' + row.id : 'inactive ' + row.id"
         style-class="table nearby-table"
         @row-mouseenter="handleRowMouseover($event, 'id')"
         @row-mouseleave="handleRowMouseleave"
-        @row-click="handleRowClick($event, 'id', 'nearby311')"
+        @row-click="handleRowClick($event, 'id', 'city311')"
+        :sort-options="{ initialSortBy: {field: 'properties.distance_ft', type: 'asc'}}"
       >
         <template #emptystate>
-          <div v-if="loadingNearby311">
+          <div v-if="loadingCity311">
             Loading nearby 311... <font-awesome-icon
               icon="fa-solid fa-spinner"
               spin
             />
           </div>
-          <div v-else-if="Nearby311Store.dataError">
+          <div v-else-if="City311Store.dataError">
             Data loading error - try refreshing the page
           </div>
           <div v-else>
@@ -176,7 +182,7 @@ only screen and (max-width: 760px) {
 
 	/*Label the data*/
 
-  #nearby311 {
+  #city311 {
     td:nth-of-type(1):before { content: "Date"; }
     td:nth-of-type(2):before { content: "Location"; }
     td:nth-of-type(3):before { content: "Type"; }
