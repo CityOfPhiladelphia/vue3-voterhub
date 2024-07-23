@@ -46,21 +46,21 @@ const accountsLength = computed(() => {
   return value;
 })
 
-const stormwaterCapData = computed(() => {
-  let data;
-  if (StormwaterStore.stormwaterCapData && Object.keys(StormwaterStore.stormwaterCapData).length) {
-    data = StormwaterStore.stormwaterCapData
-  }
-  return data;
-})
+// const stormwaterParcelData = computed(() => {
+//   let data;
+//   if (StormwaterStore.stormwaterData.Parcel && Object.keys(StormwaterStore.stormwaterData.Parcel).length) {
+//     data = StormwaterStore.stormwaterData.Parcel
+//   }
+//   return data;
+// })
 
-const hasNoCapData = computed(() => {
-  return !Object.keys(StormwaterStore.stormwaterCapData).length;
-});
+// const hasNoCapData = computed(() => {
+//   return !Object.keys(StormwaterStore.stormwaterCapData).length;
+// });
 
 const vertTableData = computed(() => {
-  if (import.meta.env.VITE_DEBUG) console.log('stormwaterData:', stormwaterData, 'stormwaterCapData:', stormwaterCapData);
-  if (stormwaterData.value && stormwaterCapData.value) {
+  // if (import.meta.env.VITE_DEBUG) console.log('stormwaterData:', stormwaterData);
+  if (stormwaterData.value) {
     return [
       {
         label: 'ParcelID',
@@ -82,10 +82,10 @@ const vertTableData = computed(() => {
         label: 'Impervious Area',
         value: thousandsPlace(stormwaterData.value.Parcel.ImpervArea) + ' sq ft',
       },
-      {
-        label: 'CAP Eligible',
-        value: stormwaterCapData.value.CAP.Eligible,
-      }
+      // {
+      //   label: 'CAP Eligible',
+      //   value: stormwaterParcelData.value.CAP.Eligible,
+      // }
     ]
   } else {
     return []
@@ -103,10 +103,10 @@ const accountsTableData = computed(() => {
         label: 'Customer',
         field: 'CustomerName',
       },
-      {
-        label: 'Status',
-        field: 'AcctStatus'
-      },
+      // {
+      //   label: 'Status',
+      //   field: 'StormwaterStatus'
+      // },
       {
         label: 'Service Type',
         field: 'ServiceTypeLabel',
@@ -155,9 +155,9 @@ const accountsTableData = computed(() => {
         />
       </p>
     </div>
-    <div v-else-if="hasNoCapData">
+    <!-- <div v-else-if="hasNoCapData">
       <p>Cannot currently find stormwater data for this address.</p>
-    </div>
+    </div> -->
     <vertical-table
       table-id="stormwaterTable"
       :data="vertTableData"
