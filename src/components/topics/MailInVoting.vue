@@ -1,5 +1,5 @@
 <script setup>
-import { computed, watch, onMounted, onBeforeUnmount } from 'vue';
+import { computed, watch, onMounted, onBeforeUnmount, getCurrentInstance } from 'vue';
 import { point, featureCollection } from '@turf/helpers';
 
 import { useMailinVotingStore } from '@/stores/MailinVotingStore';
@@ -8,6 +8,12 @@ import { useMainStore } from '@/stores/MainStore';
 const MainStore = useMainStore();
 import { useMapStore } from '@/stores/MapStore';
 const MapStore = useMapStore();
+
+const instance = getCurrentInstance();
+import i18nFromFiles from '@/i18n/i18n.js';
+const messages = computed(() => {
+  return i18nFromFiles.i18n.data.messages[instance.appContext.config.globalProperties.$i18n.locale];
+})
 
 import useScrolling from '@/composables/useScrolling';
 const { handleRowClick, handleRowMouseover, handleRowMouseleave, isElementInViewport } = useScrolling();
@@ -62,7 +68,6 @@ const mailinVotingTableData = computed(() => {
       {
         label: 'Type and Hours',
         field: 'site_type',
-        // html: true,
       },
       {
         label: 'Distance',
@@ -88,8 +93,13 @@ watch(() => clickedMarkerId.value, (newClickedMarkerId) => {
 </script>
 
 <template>
-  
-  <div class="mt-5">
+  <section>
+    <div
+      id="Mail-in-callout"
+      class="topic-info"
+    >
+      {{ $t('mailInVoting.topic.exclamationCallout1.p1') }}
+    </div>
     <h5 class="subtitle is-5 mb-2">
       Nearby mail-in ballot drop-off locations
       <font-awesome-icon
@@ -126,6 +136,6 @@ watch(() => clickedMarkerId.value, (newClickedMarkerId) => {
         </template>
       </vue-good-table>
     </div>
-  </div>
+  </section>
 
 </template>

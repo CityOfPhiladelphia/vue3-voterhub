@@ -181,7 +181,7 @@ export default {
     "topic": {
       "mailInVoting": 'Mail-in Voting',
       "exclamationCallout1": {
-        "p1": "Mail-in ballot dropoff locations and availability may change for each election.\
+        "p1": "Spanish Mail-in ballot dropoff locations and availability may change for each election.\
         Check back closer to election day to get updated details about where you can drop off your mail-in ballot.",
       },
       "table1": {

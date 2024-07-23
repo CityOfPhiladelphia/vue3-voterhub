@@ -10,13 +10,11 @@ const PollingPlaceStore = usePollingPlaceStore();
 import VerticalTable from '@/components/VerticalTable.vue';
 
 const instance = getCurrentInstance();
-// const locale = computed(() => instance.appContext.config.globalProperties.$i18n.locale);
-
 import i18nFromFiles from '@/i18n/i18n.js';
 const messages = computed(() => {
   return i18nFromFiles.i18n.data.messages[instance.appContext.config.globalProperties.$i18n.locale];
 })
-if (import.meta.env.VITE_DEBUG == 'true') console.log('messages.value:', messages.value);
+// if (import.meta.env.VITE_DEBUG == 'true') console.log('messages.value:', messages.value);
 
 
 const accessibility = computed(() => {
@@ -68,7 +66,7 @@ const pollingPlaceData = computed(() => {
       },
       {
         label: 'Last Updated',
-        value: 'This has been the polling place for this division since',
+        value: messages.value.pollingPlace.topic.lastUpdatedSentence,
       },
     ];
   }
