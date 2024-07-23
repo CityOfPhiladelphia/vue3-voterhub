@@ -191,6 +191,7 @@ export default {
       "paragraph1": {
         "text": "All mail-in voting dates in 2023 have passed. See the <a target='_blank' href='https://vote.phila.gov/voting/important-dates-for-voters/'>full election calendar for 2023</a>.",
       },
+      "h3_1": "Mail-in ballots",
       "h4_1": "Mail-in ballot dropoff locations",
       "paragraph2": {
         "text": "Mail-in and absentee ballots can be dropped off at our Election Office, at a fixed drop box, or at a temporary mobile ballot return location.",

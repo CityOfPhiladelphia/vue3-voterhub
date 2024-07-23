@@ -100,15 +100,51 @@ watch(() => clickedMarkerId.value, (newClickedMarkerId) => {
     >
       {{ $t('mailInVoting.topic.exclamationCallout1.p1') }}
     </div>
-    <h5 class="subtitle is-5 mb-2">
-      Nearby mail-in ballot drop-off locations
+
+    <h2 class="subtitle is-5 mb-2">
+      {{ $t('mailInVoting.topic.table1.title') }}
+    </h2>
+
+    <div
+      id="Mail-in-dates"
+      class="topic-info"
+      v-html="$t('mailInVoting.topic.paragraph1.text')"
+    >
+    </div>
+
+    <h2 class="subtitle is-5 mb-2">
+      {{ $t('mailInVoting.topic.h3_1') }}
+    </h2>
+
+    <div
+      id="Mail-in-locations"
+      class="topic-info"
+    >
+      {{ $t('mailInVoting.topic.paragraph2.text') }}
+    </div>
+
+    <ul class="bullet-list mb-4">
+      <li>{{ $t('mailInVoting.topic.ul1.li1') }}</li>
+      <li>{{ $t('mailInVoting.topic.ul1.li2') }}</li>
+      <li>{{ $t('mailInVoting.topic.ul1.li3') }}</li>
+    </ul>
+
+    <div
+      id="Mail-in-locations"
+      class="topic-info"
+      v-html="$t('mailInVoting.topic.paragraph3.text')"
+    >
+    </div>
+
+    <h2 class="subtitle is-5 mb-2">
+      {{ $t('mailInVoting.topic.h4_1') }}
       <font-awesome-icon
         v-if="loadingData"
         icon="fa-solid fa-spinner"
         spin
       />
       <span v-else>({{ mailinVotingTableData.rows.length }})</span>
-    </h5>
+    </h2>
     <div class="horizontal-table">
       <vue-good-table
         id="mailinVoting"
