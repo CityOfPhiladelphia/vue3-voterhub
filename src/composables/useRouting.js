@@ -1,5 +1,4 @@
 import { useMainStore } from '@/stores/MainStore';
-import { useParcelsStore } from '@/stores/ParcelsStore';
 
 export default function useRouting() {
 
@@ -7,7 +6,6 @@ export default function useRouting() {
     if (import.meta.env.VITE_DEBUG == 'true') console.log('routeApp')
 
     const MainStore = useMainStore();
-    const ParcelsStore = useParcelsStore();
     if (!MainStore.currentAddress && MainStore.currentTopic){
       if (MainStore.currentLang) {
         router.push({ name: 'topic', params: { topic: MainStore.currentTopic }, query: { lang: MainStore.currentLang } });

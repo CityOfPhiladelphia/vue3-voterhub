@@ -52,7 +52,7 @@ export const useMapStore = defineStore("MapStore", {
     async fillBufferForAddress(lng, lat) {
       const projection4326 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
       const projection2272 = "+proj=lcc +lat_1=40.96666666666667 +lat_2=39.93333333333333 +lat_0=39.33333333333334 +lon_0=-77.75 +x_0=600000 +y_0=0 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048006096012192 +no_defs";
-      const distances = 500;
+      const distances = 700;
 
       const coords2272 = proj4(projection4326, projection2272, [ lng, lat ]);
 
@@ -71,6 +71,14 @@ export const useMapStore = defineStore("MapStore", {
       };
 
       let response = await axios.get(bufferUrl, { params });
+      console.log('response:', response);
+      for (let [index, point] of response.data.geometries[0].rings[0].entries()) {
+        if (index % 2 === 0 || index % 3 === 0) {
+          response.data.geometries[0].rings[0].splice(index, 1);
+        }
+      }
+      response.data.geometries[0].rings[0].push(response.data.geometries[0].rings[0][0]);
+
       this.bufferForAddress = response.data;
     }
   },

@@ -90,7 +90,9 @@ watch(() => selectedDataType.value, (newDataType) => {
       popup[0].remove();
     }
   }
-  timeIntervalSelected.value = Object.keys(timeIntervals.value)[0]
+  if (timeIntervals.value) {
+    timeIntervalSelected.value = Object.keys(timeIntervals.value)[0]
+  }
 })
 
 const clickedMarkerId = computed(() => { return MainStore.clickedMarkerId; });
@@ -142,7 +144,7 @@ onMounted( () => {
       </div>
 
       <div
-        v-if="selectedDataType != 'nearbyVacantIndicatorPoints'"
+        v-if="selectedDataType != 'vacantIndicatorPoints'"
         class="dropdown nearby-dropdown column is-3 is-12-mobile pt-0 pb-0"
       >
         <dropdown
