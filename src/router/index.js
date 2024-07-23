@@ -211,7 +211,9 @@ const topicDataFetch = async (topic, data) => {
 
   if (topic === 'city311') {
     const City311Store = useCity311Store();
-    await City311Store.getAgoToken();
+    if (!City311Store.agoToken) {
+      await City311Store.getAgoToken();
+    }
     await City311Store.fillCity311(data);
   }
 
