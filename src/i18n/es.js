@@ -153,6 +153,7 @@ export default {
         "noParking": "Sin estacionamiento",
         "generalParking": "Estacionamiento general",
         "loadingZone": "Zona de carga",
+        "informationNotAvailable": "Información no disponible",
       },
       "callout1": {
         "text": "La fecha límite para registrarse para la próxima elección es 15 días antes de la elección. Puede confirmar su registro y obtener información sobre cómo registrarse para votar en <a target='_blank' href='https://www.philadelphiavotes.com/'>www.philadelphiavotes.com</a>.",

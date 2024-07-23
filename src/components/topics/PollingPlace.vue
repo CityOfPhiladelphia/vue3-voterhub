@@ -22,13 +22,13 @@ if (import.meta.env.VITE_DEBUG == 'true') console.log('messages.value:', message
 const accessibility = computed(() => {
   if (PollingPlaceStore.pollingPlaces.rows && PollingPlaceStore.pollingPlaces.rows.length) {
     const code = PollingPlaceStore.pollingPlaces.rows[0].accessibility_code;
-    const answer = code== "F" ? 'Building Fully Accessible' :
-      code== "B" ? 'Building Substantially Accessible' :
-      code== "M" ? 'Building Accessibility Modified' :
-      code== "A" ? 'Alternate Entrance' :
-      code== "R" ? 'Building Accessible With Ramp' :
-      code== "N" ? 'Building Not Accessible' :
-      'Information Not Available';
+    const answer = code== "F" ? 'buildingFullyAccessible' :
+      code== "B" ? 'buildingSubstantiallyAccessible' :
+      code== "M" ? 'buildingAccessibilityModified' :
+      code== "A" ? 'alternateEntrance' :
+      code== "R" ? 'buildingAccessibleWithRamp' :
+      code== "N" ? 'buildingNotAccessible' :
+      'informationNotAvailable';
     return answer;
   }
 });
@@ -36,10 +36,10 @@ const accessibility = computed(() => {
 const parking = computed(() => {
   if (PollingPlaceStore.pollingPlaces.rows && PollingPlaceStore.pollingPlaces.rows.length) {
     const code = PollingPlaceStore.pollingPlaces.rows[0].parking_info;
-    const parking = code == "N" ? 'No Parking' :
-      code == "G" ? 'General Parking' :
-      code == "L" ? 'Loading Zone' :
-      'Information Not Available';
+    const parking = code == "N" ? 'noParking' :
+      code == "G" ? 'generalParking' :
+      code == "L" ? 'loadingZone' :
+      'informationNotAvailable';
     return parking;
   }
 });
@@ -60,11 +60,11 @@ const pollingPlaceData = computed(() => {
       },
       {
         label: 'Accessibility',
-        value: `<a target="_blank" href="https://vote.phila.gov/voting/voting-at-the-polls/polling-place-accessibility/">${accessibility.value}</a>`,
+        value: `<a target="_blank" href="https://vote.phila.gov/voting/voting-at-the-polls/polling-place-accessibility/">${messages.value.pollingPlace.topic.accessibilityCodes[accessibility.value]}</a>`,
       },
       {
         label: 'Parking',
-        value: parking.value,
+        value: messages.value.pollingPlace.topic.parkingCodes[parking.value],
       },
       {
         label: 'Last Updated',
