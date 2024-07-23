@@ -34,7 +34,7 @@ import MapPanel from '@/components/MapPanel.vue';
 
 const instance = getCurrentInstance();
 // if (import.meta.env.VITE_DEBUG == 'true') console.log('instance:', instance);
-const locale = computed( () => instance.appContext.config.globalProperties.$i18n.locale );
+const locale = computed(() => instance.appContext.config.globalProperties.$i18n.locale);
 // if (import.meta.env.VITE_DEBUG == 'true') console.log('locale:', locale);
 
 onMounted(async () => {

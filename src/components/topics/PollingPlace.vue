@@ -4,10 +4,20 @@ import useTransforms from '@/composables/useTransforms';
 const { titleCase } = useTransforms();
 
 import { usePollingPlaceStore } from '@/stores/PollingPlaceStore';
-import { computed } from 'vue';
+import { computed, getCurrentInstance } from 'vue';
 const PollingPlaceStore = usePollingPlaceStore();
 
 import VerticalTable from '@/components/VerticalTable.vue';
+
+const instance = getCurrentInstance();
+// const locale = computed(() => instance.appContext.config.globalProperties.$i18n.locale);
+
+import i18nFromFiles from '@/i18n/i18n.js';
+const messages = computed(() => {
+  return i18nFromFiles.i18n.data.messages[instance.appContext.config.globalProperties.$i18n.locale];
+})
+if (import.meta.env.VITE_DEBUG == 'true') console.log('messages.value:', messages.value);
+
 
 const accessibility = computed(() => {
   if (PollingPlaceStore.pollingPlaces.rows && PollingPlaceStore.pollingPlaces.rows.length) {
@@ -45,7 +55,8 @@ const pollingPlaceData = computed(() => {
       },
       {
         label: 'Hours',
-        value: 'All polling places will be open on election day from 7 a.m. to 8 p.m.'
+        value: messages.value.default.introPage.p4,
+        // value: 'All polling places will be open on election day from 7 a.m. to 8 p.m.'
       },
       {
         label: 'Accessibility',
@@ -55,6 +66,10 @@ const pollingPlaceData = computed(() => {
         label: 'Parking',
         value: parking.value,
       },
+      {
+        label: 'Last Updated',
+        value: 'This has been the polling place for this division since',
+      },
     ];
   }
 });
@@ -63,13 +78,23 @@ const pollingPlaceData = computed(() => {
 
 <template>
 
-  <h5 class="subtitle is-5 vert-table-title">
+  <h2 class="subtitle is-5 vert-table-title">
     Polling Place
-  </h5>
+  </h2>
+  <font-awesome-icon
+    v-if="PollingPlaceStore.loadingPollingPlaceData"
+    icon="fa-solid fa-spinner"
+    spin
+  />
   <vertical-table
     :table-id="'pollingPlaceTable'"
     :data="pollingPlaceData"
   />
+  <a
+    class="table-link"
+    target="_blank"
+    :href="`https://vote.phila.gov/voting/vote-by-mail/`"
+  >{{ $t('pollingPlace.topic.verticalTable1.link') }} <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
 
 </template>
 

@@ -17,6 +17,7 @@ export const usePollingPlaceStore = defineStore("PollingPlaceStore", {
       this.fillPollingPlaces();
     },
     async clearAllPollingPlaceData() {
+      this.loadingPollingPlaceData = true;
       this.divisions = {};
       this.pollingPlaces = {};
     },

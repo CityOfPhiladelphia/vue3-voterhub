@@ -22,7 +22,7 @@ export default {
         "li5": "Spanish Look up your elected representatives and committeepeople",
       },
       "p4_b": "Hours: ",
-      "p4": "All polling places will be open on election day from 7 a.m. to 8 p.m.",
+      "p4": "Spanish All polling places will be open on election day from 7 a.m. to 8 p.m.",
       "p5": "Changes to the official voter registry may not be reflected here immediately. For up-to-date, official polling place locations in Philadelphia County, contact the Philadelphia Voter Registration Office at <a href='tel:215-686-1590'>(215) 686-1590</a>.",
       "relatedContent": "Related content",
       "link1": "Spanish Check your voter registration status",
@@ -84,7 +84,7 @@ export default {
         "p1": "All important dates for voters in 2023 have passed. See the <a href='https://vote.phila.gov/resources-data/important dates'>full election calendar for 2023</a>.",
       },
       "links": {
-        "link1": "Check your voter registration status",
+        "link1": "Spanish Check your voter registration status",
       },
       // "hours": "Hours",
       // "electedRep": "Elected Representatives",
