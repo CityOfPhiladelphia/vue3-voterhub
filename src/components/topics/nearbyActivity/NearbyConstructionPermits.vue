@@ -85,7 +85,12 @@ const nearbyConstructionPermitsTableData = computed(() => {
       {
         label: 'Distance',
         field: 'distance_ft',
-      }
+        sortFn: (x, y) => {
+          const xSplit = parseInt(x.split(' ')[0]);
+          const ySplit = parseInt(y.split(' ')[0]);
+          return (xSplit < ySplit ? -1 : (xSplit > ySplit ? 1 : 0));
+        },
+      },
     ],
     rows: nearbyConstructionPermits.value || [],
   }
@@ -114,6 +119,7 @@ const nearbyConstructionPermitsTableData = computed(() => {
         @row-mouseenter="handleRowMouseover($event, 'objectid')"
         @row-mouseleave="handleRowMouseleave"
         @row-click="handleRowClick($event, 'objectid', 'nearbyConstructionPermits')"
+        :sort-options="{ initialSortBy: {field: 'distance_ft', type: 'asc'}}"
       >
         <template #emptystate>
           <div v-if="loadingData">

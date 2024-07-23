@@ -87,6 +87,11 @@ const nearbyImminentlyDangerousTableData = computed(() => {
       {
         label: 'Distance',
         field: 'distance_ft',
+        sortFn: (x, y) => {
+          const xSplit = parseInt(x.split(' ')[0]);
+          const ySplit = parseInt(y.split(' ')[0]);
+          return (xSplit < ySplit ? -1 : (xSplit > ySplit ? 1 : 0));
+        },
       }
     ],
     rows: nearbyImminentlyDangerous.value || [],
@@ -116,6 +121,7 @@ const nearbyImminentlyDangerousTableData = computed(() => {
         @row-mouseenter="handleRowMouseover($event, 'casenumber')"
         @row-mouseleave="handleRowMouseleave"
         @row-click="handleRowClick($event, 'casenumber', 'nearbyImminentlyDangerous')"
+        :sort-options="{ initialSortBy: {field: 'distance_ft', type: 'asc'}}"
       >
         <template #emptystate>
           <div v-if="loadingData">

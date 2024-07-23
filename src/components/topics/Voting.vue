@@ -135,8 +135,19 @@ const nextElectionDate = computed(() => {
       <div class="column is-12 badge-title">
         <b>Next Eligible Election Is</b>
       </div>
-      <div class="column is-12 election">
+      <div
+        v-if="!VotingStore.loadingVotingData"
+        class="column is-12 election"
+      >
         {{ nextElectionDate }}
+      </div>
+      <div v-else class="column election">
+        <p>
+          <font-awesome-icon
+            icon="fa-solid fa-spinner"
+            spin
+          />
+        </p>
       </div>
     </div>
   </section>
@@ -161,18 +172,36 @@ const nextElectionDate = computed(() => {
     Polling Place
   </h2>
   <vertical-table
+    v-if="!VotingStore.loadingVotingData"
     :table-id="'pollingPlaceTable'"
     :data="pollingPlaceData"
   />
+  <div v-else>
+    <p>
+      Loading polling place data... <font-awesome-icon
+        icon="fa-solid fa-spinner"
+        spin
+      />
+    </p>
+  </div>
   <br>
 
   <h2 class="subtitle is-5 vert-table-title">
     Elected Representatives
   </h2>
   <vertical-table
+    v-if="!VotingStore.loadingVotingData"
     :table-id="'electedRepsTable'"
     :data="electedRepsData"
   />
+  <div v-else>
+    <p>
+      Loading elected representatives data... <font-awesome-icon
+        icon="fa-solid fa-spinner"
+        spin
+      />
+    </p>
+  </div>
   <br>
 </template>
 
