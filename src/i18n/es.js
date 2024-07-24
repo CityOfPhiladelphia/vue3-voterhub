@@ -308,13 +308,13 @@ export default {
         "auditorGeneral": "Spanish Auditor General",
       },
       "verticalTable3": {
-        "title": "Federal Officials",
-        "congressionalRepresentative": "Congressional Representative",
-        "senators": "Senators",
-        "president": "President and Vice President",
+        "title": "Spanish Federal Officials",
+        "congressionalRepresentative": "Spanish Congressional Representative",
+        "senators": "Spanish Senators",
+        "president": "Spanish President and Vice President",
       },
       "callout1": {
-        "text": "The city of Philadelphia is divided into 66 wards, each further broken down into \
+        "text": "Spanish The city of Philadelphia is divided into 66 wards, each further broken down into \
         divisions. Each division is capable of electing two party representatives: the \
         committeepeople. The committeepeople in every ward then elect their ward leader \
         and the ward leaders elect the Chairs of their respective City Committees. The \
@@ -325,17 +325,17 @@ export default {
         candidates, and serve as resources for their neighborhood.",
       },
       "verticalTable4": {
-        "title": "Ward Leadership",
-        "wardAndDivision": "Ward and Division",
-        "totalDivisions": "Total Divisions",
-        "democraticWardLeader": "Democratic Ward Leader",
+        "title": "Spanish Ward Leadership",
+        "wardAndDivision": "Spanish Ward and Division",
+        "totalDivisions": "Spanish Total Divisions",
+        "democraticWardLeader": "Spanish Democratic Ward Leader",
       },
       "horizontalTable1": {
-        "title": "City Ward Division Committeepeople",
-        "party": "Party",
-        "name": "Name",
-        "zipCode": "Zip Code",
-        "yearElected": "Year Elected",
+        "title": "Spanish City Ward Division Committeepeople",
+        "party": "Spanish Party",
+        "name": "Spanish Name",
+        "zipCode": "Spanish Zip Code",
+        "yearElected": "Spanish Year Elected",
       },
     },
   },

@@ -6,6 +6,10 @@ const { nth, phoneNumber, titleCase } = useTransforms();
 import { useElectedOfficialsStore } from '@/stores/ElectedOfficialsStore';
 import { computed, getCurrentInstance } from 'vue';
 
+import CustomPaginationLabels from '@/components/pagination/CustomPaginationLabels.vue';
+import useTables from '@/composables/useTables';
+const { paginationOptions } = useTables();
+
 import VerticalTable from '@/components/VerticalTable.vue';
 
 const ElectedOfficialsStore = useElectedOfficialsStore();
@@ -176,39 +180,82 @@ const stateHouseRepresentatives = computed(() => {
   return value2;
 });
 
-// const council = computed(() => {
-//   if (electedOfficials.value) {
-//     let value = electedOfficials.value.filter((item) => {
-//       return item.office_label == "City Council";
-//     })[0];
-//     if (import.meta.env.VITE_DEBUG == 'true') console.log('value:', value);
-//     return value;
-//   } else {
-//     return null;
-//   }
-// });
+const stateSenator = computed(() => {
+  if (!ElectedOfficialsStore.electedOfficials.rows || !ElectedOfficialsStore.electedOfficials.rows.length) return null;
+  let value = ElectedOfficialsStore.electedOfficials.rows.filter((item) => {
+    return item.office == "state_senate";
+  })[0];
+  const districtLabel = 'District';
+  let value2 = formatMember(value, 4, districtLabel);
+  return value2;
+});
 
-// const councilMember = computed(() => {
-//   if (council.value && council.value[0]) {
-//     return '<a href="http://' + council.value[0].website + '" target="_blank">' +
-//       council.value[0].first_name +" " +council.value[0].last_name + " - " + nth(council.value[0].district) + " Council District </a>";
-//   }
-// });
+const governor = computed(() => {
+  if (!ElectedOfficialsStore.electedOfficials.rows || !ElectedOfficialsStore.electedOfficials.rows.length) return null;
+  let value = ElectedOfficialsStore.electedOfficials.rows.filter((item) => {
+    return item.office == "governor";
+  })[0];
+  let value2 = formatMember(value, 4);
+  return value2;
+});
 
-// const office = computed(() => {
-//   if (council.value && council.value[0]) {
-//     return council.value[0].main_contact_address_2 + '<br>' +
-//       phoneNumber(council.value[0].main_contact_phone_1) + ", " + phoneNumber(council.value[0].main_contact_phone_2) + '<br>\
-//       F: '+ phoneNumber(council.value[0].main_contact_fax) + ' <br>\
-//       <b><a href=mailto:"' + council.value[0].email + '">' + council.value[0].email + '</a></b>';
-//   }
-// });
+const ltGovernor = computed(() => {
+  if (!ElectedOfficialsStore.electedOfficials.rows || !ElectedOfficialsStore.electedOfficials.rows.length) return null;
+  let value = ElectedOfficialsStore.electedOfficials.rows.filter((item) => {
+    return item.office == "lt_governor";
+  })[0];
+  let value2 = formatMember(value, 4);
+  return value2;
+});
 
-// const term = computed(() => {
-//   if (council.value && council.value[0]) {
-//     return council.value[0].next_election - 4 + ' - ' + council.value[0].next_election;
-//   }
-// });
+const attorneyGeneral = computed(() => {
+  if (!ElectedOfficialsStore.electedOfficials.rows || !ElectedOfficialsStore.electedOfficials.rows.length) return null;
+  let value = ElectedOfficialsStore.electedOfficials.rows.filter((item) => {
+    return item.office == "attorney_general";
+  })[0];
+  let value2 = formatMember(value, 4);
+  return value2;
+});
+
+const stateTreasurer = computed(() => {
+  if (!ElectedOfficialsStore.electedOfficials.rows || !ElectedOfficialsStore.electedOfficials.rows.length) return null;
+  let value = ElectedOfficialsStore.electedOfficials.rows.filter((item) => {
+    return item.office == "state_treasurer";
+  })[0];
+  let value2 = formatMember(value, 4);
+  return value2;
+});
+
+const auditorGeneral = computed(() => {
+  if (!ElectedOfficialsStore.electedOfficials.rows || !ElectedOfficialsStore.electedOfficials.rows.length) return null;
+  let value = ElectedOfficialsStore.electedOfficials.rows.filter((item) => {
+    return item.office == "auditor_general";
+  })[0];
+  let value2 = formatMember(value, 4);
+  return value2;
+});
+
+const congressionalRepresentative = computed(() => {
+  if (!ElectedOfficialsStore.electedOfficials.rows || !ElectedOfficialsStore.electedOfficials.rows.length) return null;
+  let value = ElectedOfficialsStore.electedOfficials.rows.filter((item) => {
+    return item.office == "us_house";
+  })[0];
+  let value2 = formatMember(value, 2);
+  return value2;
+});
+
+const senators = computed(() => {
+  if (!ElectedOfficialsStore.electedOfficials.rows || !ElectedOfficialsStore.electedOfficials.rows.length) return null;
+  let cityCommissioners = ElectedOfficialsStore.electedOfficials.rows.filter((item) => {
+    return item.office == "us_senate";
+  });
+  let theString = '';
+  for (const [ index, commissioner ] of cityCommissioners.entries()) {
+    theString += formatMember(commissioner, 6);
+    index < cityCommissioners.length - 1 ? theString += '<br><br>' : theString += '';
+  }
+  return theString;
+});
 
 const cityOfficialsData = computed(() => [
   {
@@ -250,7 +297,92 @@ const stateOfficialsData = computed(() => [
     label: messages.value.electedOfficials.topic.verticalTable2.stateHouseRepresentatives,
     value: stateHouseRepresentatives.value,
   },
+  {
+    label: messages.value.electedOfficials.topic.verticalTable2.stateSenator,
+    value: stateSenator.value,
+  },
+  {
+    label: messages.value.electedOfficials.topic.verticalTable2.governor,
+    value: governor.value,
+  },
+  {
+    label: messages.value.electedOfficials.topic.verticalTable2.lieutenantGovernor,
+    value: ltGovernor.value,
+  },
+  {
+    label: messages.value.electedOfficials.topic.verticalTable2.attorneyGeneral,
+    value: attorneyGeneral.value,
+  },
+  {
+    label: messages.value.electedOfficials.topic.verticalTable2.stateTreasurer,
+    value: stateTreasurer.value,
+  },
+  {
+    label: messages.value.electedOfficials.topic.verticalTable2.auditorGeneral,
+    value: auditorGeneral.value,
+  },
 ]);
+
+const federalOfficialsData = computed(() => [
+  {
+    label: messages.value.electedOfficials.topic.verticalTable3.congressionalRepresentative,
+    value: congressionalRepresentative.value,
+  },
+  {
+    label: messages.value.electedOfficials.topic.verticalTable3.senators,
+    value: senators.value,
+  },
+  {
+    label: messages.value.electedOfficials.topic.verticalTable3.president,
+    value: '<a href="https://www.whitehouse.gov/administration/president-biden/" target="_blank">Joseph Biden</a><br> \
+              <a href="https://www.whitehouse.gov/administration/vice-president-harris/" target="_blank">Kamala Harris</a>',
+  },
+]);
+
+const wardData = computed(() => [
+  {
+    label: messages.value.electedOfficials.topic.verticalTable4.wardAndDivision,
+    value: 'ward and division',
+  },
+  {
+    label: messages.value.electedOfficials.topic.verticalTable4.totalDivisions,
+    value: 'total divisions',
+  },
+  {
+    label: messages.value.electedOfficials.topic.verticalTable4.democraticWardLeader,
+    value: 'democratic ward leader',
+  },
+]);
+
+const wardDivisionData = computed(() => {
+  return [];
+})
+
+const wardDivisionLength = computed(() => wardDivisionData.value && wardDivisionData.value.length ? wardDivisionData.value.length : 0);
+
+const wardDivisionTableData = computed(() => {
+  return {
+    columns: [
+      {
+        label: messages.value.electedOfficials.topic.horizontalTable1.party,
+        field: 'link',
+      },
+      {
+        label: messages.value.electedOfficials.topic.horizontalTable1.name,
+        field: 'business_name',
+      },
+      {
+        label: messages.value.electedOfficials.topic.horizontalTable1.zipCode,
+        field: 'licensetype',
+      },
+      {
+        label: messages.value.electedOfficials.topic.horizontalTable1.yearElected,
+        field: 'licensestatus',
+      }
+    ],
+    rows: wardDivisionData.value || [],
+  }
+});
 
 </script>
 
@@ -274,6 +406,80 @@ const stateOfficialsData = computed(() => [
         :table-id="'stateOfficialsTable'"
         :data="stateOfficialsData"
       />
+    </div>
+
+    <div class="mb-5">
+      <h5 class="subtitle is-5 vert-table-title">
+        {{ $t('electedOfficials.topic.verticalTable3.title') }}
+      </h5>
+      <vertical-table
+        :table-id="'federalOfficialsTable'"
+        :data="federalOfficialsData"
+      />
+    </div>
+      
+    <div class="mb-5" v-html="$t('electedOfficials.topic.callout1.text')" />
+
+    <div class="mb-5">
+      <h5 class="subtitle is-5 vert-table-title">
+        {{ $t('electedOfficials.topic.verticalTable4.title') }}
+      </h5>
+      <vertical-table
+        :table-id="'wardTable'"
+        :data="wardData"
+      />
+    </div>
+
+    <!-- Li Permits Table -->
+    <div class="data-section">
+      <h2 class="subtitle mb-3 is-5 table-title">
+        {{ $t('electedOfficials.topic.horizontalTable1.title') }}
+        <font-awesome-icon
+          v-if="ElectedOfficialsStore.loadingElectedOfficialsData"
+          icon="fa-solid fa-spinner"
+          spin
+        />
+        <span v-else>({{ wardDivisionLength }})</span>
+      </h2>
+      <div
+        v-if="wardDivisionTableData.rows"
+        class="horizontal-table"
+      >
+        <vue-good-table
+          id="permits"
+          :columns="wardDivisionTableData.columns"
+          :rows="wardDivisionTableData.rows"
+          :pagination-options="paginationOptions"
+          style-class="table"
+        >
+          <template #emptystate>
+            <div v-if="ElectedOfficialsStore.loadingElectedOfficialsData">
+              Loading committeepeople... <font-awesome-icon
+                icon="fa-solid fa-spinner"
+                spin
+              />
+            </div>
+            <div v-else>
+              No committeepeople found
+            </div>
+          </template>
+          <template #pagination-top="props">
+            <custom-pagination-labels
+              :mode="'pages'"
+              :total="props.total"
+              :perPage="5"
+              @page-changed="props.pageChanged"
+              @per-page-changed="props.perPageChanged"
+            >
+            </custom-pagination-labels>
+          </template>
+        </vue-good-table>
+      </div>
+      <!-- <a
+        class="table-link"
+        target="_blank"
+        :href="`https://li.phila.gov/Property-History/search?address=${encodeURIComponent(MainStore.currentAddress)}`"
+      >See all {{ permitsLength }} permits at L&I Property History <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a> -->
     </div>
 
   </section>
