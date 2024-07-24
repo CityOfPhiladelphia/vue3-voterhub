@@ -135,6 +135,19 @@ watch(
   }
 )
 
+const brandingImage = computed(() => {
+  let value = null;
+  if (MainStore.windowDimensions.width > 760) {
+    value = {
+      src: '/images/philadelphia-city-commissioners-logo-edit_6.png',
+      alt: 'Philadelphia City Commissioners logo',
+      width: '250px',
+    }
+  }
+  return value;
+
+})
+
 const imageLocation = computed(() => {
   let value;
   if (MainStore.windowDimensions.width > 760) {
@@ -159,14 +172,15 @@ const imageWidth = computed(() => {
     class="skip-to-main-content-link"
   >Skip to main content</a>
 
-  <app-header
-    :app-title="$t('app.title')"
-    app-link="/"
-    :branding-image="{
+    <!-- :branding-image="{
       src: '/images/philadelphia-city-commissioners-logo-edit_6.png',
       alt: 'Philadelphia City Commissioners logo',
       width: imageWidth,
-    }"
+    }" -->
+  <app-header
+    :app-title="$t('app.title')"
+    :branding-image="brandingImage"
+    app-link="/"
     :is-sticky="true"
     :is-fluid="true"
   >
@@ -222,6 +236,14 @@ const imageWidth = computed(() => {
 .branding-col {
   padding-bottom: 0px !important;
 }
+
+.dropdown-nav {
+  span:nth-of-type(even) {
+    display: none;
+  }
+}
+
+
 
 
 </style>
