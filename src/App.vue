@@ -137,7 +137,7 @@ watch(
 
 const brandingImage = computed(() => {
   let value = null;
-  if (MainStore.windowDimensions.width > 760) {
+  if (MainStore.windowDimensions.width > 767) {
     value = {
       src: '/images/philadelphia-city-commissioners-logo-edit_6.png',
       alt: 'Philadelphia City Commissioners logo',
@@ -148,22 +148,6 @@ const brandingImage = computed(() => {
 
 })
 
-const imageLocation = computed(() => {
-  let value;
-  if (MainStore.windowDimensions.width > 760) {
-    value = '/images/philadelphia-city-commissioners-logo-edit_6.png';
-  }
-  return value;
-})
-
-const imageWidth = computed(() => {
-  let value = '0px';
-  if (MainStore.windowDimensions.width > 760) {
-    value = '250px';
-  }
-  return value;
-})
-
 </script>
 
 <template>
@@ -172,11 +156,6 @@ const imageWidth = computed(() => {
     class="skip-to-main-content-link"
   >Skip to main content</a>
 
-    <!-- :branding-image="{
-      src: '/images/philadelphia-city-commissioners-logo-edit_6.png',
-      alt: 'Philadelphia City Commissioners logo',
-      width: imageWidth,
-    }" -->
   <app-header
     :app-title="$t('app.title')"
     :branding-image="brandingImage"
@@ -199,7 +178,7 @@ const imageWidth = computed(() => {
   >
     <!-- TOPIC PANEL ON LEFT -->
     <div
-      v-if="!isMobileDevice() && MainStore.windowDimensions.width > 760 && !fullScreenMapEnabled"
+      v-if="!isMobileDevice() && MainStore.windowDimensions.width > 767 && !fullScreenMapEnabled"
       class="topics-holder"
       :class="fullScreenTopicsEnabled ? 'topics-holder-full' : ''"
     >
@@ -216,7 +195,7 @@ const imageWidth = computed(() => {
     </div>
 
     <div
-      v-if="isMobileDevice() || MainStore.windowDimensions.width <= 760"
+      v-if="isMobileDevice() || MainStore.windowDimensions.width <= 767"
       class="topics-holder"
     >
       <topic-panel />
@@ -237,9 +216,13 @@ const imageWidth = computed(() => {
   padding-bottom: 0px !important;
 }
 
-.dropdown-nav {
-  span:nth-of-type(even) {
-    display: none;
+
+@media 
+only screen and (max-width: 767px) {
+  .dropdown-nav {
+    span:nth-of-type(even) {
+      display: none;
+    }
   }
 }
 
