@@ -4,11 +4,18 @@ import useTransforms from '@/composables/useTransforms';
 const { nth, phoneNumber, titleCase } = useTransforms();
 
 import { useElectedOfficialsStore } from '@/stores/ElectedOfficialsStore';
-import { computed } from 'vue';
+import { computed, getCurrentInstance } from 'vue';
 
 import VerticalTable from '@/components/VerticalTable.vue';
 
 const ElectedOfficialsStore = useElectedOfficialsStore();
+
+const instance = getCurrentInstance();
+import i18nFromFiles from '@/i18n/i18n.js';
+const messages = computed(() => {
+  return i18nFromFiles.i18n.data.messages[instance.appContext.config.globalProperties.$i18n.locale];
+})
+if (import.meta.env.VITE_DEBUG == 'true') console.log('messages:', messages);
 
 const formatMember = (person, termLength, districtLabel) => {
   if (import.meta.env.VITE_DEBUG == 'true') console.log('person:', person);
@@ -88,6 +95,19 @@ const electedOfficial = computed(() => {
   return value2;
 });
 
+const councilAtLarge = computed(() => {
+  if (!ElectedOfficialsStore.electedOfficials.rows || !ElectedOfficialsStore.electedOfficials.rows.length) return null;
+  let councilAtLarge = ElectedOfficialsStore.electedOfficials.rows.filter((item) => {
+    return item.office == "city_council_at_large";
+  });
+  let theString = '';
+  for (const [ index, councilMember ] of councilAtLarge.entries()) {
+    theString += formatMember(councilMember, 4);
+    index < councilAtLarge.length - 1 ? theString += '<br><br>' : theString += '';
+  }
+  return theString;
+});
+
 // const council = computed(() => {
 //   if (electedOfficials.value) {
 //     let value = electedOfficials.value.filter((item) => {
@@ -124,13 +144,13 @@ const electedOfficial = computed(() => {
 
 const electedRepsData = computed(() => [
   {
-    label: 'District Council Member',
+    label: messages.value.electedOfficials.topic.verticalTable1.districtCouncilMember,
     value: electedOfficial.value,
   },
-  // {
-  //   label: 'City Hall Office',
-  //   value: office.value,
-  // },
+  {
+    label: messages.value.electedOfficials.topic.verticalTable1.atLargeCouncilMembers,
+    value: councilAtLarge.value,
+  },
   // {
   //   label: 'Current Term',
   //   value: term.value,

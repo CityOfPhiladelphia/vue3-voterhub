@@ -27,6 +27,7 @@ export const useElectedOfficialsStore = defineStore("ElectedOfficialsStore", {
                 OR eo.office = 'state_house' AND eo.district = s.state_house \
                 OR eo.office = 'state_senate' AND eo.district = s.state_senate \
                 OR eo.office = 'us_house' AND eo.district = s.federal_house \
+                OR eo.office != 'city_council' AND eo.office != 'state_house' AND eo.office != 'state_senate' AND eo.office != 'us_house' \
       `;
       const response = await fetch(url);
       this.electedOfficials = await response.json();

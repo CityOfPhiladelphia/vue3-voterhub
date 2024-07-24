@@ -70,8 +70,8 @@ const nextElectionDate = computed(() => {
   >
   </div>
 
+  <!-- class="table-link" -->
   <a
-    class="table-link"
     target="_blank"
     :href="'https://vote.phila.gov/voting/vote-by-mail/'"
   >{{ $t('ballot.topic.links.link1') }} <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>

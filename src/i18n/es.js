@@ -287,9 +287,9 @@ export default {
       "term": "Term",
       "pollingPlace": "Polling Place",
       "verticalTable1": {
-        "title": "City Officials",
-        "districtCouncilMember": "District Council Member",
-        "atLargeCouncilMembers": "At-Large Council Members",
+        "title": "Spanish City Officials",
+        "districtCouncilMember": "Spanish District Council Member",
+        "atLargeCouncilMembers": "Spanish At-Large Council Members",
         "mayor": "Mayor",
         "districtAttorney": "District Attorney",
         "controller": "Controller",

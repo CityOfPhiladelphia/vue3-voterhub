@@ -88,8 +88,8 @@ const pollingPlaceData = computed(() => {
     :table-id="'pollingPlaceTable'"
     :data="pollingPlaceData"
   />
+  <!-- class="table-link" -->
   <a
-    class="table-link"
     target="_blank"
     :href="`https://vote.phila.gov/voting/vote-by-mail/`"
   >{{ $t('pollingPlace.topic.verticalTable1.link') }} <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
