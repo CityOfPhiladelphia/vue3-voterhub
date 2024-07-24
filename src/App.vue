@@ -135,6 +135,22 @@ watch(
   }
 )
 
+const imageLocation = computed(() => {
+  let value;
+  if (MainStore.windowDimensions.width > 760) {
+    value = '/images/philadelphia-city-commissioners-logo-edit_6.png';
+  }
+  return value;
+})
+
+const imageWidth = computed(() => {
+  let value = '0px';
+  if (MainStore.windowDimensions.width > 760) {
+    value = '250px';
+  }
+  return value;
+})
+
 </script>
 
 <template>
@@ -149,7 +165,7 @@ watch(
     :branding-image="{
       src: '/images/philadelphia-city-commissioners-logo-edit_6.png',
       alt: 'Philadelphia City Commissioners logo',
-      width: '250px',
+      width: imageWidth,
     }"
     :is-sticky="true"
     :is-fluid="true"
