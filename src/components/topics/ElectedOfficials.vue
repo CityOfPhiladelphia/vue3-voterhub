@@ -18,7 +18,7 @@ const messages = computed(() => {
 if (import.meta.env.VITE_DEBUG == 'true') console.log('messages:', messages);
 
 const formatMember = (person, termLength, districtLabel) => {
-  if (import.meta.env.VITE_DEBUG == 'true') console.log('person:', person);
+  // if (import.meta.env.VITE_DEBUG == 'true') console.log('person:', person);
   
   const website = '<a href="https://' + person.website + '" target="_blank">' + person.first_name +" " + person.last_name + "</a>";
   
@@ -86,7 +86,7 @@ const formatMember = (person, termLength, districtLabel) => {
   return returnString;
 }
 
-const electedOfficial = computed(() => {
+const districtCouncil = computed(() => {
   if (!ElectedOfficialsStore.electedOfficials.rows || !ElectedOfficialsStore.electedOfficials.rows.length) return null;
   let value = ElectedOfficialsStore.electedOfficials.rows.filter((item) => {
     return item.office_label == "City Council";
@@ -106,6 +106,74 @@ const councilAtLarge = computed(() => {
     index < councilAtLarge.length - 1 ? theString += '<br><br>' : theString += '';
   }
   return theString;
+});
+
+const mayor = computed(() => {
+  if (!ElectedOfficialsStore.electedOfficials.rows || !ElectedOfficialsStore.electedOfficials.rows.length) return null;
+  let value = ElectedOfficialsStore.electedOfficials.rows.filter((item) => {
+    return item.office == "mayor";
+  })[0];
+  let value2 = formatMember(value);
+  return value2;
+});
+
+const districtAttorney = computed(() => {
+  if (!ElectedOfficialsStore.electedOfficials.rows || !ElectedOfficialsStore.electedOfficials.rows.length) return null;
+  let value = ElectedOfficialsStore.electedOfficials.rows.filter((item) => {
+    return item.office == "district_attorney";
+  })[0];
+  let value2 = formatMember(value);
+  return value2;
+});
+
+const controller = computed(() => {
+  if (!ElectedOfficialsStore.electedOfficials.rows || !ElectedOfficialsStore.electedOfficials.rows.length) return null;
+  let value = ElectedOfficialsStore.electedOfficials.rows.filter((item) => {
+    return item.office == "city_controller";
+  })[0];
+  let value2 = formatMember(value);
+  return value2;
+});
+
+const cityCommissioners = computed(() => {
+  if (!ElectedOfficialsStore.electedOfficials.rows || !ElectedOfficialsStore.electedOfficials.rows.length) return null;
+  let cityCommissioners = ElectedOfficialsStore.electedOfficials.rows.filter((item) => {
+    return item.office == "city_commissioners";
+  });
+  let theString = '';
+  for (const [ index, commissioner ] of cityCommissioners.entries()) {
+    theString += formatMember(commissioner, 4);
+    index < cityCommissioners.length - 1 ? theString += '<br><br>' : theString += '';
+  }
+  return theString;
+});
+
+const sheriff = computed(() => {
+  if (!ElectedOfficialsStore.electedOfficials.rows || !ElectedOfficialsStore.electedOfficials.rows.length) return null;
+  let value = ElectedOfficialsStore.electedOfficials.rows.filter((item) => {
+    return item.office == "sheriff";
+  })[0];
+  let value2 = formatMember(value, 4);
+  return value2;
+});
+
+const registerOfWills = computed(() => {
+  if (!ElectedOfficialsStore.electedOfficials.rows || !ElectedOfficialsStore.electedOfficials.rows.length) return null;
+  let value = ElectedOfficialsStore.electedOfficials.rows.filter((item) => {
+    return item.office == "register_of_wills";
+  })[0];
+  let value2 = formatMember(value, 4);
+  return value2;
+});
+
+const stateHouseRepresentatives = computed(() => {
+  if (!ElectedOfficialsStore.electedOfficials.rows || !ElectedOfficialsStore.electedOfficials.rows.length) return null;
+  let value = ElectedOfficialsStore.electedOfficials.rows.filter((item) => {
+    return item.office == "state_house";
+  })[0];
+  const districtLabel = 'District';
+  let value2 = formatMember(value, 4, districtLabel);
+  return value2;
 });
 
 // const council = computed(() => {
@@ -142,31 +210,71 @@ const councilAtLarge = computed(() => {
 //   }
 // });
 
-const electedRepsData = computed(() => [
+const cityOfficialsData = computed(() => [
   {
     label: messages.value.electedOfficials.topic.verticalTable1.districtCouncilMember,
-    value: electedOfficial.value,
+    value: districtCouncil.value,
   },
   {
     label: messages.value.electedOfficials.topic.verticalTable1.atLargeCouncilMembers,
     value: councilAtLarge.value,
   },
-  // {
-  //   label: 'Current Term',
-  //   value: term.value,
-  // }
+  {
+    label: messages.value.electedOfficials.topic.verticalTable1.mayor,
+    value: mayor.value,
+  },
+  {
+    label: messages.value.electedOfficials.topic.verticalTable1.districtAttorney,
+    value: districtAttorney.value,
+  },
+  {
+    label: messages.value.electedOfficials.topic.verticalTable1.controller,
+    value: controller.value,
+  },
+  {
+    label: messages.value.electedOfficials.topic.verticalTable1.cityCommissioners,
+    value: cityCommissioners.value,
+  },
+  {
+    label: messages.value.electedOfficials.topic.verticalTable1.sheriff,
+    value: sheriff.value,
+  },
+  {
+    label: messages.value.electedOfficials.topic.verticalTable1.registerOfWills,
+    value: registerOfWills.value,
+  },
+]);
+
+const stateOfficialsData = computed(() => [
+  {
+    label: messages.value.electedOfficials.topic.verticalTable2.stateHouseRepresentatives,
+    value: stateHouseRepresentatives.value,
+  },
 ]);
 
 </script>
 
 <template>
   <section>
-    <h5 class="subtitle is-5 vert-table-title">
-      {{ $t('electedOfficials.topic.verticalTable1.title') }}
-    </h5>
-    <vertical-table
-      :table-id="'electedRepsTable'"
-      :data="electedRepsData"
-    />
+    <div class="mb-5">
+      <h5 class="subtitle is-5 vert-table-title">
+        {{ $t('electedOfficials.topic.verticalTable1.title') }}
+      </h5>
+      <vertical-table
+        :table-id="'cityOfficialsTable'"
+        :data="cityOfficialsData"
+      />
+    </div>
+
+    <div class="mb-5">
+      <h5 class="subtitle is-5 vert-table-title">
+        {{ $t('electedOfficials.topic.verticalTable2.title') }}
+      </h5>
+      <vertical-table
+        :table-id="'stateOfficialsTable'"
+        :data="stateOfficialsData"
+      />
+    </div>
+
   </section>
 </template>
