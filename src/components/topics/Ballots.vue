@@ -19,25 +19,37 @@ const ballotFileId = computed(() => {
   }
 });
 
-const nextElectionDate = computed(() => {
-  if (BallotsStore.nextElection.election_count_down_settings) {
-    return format(parseISO(BallotsStore.nextElection.election_count_down_settings.election_day), 'MMMM d, yyyy');
+// const nextElectionDate = computed(() => {
+//   if (BallotsStore.nextElection.election_count_down_settings) {
+//     return format(parseISO(BallotsStore.nextElection.election_count_down_settings.election_day), 'MMMM d, yyyy');
+//   }
+// });
+
+const electionSplit = computed(() => {
+  if (BallotsStore.electionSplit.rows && BallotsStore.electionSplit.rows[0]) {
+    return BallotsStore.electionSplit.rows[0];
   }
 });
+
+const electionTypes = {
+  0: 'ballot.topic.badge1.specialElection',
+  1: 'ballot.topic.badge1.primaryElection',
+  2: 'ballot.topic.badge1.generalElection',
+}
 
 </script>
 
 <template>
   <section>
     <div class="columns is-multiline column is-8 is-offset-2 has-text-centered badge">
-      <div class="column is-12 badge-title">
-        <b>{{ $t('ballot.topic.badge1.header') }}</b>
+      <div v-if="electionSplit" class="column is-12 badge-title">
+        <b>{{ $t(electionTypes[electionSplit.election_type]) }}</b>
       </div>
       <div
-        v-if="nextElectionDate"
+        v-if="electionSplit"
         class="column is-12 election"
       >
-        {{ nextElectionDate }}
+        {{ format(parseISO(electionSplit.election_date), 'MMMM d, yyyy') }}
       </div>
       <div
         v-else

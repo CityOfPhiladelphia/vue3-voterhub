@@ -60,7 +60,10 @@ export default {
         "p5": "If you are planning on voting in person, please confirm your polling place and make voting arrangements prior to the election.",
       },
       "badge1": {
-        "header": "Spanish Next Eligible Election Is",
+        "specialElection": "Próxima Elección Elegible: Elección Especial",
+        "primaryElection": "Próxima Elección Elegible: Elección Primaria",
+        "generalElection": "Próxima Elección Elegible: Elección General",
+        "header": "Next Eligible Election Is",
         "content": "November 3, 2020",
       },
       "previewBallot": "Spanish Preview ballot ",
@@ -118,10 +121,6 @@ export default {
       "link4": "Confirme que está registrado para votar.",
     },
     "topic": {
-      "badge1": {
-        "header": "La próxima elección es el",
-        "content": "3 de noviembre de 2020",
-      },
       "externalLink1": " Spanish Report an issue at this polling place on election day through our portal ",
       "hours": "Horario",
       "previewBallot": "Vista previa de la boleta ",
@@ -203,11 +202,6 @@ export default {
       },
       "paragraph3": {
         "text": "Spanish Learn more including how to request a mail in or absentee ballot at <a target='_blank' href='https://vote.phila.gov/'>vote.phila.gov</a>.",
-      },
-
-      "badge1": {
-        "header": "Next Eligible Election Is",
-        "content": "November 3, 2020",
       },
       "hours": "Hours",
       "previewBallot": "Preview ballot ",

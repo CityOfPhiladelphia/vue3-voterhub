@@ -6,6 +6,7 @@ export const useBallotsStore = defineStore("BallotsStore", {
     return {
       electedOfficials: {},
       nextElection: {},
+      electionSplit: {},
       loadingBallotsData: true,
     };
   },
@@ -13,10 +14,22 @@ export const useBallotsStore = defineStore("BallotsStore", {
     async fillAllBallotsData() {
       this.fillElectedOfficials();
       this.fillNextElection();
+      this.fillElectionSplit();
     },
     async clearAllBallotsData() {
       this.electedOfficials = {};
       this.nextElection = {};
+      this.electionSplit = {};
+    },
+    async fillElectionSplit() {
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('fillElectionSplit is running');
+      const GeocodeStore = useGeocodeStore();
+      const feature = GeocodeStore.aisData.features[0];
+      let baseUrl = 'https://phl.carto.com/api/v2/sql?q=';
+      const url = baseUrl += `SELECT * FROM splits WHERE precinct = '${feature.properties.election_precinct}'`;
+      // const url = baseUrl += `select ST_X(the_geom) as lng, ST_Y(the_geom) as lat, * from polling_places where precinct ='${feature.properties.election_precinct}'`;
+      const response = await fetch(url);
+      this.electionSplit = await response.json();
     },
     async fillElectedOfficials() {
       if (import.meta.env.VITE_DEBUG == 'true') console.log('fillElectedOfficials is running');
