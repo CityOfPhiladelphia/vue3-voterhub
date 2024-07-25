@@ -25,7 +25,7 @@ import MobileNav from "@phila/phila-ui-mobile-nav";
 import NavLink from "@phila/phila-ui-nav-link";
 import Textbox from "@phila/phila-ui-textbox";
 
-// console.log('MobileNav', MobileNav, 'Dropdown:', Dropdown);
+// if (import.meta.env.VITE_DEBUG == 'true') console.log('MobileNav', MobileNav, 'Dropdown:', Dropdown);
 
 const app = createApp(App);
 

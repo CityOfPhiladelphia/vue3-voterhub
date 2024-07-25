@@ -51,11 +51,11 @@ export const useCity311Store = defineStore('City311Store', {
   
       await axios.request(config)
       .then((response) => {
-        // console.log(JSON.stringify(response.data));
+        // if (import.meta.env.VITE_DEBUG) console.log(JSON.stringify(response.data));
         this.agoToken= response.data.token;
       })
       .catch((error) => {
-        console.log(error);
+        if (import.meta.env.VITE_DEBUG == 'true') console.log(error);
       });
     },
     async fillCity311() {
@@ -133,7 +133,7 @@ export const useCity311Store = defineStore('City311Store', {
           });
 
           features.forEach(feature => {
-            // console.log('feature:', feature);
+            // if (import.meta.env.VITE_DEBUG) console.log('feature:', feature);
             feature.properties.date = format(feature.properties.REQUESTED_DATETIME, 'MM/dd/yyyy');
             if (feature.properties.MEDIA_URL) {
               feature.properties.link = `<a target='_blank' href=${feature.properties.MEDIA_URL}>${feature.properties.SERVICE_NAME}</a>`;

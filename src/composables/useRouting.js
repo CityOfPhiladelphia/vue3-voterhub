@@ -2,7 +2,7 @@ import { useMainStore } from '@/stores/MainStore';
 
 export default function useRouting() {
   const routeApp = (router) => {
-    console.log('routeApp')
+    if (import.meta.env.VITE_DEBUG) console.log('routeApp')
     const MainStore = useMainStore();
     if (MainStore.currentAddress && MainStore.currentTopic == 'nearby') {
       if (import.meta.env.VITE_DEBUG) console.log('routeApp routing to address-topic-and-data');
