@@ -10,6 +10,7 @@ export const useVotingStore = defineStore("VotingStore", {
       pollingPlaces: {},
       electedOfficials: {},
       nextElection: {},
+      electionSplit: {},
       loadingVotingData: true,
     };
   },
@@ -21,6 +22,7 @@ export const useVotingStore = defineStore("VotingStore", {
       this.fillDivisions();
       this.fillPollingPlaces();
       this.fillElectedOfficials();
+      this.fillElectionSplit();
       this.fillNextElection();
     },
     async clearAllVotingData() {
@@ -28,6 +30,7 @@ export const useVotingStore = defineStore("VotingStore", {
       this.pollingPlaces = {};
       this.electedOfficials = {};
       this.nextElection = {};
+      this.electionSplit = {};
       this.loadingVotingData = true;
     },
     async fillDivisions() {
@@ -81,6 +84,16 @@ export const useVotingStore = defineStore("VotingStore", {
       const url = 'https://admin-vote.phila.gov/wp-json/votes/v1/election';
       const response = await fetch(url);
       this.nextElection = await response.json();
-    }
+    },
+    async fillElectionSplit() {
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('fillElectionSplit is running');
+      const GeocodeStore = useGeocodeStore();
+      const feature = GeocodeStore.aisData.features[0];
+      let baseUrl = 'https://phl.carto.com/api/v2/sql?q=';
+      const url = baseUrl += `SELECT * FROM splits WHERE precinct = '${feature.properties.election_precinct}'`;
+      // const url = baseUrl += `select ST_X(the_geom) as lng, ST_Y(the_geom) as lat, * from polling_places where precinct ='${feature.properties.election_precinct}'`;
+      const response = await fetch(url);
+      this.electionSplit = await response.json();
+    },
   },
 });
