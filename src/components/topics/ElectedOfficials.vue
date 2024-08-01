@@ -21,7 +21,7 @@ const messages = computed(() => {
 })
 if (import.meta.env.VITE_DEBUG == 'true') console.log('messages:', messages);
 
-const formatMember = (person, termLength, districtLabel) => {
+const formatMember = (person, termLength=4, districtLabel) => {
   // if (import.meta.env.VITE_DEBUG == 'true') console.log('person:', person);
   
   const website = '<a href="https://' + person.website + '" target="_blank">' + person.first_name +" " + person.last_name + "</a>";
@@ -342,8 +342,8 @@ const federalOfficialsData = computed(() => [
   },
   {
     label: messages.value.electedOfficials.topic.verticalTable3.president,
-    value: '<a href="https://www.whitehouse.gov/administration/president-biden/" target="_blank">Joseph Biden</a><br> \
-              <a href="https://www.whitehouse.gov/administration/vice-president-harris/" target="_blank">Kamala Harris</a>',
+    value: '<a href="https://www.whitehouse.gov/administration/president-biden/" target="_blank">Joseph Biden</a> (D)<br> \
+              <a href="https://www.whitehouse.gov/administration/vice-president-harris/" target="_blank">Kamala Harris</a> (D)',
   },
 ]);
 
