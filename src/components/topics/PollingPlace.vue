@@ -49,7 +49,7 @@ const pollingPlaceData = computed(() => {
         label: 'Location',
         value: '<b>Ward ' + PollingPlaceStore.pollingPlaces.rows[0].ward + ', Division ' + PollingPlaceStore.pollingPlaces.rows[0].division + '</b><br>' +
             titleCase(PollingPlaceStore.pollingPlaces.rows[0].placename) + '<br>' +
-            titleCase(PollingPlaceStore.pollingPlaces.rows[0].street_address)
+            `<a target="_blank" href="https://www.google.com/maps/place/${PollingPlaceStore.pollingPlaces.rows[0].street_address}, Philadelphia, PA">${titleCase(PollingPlaceStore.pollingPlaces.rows[0].street_address)}</a>`,
       },
       {
         label: 'Hours',
