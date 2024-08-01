@@ -26,6 +26,11 @@ const formatMember = (person, termLength, districtLabel) => {
   
   const website = '<a href="https://' + person.website + '" target="_blank">' + person.first_name +" " + person.last_name + "</a>";
   
+  let party;
+  if (person.party) {
+    party = person.party;
+  }
+
   let district;
   if (person.district != 0 && districtLabel) {
     district = nth(person.district);
@@ -56,6 +61,9 @@ const formatMember = (person, termLength, districtLabel) => {
   const term = 'Current Term: ' + (person.next_election-termLength) + ' - ' + person.next_election;
 
   let returnString = website;
+  if (party) {
+    returnString += ` (${party})`;
+  }
   if (district) {
     returnString += ' - ' + district + " " + districtLabel + '<br>';
   } else {
