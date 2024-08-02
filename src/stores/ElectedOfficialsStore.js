@@ -19,8 +19,14 @@ export const useElectedOfficialsStore = defineStore("ElectedOfficialsStore", {
       if (import.meta.env.VITE_DEBUG == 'true') console.log('fillElectedOfficials is running');
       const GeocodeStore = useGeocodeStore();
       const feature = GeocodeStore.aisData.features[0];
+      let precinct;
+      if (feature.properties.election_precinct) {
+        precinct = feature.properties.election_precinct;
+      } else if (feature.properties.political_division) {
+        precinct = feature.properties.political_division;
+      }
       let baseUrl = 'https://phl.carto.com/api/v2/sql?q=';
-      const url = baseUrl += `WITH split AS (SELECT * FROM splits WHERE precinct = '${feature.properties.election_precinct}') \
+      const url = baseUrl += `WITH split AS (SELECT * FROM splits WHERE precinct = '${precinct}') \
       SELECT eo.*, s.ballot_file_id\
       FROM elected_officials eo, split s \
       WHERE eo.office = 'city_council' AND eo.district = '${feature.properties.council_district_2024}' \

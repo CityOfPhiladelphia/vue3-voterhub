@@ -46,8 +46,14 @@ export const usePollingPlaceStore = defineStore("PollingPlaceStore", {
       if (import.meta.env.VITE_DEBUG == 'true') console.log('fillPollingPlaces is running');
       const GeocodeStore = useGeocodeStore();
       const feature = GeocodeStore.aisData.features[0];
+      let precinct;
+      if (feature.properties.election_precinct) {
+        precinct = feature.properties.election_precinct;
+      } else if (feature.properties.political_division) {
+        precinct = feature.properties.political_division;
+      }
       let baseUrl = 'https://phl.carto.com/api/v2/sql?q=';
-      const url = baseUrl += `select ST_X(the_geom) as lng, ST_Y(the_geom) as lat, * from polling_places where precinct ='${feature.properties.election_precinct}'`;
+      const url = baseUrl += `select ST_X(the_geom) as lng, ST_Y(the_geom) as lat, * from polling_places where precinct ='${precinct}'`;
       const response = await fetch(url);
       this.pollingPlaces = await response.json();
     },

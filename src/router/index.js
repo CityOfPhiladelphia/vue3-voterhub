@@ -3,15 +3,11 @@ import App from '@/App.vue';
 import $config from '@/config';
 
 import { useGeocodeStore } from '@/stores/GeocodeStore.js'
-import { useCondosStore } from '@/stores/CondosStore.js'
 import { useParcelsStore } from '@/stores/ParcelsStore.js'
-import { useOpaStore } from '@/stores/OpaStore.js'
-import { useDorStore } from '@/stores/DorStore.js'
 import { useBallotsStore } from '@/stores/BallotsStore.js'
 import { usePollingPlaceStore } from '@/stores/PollingPlaceStore.js'
 import { useMailinVotingStore } from '@/stores/MailinVotingStore.js'
 import { useElectedOfficialsStore } from '@/stores/ElectedOfficialsStore'
-import { useNearbyActivityStore } from '@/stores/NearbyActivityStore.js'
 import { useMainStore } from '@/stores/MainStore.js'
 
 import useRouting from '@/composables/useRouting';
@@ -23,10 +19,6 @@ const getGeocodeAndPutInStore = async(address) => {
   const MainStore = useMainStore();
   MainStore.clearDataSourcesLoadedArray();
 
-  const OpaStore = useOpaStore();
-  OpaStore.clearAllOpaData();
-  const DorStore = useDorStore();
-  DorStore.clearAllDorData();
   const BallotsStore = useBallotsStore();
   BallotsStore.clearAllBallotsData();
   const PollingPlaceStore = usePollingPlaceStore();
@@ -36,12 +28,6 @@ const getGeocodeAndPutInStore = async(address) => {
   const ElectedOfficialsStore = useElectedOfficialsStore();
   ElectedOfficialsStore.clearAllElectedOfficialsData();
 
-  const NearbyActivityStore = useNearbyActivityStore();
-  NearbyActivityStore.clearAllNearbyActivityData();
-
-  const CondosStore = useCondosStore();
-  CondosStore.lastPageUsed = 1;
-  CondosStore.condosData.pages = { page_1: { features: [] } };
   const GeocodeStore = useGeocodeStore();
   await GeocodeStore.fillAisData(address);
   if (MainStore.lastSearchMethod == 'address' && !GeocodeStore.aisData.features) {
@@ -140,12 +126,6 @@ const dataFetch = async(to, from) => {
     return;
   }
   
-  // check for condos
-  const CondosStore = useCondosStore();
-  CondosStore.loadingCondosData = true;
-  await CondosStore.fillCondoData(address);
-  CondosStore.loadingCondosData = false;
-
   // if the topic is condos and the address changes and there are no condos, reroute to property
   if (to.params.topic == "condos" && !CondosStore.condosData.pages.page_1.features.length) {
     MainStore.currentTopic = "property";

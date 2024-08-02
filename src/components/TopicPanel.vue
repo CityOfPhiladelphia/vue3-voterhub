@@ -1,14 +1,12 @@
 <script setup>
-import { useI18n } from 'vue-i18n'
-const { t } = useI18n() 
+// import { useI18n } from 'vue-i18n'
+// const { t } = useI18n() 
 
 import { computed } from 'vue';
 import { useMainStore } from '@/stores/MainStore.js'
 const GeocodeStore = useGeocodeStore();
 import { useGeocodeStore } from '@/stores/GeocodeStore.js'
 const MainStore = useMainStore();
-import { useCondosStore } from '@/stores/CondosStore.js'
-const CondosStore = useCondosStore();
 
 import FullScreenTopicsToggleTab from '@/components/FullScreenTopicsToggleTab.vue';
 import AddressSearchControl from '@/components/AddressSearchControl.vue';
