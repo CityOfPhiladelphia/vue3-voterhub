@@ -121,16 +121,14 @@ const handleTopicClick = () => {
   margin-right: .5em;
   /* margin-bottom: .5em; */
   width: 1em;
-  /* font-size: 16px; */
+  font-size: 22px;
 }
 
 .name-holder {
   display: inline-block;
-  /* font-size: 16px; */
   font-weight: 600;
   font-family: Montserrat !important;
-  /* font-size: 1.4rem !important; */
-  /* font-size: 1.75em !important; */
+  font-size: 22px !important;
 }
 
 .is-vcentered {
@@ -146,7 +144,6 @@ const handleTopicClick = () => {
   background-color: #f0f0f0;
   color: #0f4d90;
   border: 0px solid #cfcfcf;
-  /* border-radius: 2px; */
   /* margin-top: 16px; */
   margin-top: .5em;
   padding: .25em;
