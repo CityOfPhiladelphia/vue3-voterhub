@@ -160,7 +160,7 @@ const buildingCertsTableData = ref({
       dateOutputFormat: 'MM/dd/yyyy',
     }
   ],
-  rows: selectedBuildingCerts.value || [],
+  rows: selectedBuildingCerts || [],
 })
 
 const permitsTableData = computed(() => {
@@ -383,7 +383,7 @@ const businessLicensesTableData = computed(() => {
                   />
                 </div>
                 <div v-else>
-                  No building certifications found
+                  No building certifications found for the selected building
                 </div>
               </template>
               <template #pagination-top="props">
@@ -399,7 +399,7 @@ const businessLicensesTableData = computed(() => {
             </vue-good-table>
           </div>
           <div
-            v-if="selectedBuildingCerts.length"
+            v-if="selectedBuildingCerts"
             class="table-link"
           >
             <a

@@ -27,7 +27,7 @@ import NavLink from "@phila/phila-ui-nav-link";
 import Textbox from "@phila/phila-ui-textbox";
 import LangSelector from "@phila/phila-ui-lang-selector";
 
-// console.log('MobileNav', MobileNav, 'Dropdown:', Dropdown);
+// if (import.meta.env.VITE_DEBUG == 'true') console.log('MobileNav', MobileNav, 'Dropdown:', Dropdown);
 
 const app = createApp(App);
 
@@ -64,8 +64,9 @@ import { faPhone } from '@fortawesome/free-solid-svg-icons';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { faFlagUsa } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faMinus } from '@fortawesome/free-solid-svg-icons';
 
-// import { faBars } from '@fortawesome/free-solid-svg-icons';
 library.add(
   faSearch,
   faHome,
@@ -87,7 +88,8 @@ library.add(
   faStar,
   faEnvelope,
   faFlagUsa,
-  // faBars,
+  faPlus,
+  faMinus,
 );
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';

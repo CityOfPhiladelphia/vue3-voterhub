@@ -121,25 +121,31 @@ const electedRepsData = computed(() => [
   }
 ]);
 
-const nextElectionDate = computed(() => {
-  if (VotingStore.nextElection.election_count_down_settings) {
-    return format(parseISO(VotingStore.nextElection.election_count_down_settings.election_day), 'MMMM d, yyyy');
+const electionSplit = computed(() => {
+  if (VotingStore.electionSplit.rows && VotingStore.electionSplit.rows[0]) {
+    return VotingStore.electionSplit.rows[0];
   }
 });
+
+const electionTypes = {
+  0: 'Special Election',
+  1: 'Primary Election',
+  2: 'General Election',
+}
 
 </script>
 
 <template>
   <section>
     <div class="columns is-multiline column is-8 is-offset-2 has-text-centered badge">
-      <div class="column is-12 badge-title">
-        <b>Next Eligible Election Is</b>
+      <div v-if="electionSplit" class="column is-12 badge-title">
+        <b>Next Eligible Election: {{ electionTypes[electionSplit.election_type] }}</b>
       </div>
       <div
         v-if="!VotingStore.loadingVotingData"
         class="column is-12 election"
       >
-        {{ nextElectionDate }}
+        {{ format(parseISO(electionSplit.election_date), 'MMMM d, yyyy') }}
       </div>
       <div v-else class="column election">
         <p>

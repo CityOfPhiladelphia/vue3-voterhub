@@ -13,6 +13,7 @@ export const useBallotsStore = defineStore("BallotsStore", {
   actions: {
     async fillAllBallotsData() {
       this.fillElectedOfficials();
+      this.fillElectionSplit();
       this.fillNextElection();
       this.fillElectionSplit();
     },
@@ -20,6 +21,7 @@ export const useBallotsStore = defineStore("BallotsStore", {
       this.electedOfficials = {};
       this.nextElection = {};
       this.electionSplit = {};
+      this.loadingBallotsData = true;
     },
     async fillElectionSplit() {
       if (import.meta.env.VITE_DEBUG == 'true') console.log('fillElectionSplit is running');
@@ -52,6 +54,16 @@ export const useBallotsStore = defineStore("BallotsStore", {
       const url = 'https://admin-vote.phila.gov/wp-json/votes/v1/election';
       const response = await fetch(url);
       this.nextElection = await response.json();
-    }
+    },
+    async fillElectionSplit() {
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('fillElectionSplit is running');
+      const GeocodeStore = useGeocodeStore();
+      const feature = GeocodeStore.aisData.features[0];
+      let baseUrl = 'https://phl.carto.com/api/v2/sql?q=';
+      const url = baseUrl += `SELECT * FROM splits WHERE precinct = '${feature.properties.election_precinct}'`;
+      // const url = baseUrl += `select ST_X(the_geom) as lng, ST_Y(the_geom) as lat, * from polling_places where precinct ='${feature.properties.election_precinct}'`;
+      const response = await fetch(url);
+      this.electionSplit = await response.json();
+    },
   },
 });

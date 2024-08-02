@@ -90,6 +90,19 @@ const handleTopicClick = () => {
             spin
           />
         </div>
+      
+        <div
+          class="mr-2 is-pulled-right icon-holder"
+        >
+          <font-awesome-icon
+            v-if="!open"
+            icon="fa-solid fa-plus"
+          />
+          <font-awesome-icon
+            v-if="open && !loading"
+            icon="fa-solid fa-minus"
+          />
+        </div>
       </div>
     </button>
     <div
@@ -110,11 +123,15 @@ const handleTopicClick = () => {
   margin-right: .5em;
   /* margin-bottom: .5em; */
   width: 1em;
+  /* font-size: 16px; */
 }
 
 .name-holder {
   display: inline-block;
-  font-size: 1.4rem !important;
+  /* font-size: 16px; */
+  font-weight: 600;
+  font-family: Montserrat !important;
+  /* font-size: 1.4rem !important; */
   /* font-size: 1.75em !important; */
 }
 
@@ -132,6 +149,7 @@ const handleTopicClick = () => {
   color: #0f4d90;
   border: 0px solid #cfcfcf;
   /* border-radius: 2px; */
+  /* margin-top: 16px; */
   margin-top: .5em;
   padding: .25em;
   cursor: pointer;

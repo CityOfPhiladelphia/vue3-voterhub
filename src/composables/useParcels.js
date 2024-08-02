@@ -133,7 +133,7 @@ export default function useParcels() {
     // if (import.meta.env.VITE_DEBUG == 'true') console.log('coords:', coords);
     const turfPolygon = polygon(coords);
     let distances = getDistances(coords);
-    if (import.meta.env.VITE_DEBUG == 'true') console.log('distances:', distances);
+    // if (import.meta.env.VITE_DEBUG == 'true') console.log('distances:', distances);
     return { perimeter: distances.reduce(function(acc, val) {
       return acc + val;
     }),
