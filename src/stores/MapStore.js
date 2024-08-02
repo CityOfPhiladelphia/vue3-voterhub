@@ -71,7 +71,7 @@ export const useMapStore = defineStore("MapStore", {
       };
 
       let response = await axios.get(bufferUrl, { params });
-      console.log('response:', response);
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('response:', response);
       for (let [index, point] of response.data.geometries[0].rings[0].entries()) {
         if (index % 2 === 0 || index % 3 === 0) {
           response.data.geometries[0].rings[0].splice(index, 1);

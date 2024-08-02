@@ -13,20 +13,27 @@ export const useBallotsStore = defineStore("BallotsStore", {
   actions: {
     async fillAllBallotsData() {
       this.fillElectedOfficials();
-      this.fillNextElection();
       this.fillElectionSplit();
+      this.fillNextElection();
     },
     async clearAllBallotsData() {
       this.electedOfficials = {};
       this.nextElection = {};
       this.electionSplit = {};
+      this.loadingBallotsData = true;
     },
     async fillElectionSplit() {
       if (import.meta.env.VITE_DEBUG == 'true') console.log('fillElectionSplit is running');
       const GeocodeStore = useGeocodeStore();
       const feature = GeocodeStore.aisData.features[0];
+      let precinct;
+      if (feature.properties.election_precinct) {
+        precinct = feature.properties.election_precinct;
+      } else if (feature.properties.political_division) {
+        precinct = feature.properties.political_division;
+      }
       let baseUrl = 'https://phl.carto.com/api/v2/sql?q=';
-      const url = baseUrl += `SELECT * FROM splits WHERE precinct = '${feature.properties.election_precinct}'`;
+      const url = baseUrl += `SELECT * FROM splits WHERE precinct = '${precinct}'`;
       // const url = baseUrl += `select ST_X(the_geom) as lng, ST_Y(the_geom) as lat, * from polling_places where precinct ='${feature.properties.election_precinct}'`;
       const response = await fetch(url);
       this.electionSplit = await response.json();
@@ -35,8 +42,14 @@ export const useBallotsStore = defineStore("BallotsStore", {
       if (import.meta.env.VITE_DEBUG == 'true') console.log('fillElectedOfficials is running');
       const GeocodeStore = useGeocodeStore();
       const feature = GeocodeStore.aisData.features[0];
+      let precinct;
+      if (feature.properties.election_precinct) {
+        precinct = feature.properties.election_precinct;
+      } else if (feature.properties.political_division) {
+        precinct = feature.properties.political_division;
+      }
       let baseUrl = 'https://phl.carto.com/api/v2/sql?q=';
-      const url = baseUrl += `WITH split AS (SELECT * FROM splits WHERE precinct = '${feature.properties.election_precinct}') \
+      const url = baseUrl += `WITH split AS (SELECT * FROM splits WHERE precinct = '${precinct}') \
       SELECT eo.*, s.ballot_file_id\
       FROM elected_officials eo, split s \
       WHERE eo.office = 'city_council' AND eo.district = '${feature.properties.council_district_2024}' \
@@ -52,6 +65,6 @@ export const useBallotsStore = defineStore("BallotsStore", {
       const url = 'https://admin-vote.phila.gov/wp-json/votes/v1/election';
       const response = await fetch(url);
       this.nextElection = await response.json();
-    }
+    },
   },
 });

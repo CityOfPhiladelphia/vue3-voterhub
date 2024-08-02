@@ -51,7 +51,7 @@ import CyclomediaRecordingsClient from '@/components/map/recordings-client.js';
 
 let map;
 
-// keep image sources as computed props so that the publicPath can used, for pushing the app to different environments
+// keep image sources as computed props so that the publicPath can be used, for pushing the app to different environments
 const markerSrc = computed(() => {
   return MainStore.publicPath + 'images/marker_blue_base_5.png';
 })
@@ -92,7 +92,7 @@ onMounted(async () => {
 
   // add the address marker and camera icon sources
   const markerImage = await map.loadImage(markerSrc.value)
-  console.log('markerImage:', markerImage);
+  if (import.meta.env.VITE_DEBUG == 'true') console.log('markerImage:', markerImage);
   map.addImage('marker-blue', markerImage.data);
   const buildingColumnsImage = await map.loadImage(buildingColumnsSrc.value)
   map.addImage('building-columns-solid', buildingColumnsImage.data);
@@ -122,6 +122,13 @@ onMounted(async () => {
     if (MapStore.cyclomediaOn) {
       updateCyclomediaCameraViewcone(MapStore.cyclomediaCameraHFov, MapStore.cyclomediaCameraYaw);
     }
+  });
+
+  // if the L&I topic is selected, and a building footprint is clicked, set the selected building number in the LiStore
+  map.on('click', 'liBuildingFootprints', (e) => {
+    // if (import.meta.env.VITE_DEBUG == 'true') console.log('liBuildingFootprints click, e:', e);
+    e.clickOnLayer = true;
+    LiStore.selectedLiBuildingNumber = e.features[0].properties.id;
   });
 
   map.on('mouseenter', 'liBuildingFootprints', (e) => {
@@ -493,6 +500,8 @@ watch(
   }
 );
 
+// Opacity changes
+// for Deeds topic, change opacity of regmap layer
 const handleRegmapOpacityChange = (opacity) => {
   MapStore.regmapOpacity = opacity/100;
   map.setPaintProperty(
@@ -502,7 +511,7 @@ const handleRegmapOpacityChange = (opacity) => {
   );
 }
 
-// for zoning topic, change opacity of zoning layer
+// for Zoning topic, change opacity of zoning layer
 const handleZoningOpacityChange = (opacity) => {
   MapStore.zoningOpacity = opacity/100;
   map.setPaintProperty(
@@ -512,6 +521,7 @@ const handleZoningOpacityChange = (opacity) => {
   );
 }
 
+// for Cityatlas Stormwater topic, change opacity of stormwater layer
 const handleStormwaterOpacityChange = (opacity) => {
   MapStore.stormwaterOpacity = opacity/100;
   map.setPaintProperty(
@@ -521,6 +531,7 @@ const handleStormwaterOpacityChange = (opacity) => {
   );
 }
 
+// for Voting topic, watch voting division and polling place for changing map center and zoom
 const votingDivision = computed(() => { 
   if (PollingPlaceStore.divisions.features) {
     return PollingPlaceStore.divisions.features[0].geometry.coordinates[0];
@@ -549,6 +560,7 @@ watchEffect(() => {
   }
 });
 
+// for Nearby topic, watch the clicked row to fly to its coordinates and show a popup
 const clickedRow = computed(() => { return MainStore.clickedRow; })
 watch(
   () => clickedRow.value,

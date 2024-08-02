@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 import isMobileDevice from './util/is-mobile-device';
-import isMac from './util/is-mac';
+import isMac from './util/is-mac'; // this can probably be removed from App.vue, and only run in main.js
 
 import i18nFromFiles from './i18n/i18n.js';
 const languages = i18nFromFiles.i18n.languages;
