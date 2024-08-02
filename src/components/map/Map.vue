@@ -51,7 +51,7 @@ import OpacitySlider from '@/components/map/OpacitySlider.vue';
 import OverlayLegend from '@/components/map/OverlayLegend.vue';
 import EagleviewPanel from '@/components/map/EagleviewPanel.vue';
 import CyclomediaPanel from '@/components/map/CyclomediaPanel.vue';
-import CyclomediaRecordingsClient from '@/components/map/recordings-client.js';
+import CyclomediaRecordingsClient from '@/util/recordings-client.js';
 
 let map;
 
