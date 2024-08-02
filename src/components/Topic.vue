@@ -121,14 +121,14 @@ const handleTopicClick = () => {
   margin-right: .5em;
   /* margin-bottom: .5em; */
   width: 1em;
-  font-size: 22px;
+  font-size: 20px;
 }
 
 .name-holder {
   display: inline-block;
   font-weight: 600;
   font-family: Montserrat !important;
-  font-size: 22px !important;
+  font-size: 20px !important;
 }
 
 .is-vcentered {
