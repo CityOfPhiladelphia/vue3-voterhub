@@ -55,7 +55,7 @@ import CyclomediaRecordingsClient from '@/components/map/recordings-client.js';
 
 let map;
 
-// keep image sources as computed props so that the publicPath can used, for pushing the app to different environments
+// keep image sources as computed props so that the publicPath can be used, for pushing the app to different environments
 const markerSrc = computed(() => {
   return MainStore.publicPath + 'images/marker_blue_base_5.png';
 })
@@ -123,7 +123,7 @@ onMounted(async () => {
     }
   });
 
-  // if the L&I topic is selected, and a building footrprint is clicked, set the selected building number in the LiStore
+  // if the L&I topic is selected, and a building footprint is clicked, set the selected building number in the LiStore
   map.on('click', 'liBuildingFootprints', (e) => {
     // if (import.meta.env.VITE_DEBUG == 'true') console.log('liBuildingFootprints click, e:', e);
     e.clickOnLayer = true;
@@ -501,6 +501,8 @@ watch(
   }
 );
 
+// Opacity changes
+// for Deeds topic, change opacity of regmap layer
 const handleRegmapOpacityChange = (opacity) => {
   MapStore.regmapOpacity = opacity/100;
   map.setPaintProperty(
@@ -510,7 +512,7 @@ const handleRegmapOpacityChange = (opacity) => {
   );
 }
 
-// for zoning topic, change opacity of zoning layer
+// for Zoning topic, change opacity of zoning layer
 const handleZoningOpacityChange = (opacity) => {
   MapStore.zoningOpacity = opacity/100;
   map.setPaintProperty(
@@ -520,6 +522,7 @@ const handleZoningOpacityChange = (opacity) => {
   );
 }
 
+// for Cityatlas Stormwater topic, change opacity of stormwater layer
 const handleStormwaterOpacityChange = (opacity) => {
   MapStore.stormwaterOpacity = opacity/100;
   map.setPaintProperty(
@@ -556,6 +559,7 @@ watch(
   }
 )
 
+// for Voting topic, watch voting division and polling place for changing map center and zoom
 const votingDivision = computed(() => { 
   if (VotingStore.divisions.features) {
     return VotingStore.divisions.features[0].geometry.coordinates[0];
@@ -584,6 +588,7 @@ watchEffect(() => {
   }
 });
 
+// for Nearby topic, watch the clicked row to fly to its coordinates and show a popup
 const clickedRow = computed(() => { return MainStore.clickedRow; })
 watch(
   () => clickedRow.value,
