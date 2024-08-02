@@ -147,7 +147,7 @@ watch(() => clickedMarkerId.value, (newClickedMarkerId) => {
     </h2>
     <div class="horizontal-table">
       <vue-good-table
-        id="mailinVoting"
+        id="mail-in-voting"
         :columns="mailinVotingTableData.columns"
         :rows="mailinVotingTableData.rows"
         :row-style-class="row => hoveredStateId === row.cartodb_id ? 'active-hover ' + row.cartodb_id : 'inactive ' + row.cartodb_id"
@@ -175,3 +175,25 @@ watch(() => clickedMarkerId.value, (newClickedMarkerId) => {
   </section>
 
 </template>
+
+<style>
+
+@media 
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+
+	/* Label the data */
+    
+	#mail-in-voting {
+
+    td:nth-of-type(2) {
+      min-height: 60px;
+    }
+
+    td:nth-of-type(1):before { content: "Location"; }
+    td:nth-of-type(2):before { content: "Type and Hours"; }
+    td:nth-of-type(3):before { content: "Distance"; }
+  }
+}
+
+</style>
