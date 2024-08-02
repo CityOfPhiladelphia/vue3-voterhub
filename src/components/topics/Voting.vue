@@ -142,7 +142,7 @@ const electionTypes = {
         <b>Next Eligible Election: {{ electionTypes[electionSplit.election_type] }}</b>
       </div>
       <div
-        v-if="!VotingStore.loadingVotingData"
+        v-if="electionSplit && VotingStore.loadingVotingData === false"
         class="column is-12 election"
       >
         {{ format(parseISO(electionSplit.election_date), 'MMMM d, yyyy') }}
