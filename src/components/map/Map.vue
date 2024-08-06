@@ -593,19 +593,19 @@ const clickedRow = computed(() => { return MainStore.clickedRow; })
 watch(
   () => clickedRow.value,
   newClickedRow => {
-    // if (import.meta.env.VITE_DEBUG == 'true') console.log('Map.vue clickedRow watch, newClickedRow:', newClickedRow);
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('Map.vue clickedRow watch, newClickedRow:', newClickedRow, 'newClickedRow.type:', newClickedRow.type);
     if (newClickedRow) map.flyTo({ center: newClickedRow.lngLat });
     let idField, infoField, row;
     if (MainStore.currentTopic == 'nearby') {
       idField = NearbyActivityStore.dataFields[newClickedRow.type].id_field;
       infoField = NearbyActivityStore.dataFields[newClickedRow.type].info_field;
       row = NearbyActivityStore[newClickedRow.type].rows.filter(row => row[idField] === newClickedRow.id)[0];
-    } else if (MainStore.currentTopic == '311') {
-      idField = City311Store.dataFields[newClickedRow.type].id_field;
-      infoField = City311Store.dataFields[newClickedRow.type].info_field;
+    } else if (MainStore.currentTopic == 'city311') {
+      idField = City311Store.dataFields.city311.id_field;
+      infoField = City311Store.dataFields.city311.info_field;
       row = City311Store[newClickedRow.type].rows.filter(row => row[idField] === newClickedRow.id)[0];
     }
-    // if (import.meta.env.VITE_DEBUG == 'true') console.log('nearby click, idField:', idField, 'row:', row);
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('nearby click, newClickedRow:', newClickedRow, 'idField:', idField, 'row:', row);
     if (row.properties) row[infoField] = row.properties[infoField];
     const popup = document.getElementsByClassName('maplibregl-popup');
     if (popup.length) {
