@@ -356,7 +356,7 @@ const businessLicensesTableData = computed(() => {
 
           <!-- Building Certs Table -->
           <h2 class="subtitle mb-3 is-5 table-title">
-            Building Certifications
+            Building Certifications (Selected Building)
             <font-awesome-icon
               v-if="LiStore.loadingLiBuildingCerts"
               icon="fa-solid fa-spinner"
