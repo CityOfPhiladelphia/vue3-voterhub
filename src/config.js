@@ -2,6 +2,10 @@ import mergeDeep from './util/merge-deep.js';
 
 const cityCenterCoords = [-75.163471, 39.953338];
 
+const addressDoubles = [
+  '15 E HAMPTON RD',
+];
+
 const imageryInfo = {
   sources: {
     imageryLabels: {
@@ -1442,6 +1446,7 @@ const stormwaterLegendData = {
 }
 
 $config['cityCenterCoords'] = cityCenterCoords;
+$config['addressDoubles'] = addressDoubles;
 $config['pwdDrawnMapStyle'] = pwdDrawnMapStyle;
 $config['dorDrawnMapStyle'] = dorDrawnMapStyle;
 $config['liDrawnMapStyle'] = liDrawnMapStyle;

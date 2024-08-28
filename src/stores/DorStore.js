@@ -282,7 +282,8 @@ export const useDorStore = defineStore("DorStore", {
               }
           
               if (geocode.address_low_suffix == '') {
-                where += " AND (ADDRESS_LOW_SUFFIX = '' OR ADDRESS_LOW_SUFFIX = null)";
+                where += " AND COALESCE(ADDRESS_LOW_SUFFIX, '') = ''";
+                // where += " AND (ADDRESS_LOW_SUFFIX = '' OR ADDRESS_LOW_SUFFIX = null)";
               }
           
               // this is hardcoded right now to handle dor address suffixes that are actually fractions
@@ -326,14 +327,18 @@ export const useDorStore = defineStore("DorStore", {
           if (!ParcelsStore.dor.features) {
             return resolve();
           }
+          // if (import.meta.env.VITE_DEBUG == 'true') console.log('ParcelsStore.dor.features:', ParcelsStore.dor.features);
           for (let feature of ParcelsStore.dor.features) {
+            // if (import.meta.env.VITE_DEBUG == 'true') console.log('in loop before try, feature:', feature);
             try {
+              // if (import.meta.env.VITE_DEBUG == 'true') console.log('in loop in try, feature:', feature);
               let theWhere = where(feature);
                 
               const params = {
                 where: theWhere,
                 // outFields: '*',
-                outFields: "DOCUMENT_ID, DISPLAY_DATE, DOCUMENT_TYPE, GRANTORS, GRANTEES, UNIT_NUM, MATCHED_REGMAP, REG_MAP_ID",
+                // outFields: "DOCUMENT_ID, DISPLAY_DATE, DOCUMENT_TYPE, GRANTORS, GRANTEES, UNIT_NUM, MATCHED_REGMAP, REG_MAP_ID",
+                outFields: "DOCUMENT_ID, DISPLAY_DATE, DOCUMENT_TYPE, GRANTORS, GRANTEES, UNIT_NUM",
                 returnDistinctValues: 'true',
                 returnGeometry: 'false',
                 f: 'json',
@@ -349,16 +354,17 @@ export const useDorStore = defineStore("DorStore", {
                   doc.attributes.link = `<a target='_blank' href='http://epay.phila-records.com/phillyepay/web/integration/document/InstrumentID=${doc.attributes.DOCUMENT_ID}&Guest=true'>${doc.attributes.DOCUMENT_ID}<i class='fa fa-external-link-alt'></i></a>`;
                 })
                 this.dorDocuments[feature.properties.OBJECTID] = data;
-                return resolve();
+                // return resolve();
               } else {
                 if (import.meta.env.VITE_DEBUG == 'true') console.warn('dorDocs - await resolved but HTTP status was not successful')
-                return resolve();
+                // return resolve();
               }
             } catch {
               if (import.meta.env.VITE_DEBUG == 'true') console.error('dorDocs - await never resolved, failed to fetch data')
-              return resolve();
+              // return resolve();
             }
           }
+        return resolve();
         })();
       });
     },

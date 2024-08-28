@@ -118,7 +118,7 @@ const dataFetch = async(to, from) => {
   
   let routeAddressChanged = to.params.address !== from.params.address;
 
-  if (routeAddressChanged) {
+  if ($config.addressDoubles.includes(address) || routeAddressChanged) {
     // if there is no geocode or the geocode does not match the address in the route, get the geocode
     if (!GeocodeStore.aisData.normalized || GeocodeStore.aisData.normalized && GeocodeStore.aisData.normalized !== address) {
       await getGeocodeAndPutInStore(address);
