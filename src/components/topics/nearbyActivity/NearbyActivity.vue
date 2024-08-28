@@ -158,10 +158,10 @@ onMounted( () => {
         <TextFilter
           v-model="textSearch"
           :search-label="`Search ${ shortDataTypes[currentNearbyDataType] }`"
+          :placeholder="'Search Requests'"
         />
       </div>
     </div>
-
 
     <Nearby311 v-if="currentNearbyDataType == '311'" :time-interval-selected="timeIntervalSelected" :text-search="textSearch" />
     <NearbyCrimeIncidents v-if="currentNearbyDataType == 'crimeIncidents'" :time-interval-selected="timeIntervalSelected" :text-search="textSearch" />

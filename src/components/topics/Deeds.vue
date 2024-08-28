@@ -301,6 +301,7 @@ const dorDocsTableData = computed(() => {
         <TextFilter
           class="dor-docs-filter"
           :search-label="'Search Documents'"
+          :placeholder="'Search Documents'"
           v-model="textSearch"
         />
         <div class="horizontal-table">
