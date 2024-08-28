@@ -380,9 +380,9 @@ const rcosTableData = computed(() => {
     </vue-good-table>
   </div>
 
-  <div class="topic-info mt-6 mb-2">
+  <!-- <div class="topic-info mt-6 mb-2">
     Looking for zoning documents? They are now located in the Licenses & Inspections tab under "Zoning Permit Documents".
-  </div>
+  </div> -->
 
   <h2 class="subtitle mb-3 is-5 table-title">
     Registered Community Organizations (RCOs)
