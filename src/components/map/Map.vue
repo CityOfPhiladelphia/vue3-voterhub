@@ -344,6 +344,7 @@ watch(
       if (MapStore.imageryOn) {
         map.addLayer($config.mapLayers[imagerySelected.value], 'cyclomediaRecordings')
         map.addLayer($config.mapLayers.imageryLabels, 'cyclomediaRecordings')
+        map.addLayer($config.mapLayers.imageryParcelOutlines, 'cyclomediaRecordings')
       }
       const addressMarker = map.getSource('addressMarker');
       const dorParcel = map.getSource('dorParcel');
@@ -423,11 +424,13 @@ const toggleImagery = () => {
     MapStore.imageryOn = true;
     map.addLayer($config.mapLayers[imagerySelected.value], 'cyclomediaRecordings')
     map.addLayer($config.mapLayers.imageryLabels, 'cyclomediaRecordings')
+    map.addLayer($config.mapLayers.imageryParcelOutlines, 'cyclomediaRecordings')
   } else {
     if (import.meta.env.VITE_DEBUG == 'true') console.log('map.getStyle().layers:', map.getStyle().layers);
     MapStore.imageryOn = false;
     map.removeLayer(imagerySelected.value);
     map.removeLayer('imageryLabels');
+    map.removeLayer('imageryParcelOutlines')
     if (!route.params.topic) {
       map.setStyle($config['pwdDrawnMapStyle']);
       if (pwdCoordinates.value.length) {
@@ -444,7 +447,7 @@ const setImagery = async (newImagery) => {
   }
   // if (import.meta.env.VITE_DEBUG == 'true') console.log('setImagery, newImagery:', newImagery, 'oldLayer:', oldLayer, 'imagerySelected.value:', imagerySelected.value);
   MapStore.imagerySelected = newImagery;
-  await map.addLayer($config.mapLayers[imagerySelected.value], 'cyclomediaRecordings')
+  await map.addLayer($config.mapLayers[imagerySelected.value], 'imageryLabels')
   map.removeLayer(oldLayer);
 }
 
@@ -466,7 +469,7 @@ watch(
         map.removeSource('regmap');
       }
       if (import.meta.env.VITE_DEBUG == 'true') console.log('add newRegmap:', newRegmap);
-      const tiles =  `https://ags-regmaps.phila.gov/arcgis/rest/services/RegMaps/MapServer/export?dpi=96&layerDefs=0:NAME='g${newRegmap.toLowerCase()}.tif'&transparent=true&format=png24&bbox={bbox-epsg-3857}&bboxSR=3857&imageSR=3857&size=700,700&f=image&layers=show%3A0`;
+      const tiles =  `https://ags-regmaps.phila.gov/arcgis/rest/services/RegMaps/MapServer/export?dpi=96&layerDefs=0:NAME='g${newRegmap.toLowerCase().trim()}.tif'&transparent=true&format=png24&bbox={bbox-epsg-3857}&bboxSR=3857&imageSR=3857&size=700,700&f=image&layers=show%3A0`;
       $config.dorDrawnMapStyle.sources.regmap = {
         type: 'raster',
         tiles: [tiles],
@@ -483,7 +486,7 @@ watch(
     } else {
       map.removeLayer('regmap');
       map.removeSource('regmap');
-      const tiles =  `https://ags-regmaps.phila.gov/arcgis/rest/services/RegMaps/MapServer/export?dpi=96&layerDefs=0:NAME='g${newRegmap.toLowerCase()}.tif'&transparent=true&format=png24&bbox={bbox-epsg-3857}&bboxSR=3857&imageSR=3857&size=700,700&f=image&layers=show%3A0`;
+      const tiles =  `https://ags-regmaps.phila.gov/arcgis/rest/services/RegMaps/MapServer/export?dpi=96&layerDefs=0:NAME='g${newRegmap.toLowerCase().trim()}.tif'&transparent=true&format=png24&bbox={bbox-epsg-3857}&bboxSR=3857&imageSR=3857&size=700,700&f=image&layers=show%3A0`;
       $config.dorDrawnMapStyle.sources.regmap = {
         type: 'raster',
         tiles: [tiles],
@@ -960,17 +963,17 @@ const toggleEagleview = () => {
     <EagleviewControl @toggle-eagleview="toggleEagleview" />
     <CyclomediaControl @toggle-cyclomedia="toggleCyclomedia" />
     <OpacitySlider
-      v-if="MainStore.currentTopic == 'Deeds' && selectedRegmap"
+      v-if="MainStore.currentTopic == 'deeds' && selectedRegmap"
       :initial-opacity="MapStore.regmapOpacity"
       @opacity-change="handleRegmapOpacityChange"
     />
     <OpacitySlider
-      v-if="MainStore.currentTopic == 'Zoning'"
+      v-if="MainStore.currentTopic == 'zoning'"
       :initial-opacity="MapStore.zoningOpacity"
       @opacity-change="handleZoningOpacityChange"
     />
     <OpacitySlider
-      v-if="MainStore.currentTopic == 'Stormwater'"
+      v-if="MainStore.currentTopic == 'stormwater'"
       :initial-opacity="MapStore.stormwaterOpacity"
       @opacity-change="handleStormwaterOpacityChange"
     />
@@ -981,12 +984,12 @@ const toggleEagleview = () => {
       @drawCancel="drawCancel"
     />
     <OverlayLegend
-      v-show="!MapStore.imageryOn && ['Stormwater'].includes(MainStore.currentTopic)"
+      v-show="!MapStore.imageryOn && ['stormwater'].includes(MainStore.currentTopic)"
       :items="$config.stormwaterLegendData"
       :options="{ shape: 'square' }"
     />
     <OverlayLegend
-      v-show="!MapStore.imageryOn && ['Deeds', 'Zoning'].includes(MainStore.currentTopic)"
+      v-show="!MapStore.imageryOn && ['deeds', 'zoning'].includes(MainStore.currentTopic)"
       :items="$config.dorLegendData"
       :options="{ shape: 'square' }"
     />

@@ -8,9 +8,16 @@ const addressDoubles = [
 
 const imageryInfo = {
   sources: {
+    imageryParcelOutlines: {
+      tiles: [
+        'https://tiles.arcgis.com/tiles/fLeGjb7u4uXqeF9q/arcgis/rest/services/PWDParcel_ImageryOverlay/MapServer/tile/{z}/{y}/{x}',
+      ],
+      type: 'raster',
+      tileSize: 256,
+    },
     imageryLabels: {
       tiles: [
-      'https://tiles.arcgis.com/tiles/fLeGjb7u4uXqeF9q/arcgis/rest/services/CityImagery_Labels/MapServer/tile/{z}/{y}/{x}',
+        'https://tiles.arcgis.com/tiles/fLeGjb7u4uXqeF9q/arcgis/rest/services/CityImagery_Labels/MapServer/tile/{z}/{y}/{x}',
       ],
       type: 'raster',
       tileSize: 256,
@@ -1148,6 +1155,13 @@ const $config = {
         'line-color': 'blue',
         'line-width': 2
       }
+    },
+    imageryParcelOutlines: {
+      id: 'imageryParcelOutlines',
+      source: 'imageryParcelOutlines',
+      type: 'raster',
+      minzoom: 0,
+      maxzoom: 22,
     },
     imageryLabels: {
       id: 'imageryLabels',
