@@ -110,7 +110,6 @@ const appealsTableData = computed(() => {
       },
       {
         label: 'Id',
-        // field: 'appealnumber',
         field: 'link',
         html: true,
       },
@@ -202,13 +201,13 @@ const rcosTableData = computed(() => {
             </div>
             <div
               v-if="hexForLongCode"
-              class="column is-2 code"
+              class="column is-2 badge-cell"
             >
               <div :style="{ 'height': '36px', 'width': '36px', 'background-color': hexForLongCode }" />
             </div>
             <div
               v-else
-              class="column is-2 code"
+              class="column is-2 badge-cell"
             >
               <font-awesome-icon
                 icon="fa-solid fa-spinner"
@@ -217,13 +216,13 @@ const rcosTableData = computed(() => {
             </div>
             <div
               v-if="longCode"
-              class="column is-3 code"
+              class="column is-3 badge-cell"
             >
               <b>{{ longCode }}</b>
             </div>
             <div
               v-else
-              class="column is-3 code"
+              class="column is-3 badge-cell"
             >
               <font-awesome-icon
                 icon="fa-solid fa-spinner"
@@ -232,13 +231,13 @@ const rcosTableData = computed(() => {
             </div>
             <div
               v-if="description"
-              class="column is-7 description"
+              class="column is-7 badge-cell"
             >
               {{ description }}
             </div>
             <div
               v-else
-              class="column is-7 description"
+              class="column is-7 badge-cell"
             >
               <font-awesome-icon
                 icon="fa-solid fa-spinner"
@@ -456,7 +455,7 @@ const rcosTableData = computed(() => {
   border-width: 1px;
 }
 
-.code {
+.badge-cell {
   background-color: #f0f0f0;
   border-style: solid;
   border-color: white;
@@ -464,13 +463,6 @@ const rcosTableData = computed(() => {
   display: flex !important;
   align-items: center;
   justify-content: center;
-}
-
-.description {
-  background-color: #f0f0f0;
-  border-style: solid;
-  border-color: white;
-  border-width: 1px;
 }
 
 @media 
