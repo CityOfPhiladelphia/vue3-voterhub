@@ -50,12 +50,13 @@ const zipCode = computed(() => {
   <!-- FRONT PAGE CONTENT -->
   <div
     v-if="route.name == 'home' && version == 'atlas'"
-    id="topic-panel-set-content"
+    id="topic-panel-no-topics"
+    class="section"
   >
     <div v-if="MainStore.fullScreenTopicsEnabled">
       <address-search-control :input-id="'address-bar-search-input'" />
     </div>
-    <div class="topic-panel-final-content">
+    <div :class="MainStore.fullScreenTopicsEnabled ? 'topic-panel-half': ''">
       <h1 class="subtitle is-3">
         Atlas is your front door to the City of Philadelphia.
       </h1>
@@ -77,12 +78,13 @@ const zipCode = computed(() => {
 
   <div
     v-if="route.name == 'home' && version == 'cityatlas'"
-    id="topic-panel-set-content"
+    id="topic-panel-no-topics"
+    class="section"
   >
     <div v-if="MainStore.fullScreenTopicsEnabled">
       <address-search-control :input-id="'address-bar-search-input'" />
     </div>
-    <div class="topic-panel-final-content">
+    <div :class="MainStore.fullScreenTopicsEnabled ? 'topic-panel-half': ''">
       <h1 class="subtitle is-3">
         CityAtlas connects you with information about any address in the city.
       </h1>
@@ -104,12 +106,13 @@ const zipCode = computed(() => {
   <!-- ADDRESS NOT FOUND CONTENT -->
   <div
     v-if="route.name == 'not-found'"
-    id="topic-panel-set-content"
+    id="topic-panel-no-topics"
+    class="section"
   >
     <div v-if="MainStore.fullScreenTopicsEnabled">
       <address-search-control :input-id="'address-bar-search-input'" />
     </div>
-    <div class="topic-panel-final-content">
+    <div :class="MainStore.fullScreenTopicsEnabled ? 'topic-panel-half': ''">
       <h1 class="subtitle is-3">We couldn't find that address.</h1>
       <p class="subtitle is-4">Are you sure everything was spelled correctly?</p>
       <p>Here are some examples of things you can search for:</p>
