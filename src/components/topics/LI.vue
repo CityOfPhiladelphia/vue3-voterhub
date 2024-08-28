@@ -264,7 +264,9 @@ const violationsTableData = computed(() => {
       },
       {
         label: 'Description',
-        field: 'violationcodetitle',
+        // field: 'violationcodetitle',
+        field: 'novLink',
+        html: true,
       },
       {
         label: 'Status',

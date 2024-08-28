@@ -206,6 +206,9 @@ export const useZoningStore = defineStore('ZoningStore', {
         const response = await fetch(url);
         if (response.ok) {
           let data = await response.json();
+          data.rows.forEach(row => {
+            row.link = `<a target='_blank' href='https://li.phila.gov/Property-History/search/Appeal-Detail?address=${row.address}&Id=${row.appealnumber}'>${row.appealnumber}<i class='fas fa-external-link-alt'></i></a>`
+          });
           this.zoningAppeals = data;
           this.loadingZoningAppeals = false;
         } else {

@@ -110,7 +110,8 @@ const appealsTableData = computed(() => {
       },
       {
         label: 'Id',
-        field: 'decision',
+        // field: 'appealnumber',
+        field: 'link',
         html: true,
       },
       {
@@ -339,99 +340,103 @@ const rcosTableData = computed(() => {
     </div>
   </div>
 
-  <h2 class="subtitle mb-3 is-5 table-title">
-    Appeals
-    <font-awesome-icon
-      v-if="ZoningStore.loadingZoningAppeals"
-      icon="fa-solid fa-spinner"
-      spin
-    />
-    <span v-else>({{ zoningAppeals.length }})</span>
-  </h2>
-  <div class="horizontal-table">
-    <vue-good-table
-      id="appeals"
-      :columns="appealsTableData.columns"
-      :rows="appealsTableData.rows"
-      :pagination-options="paginationOptions"
-      style-class="table"
-    >
-      <template #emptystate>
-        <div v-if="ZoningStore.loadingZoningAppeals">
-          Loading appeals... <font-awesome-icon
-            icon="fa-solid fa-spinner"
-            spin
-          />
-        </div>
-        <div v-else>
-          No appeals found
-        </div>
-      </template>
-      <template #pagination-top="props">
-        <custom-pagination-labels
-          :mode="'pages'"
-          :total="props.total"
-          :perPage="5"
-          @page-changed="props.pageChanged"
-          @per-page-changed="props.perPageChanged"
-        >
-        </custom-pagination-labels>
-      </template>
-    </vue-good-table>
+  <div class="data-section">
+    <h2 class="subtitle mb-3 is-5 table-title">
+      Appeals
+      <font-awesome-icon
+        v-if="ZoningStore.loadingZoningAppeals"
+        icon="fa-solid fa-spinner"
+        spin
+      />
+      <span v-else>({{ zoningAppeals.length }})</span>
+    </h2>
+    <div class="horizontal-table">
+      <vue-good-table
+        id="appeals"
+        :columns="appealsTableData.columns"
+        :rows="appealsTableData.rows"
+        :pagination-options="paginationOptions"
+        style-class="table"
+      >
+        <template #emptystate>
+          <div v-if="ZoningStore.loadingZoningAppeals">
+            Loading appeals... <font-awesome-icon
+              icon="fa-solid fa-spinner"
+              spin
+            />
+          </div>
+          <div v-else>
+            No appeals found
+          </div>
+        </template>
+        <template #pagination-top="props">
+          <custom-pagination-labels
+            :mode="'pages'"
+            :total="props.total"
+            :perPage="5"
+            @page-changed="props.pageChanged"
+            @per-page-changed="props.perPageChanged"
+          >
+          </custom-pagination-labels>
+        </template>
+      </vue-good-table>
+    </div>
   </div>
 
   <!-- <div class="topic-info mt-6 mb-2">
     Looking for zoning documents? They are now located in the Licenses & Inspections tab under "Zoning Permit Documents".
   </div> -->
 
-  <h2 class="subtitle mb-3 is-5 table-title">
-    Registered Community Organizations (RCOs)
-    <font-awesome-icon
-      v-if="ZoningStore.loadingRcos"
-      icon="fa-solid fa-spinner"
-      spin
-    />
-    <span v-else>({{ rcosTableData.rows.length }})</span>
-  </h2>
-  <div
-    id="rcos"
-    class="horizontal-table"
-  >
-    <vue-good-table
+  <div class="data-section">
+    <h2 class="subtitle mb-3 is-5 table-title">
+      Registered Community Organizations (RCOs)
+      <font-awesome-icon
+        v-if="ZoningStore.loadingRcos"
+        icon="fa-solid fa-spinner"
+        spin
+      />
+      <span v-else>({{ rcosTableData.rows.length }})</span>
+    </h2>
+    <div
       id="rcos"
-      :columns="rcosTableData.columns"
-      :rows="rcosTableData.rows"
-      :pagination-options="paginationOptions"
-      style-class="table"
+      class="horizontal-table"
     >
-      <template #emptystate>
-        <div v-if="ZoningStore.loadingRcos">
-          Loading RCOs... <font-awesome-icon
-            icon="fa-solid fa-spinner"
-            spin
-          />
-        </div>
-        <div v-else>
-          No RCOs found
-        </div>
-      </template>
-      <template #pagination-top="props">
-        <custom-pagination-labels
-          :mode="'pages'"
-          :total="props.total"
-          :perPage="5"
-          @page-changed="props.pageChanged"
-          @per-page-changed="props.perPageChanged"
-        >
-        </custom-pagination-labels>
-      </template>
-    </vue-good-table>
+      <vue-good-table
+        id="rcos"
+        :columns="rcosTableData.columns"
+        :rows="rcosTableData.rows"
+        :pagination-options="paginationOptions"
+        style-class="table"
+      >
+        <template #emptystate>
+          <div v-if="ZoningStore.loadingRcos">
+            Loading RCOs... <font-awesome-icon
+              icon="fa-solid fa-spinner"
+              spin
+            />
+          </div>
+          <div v-else>
+            No RCOs found
+          </div>
+        </template>
+        <template #pagination-top="props">
+          <custom-pagination-labels
+            :mode="'pages'"
+            :total="props.total"
+            :perPage="5"
+            @page-changed="props.pageChanged"
+            @per-page-changed="props.perPageChanged"
+          >
+          </custom-pagination-labels>
+        </template>
+      </vue-good-table>
+    </div>
+    <a
+      class="table-link"
+      target="_blank"
+      href="//www.phila.gov/documents/registered-community-organization-rco-materials/"
+    >See a list of all RCOs in the city [PDF] <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
   </div>
-  <a
-    class="table-link"
-    target="_blank"
-    href="//www.phila.gov/documents/registered-community-organization-rco-materials/"
-  >See a list of all RCOs in the city [PDF] <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
 </template>
 
 <style>

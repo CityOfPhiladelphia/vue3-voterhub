@@ -372,6 +372,12 @@ export const useLiStore = defineStore('LiStore', {
               address += ' Unit ' + item.unit_num;
             }
             item.link = "<a target='_blank' href='https://li.phila.gov/Property-History/search/Violation-Detail?address="+encodeURIComponent(address)+"&Id="+item.casenumber+"'>"+item.casenumber+" <i class='fa fa-external-link-alt'></i></a>";
+            item.novLink = null;
+            if (item.publicnov) {
+              item.novLink = `<a target='_blank' href='${item.publicnov}'>${item.violationcodetitle} <i class='fa fa-external-link-alt'></i></a>`
+            } else {
+              item.novLink = item.violationcodetitle;
+            }
           });
           this.liViolations = data;
           this.loadingLiViolations = false;
