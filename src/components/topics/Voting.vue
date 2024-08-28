@@ -190,6 +190,12 @@ const electionTypes = {
       />
     </p>
   </div>
+  <a
+    class="table-link"
+    target="_blank"
+    :href="`https://vote.phila.gov/voting/vote-by-mail/`"
+  >Learn about your voting options if you cannot vote in person on Election Day <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
+  <br>
   <br>
 
   <h2 class="subtitle is-5 vert-table-title">
@@ -208,6 +214,12 @@ const electionTypes = {
       />
     </p>
   </div>
+  <a
+    class="table-link"
+    target="_blank"
+    :href="`https://vote.phila.gov/voting/current-elected-officials/`"
+  >See all citywide, state, and federal representatives <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
+  <br>
   <br>
 </template>
 
