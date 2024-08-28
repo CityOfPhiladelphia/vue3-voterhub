@@ -303,18 +303,9 @@ export const useNearbyActivityStore = defineStore('NearbyActivityStore', {
         const MapStore = useMapStore();
         await MapStore.fillBufferForAddress(coordinates[0], coordinates[1]);
         const buffer = MapStore.bufferForAddress;
+        if (import.meta.env.VITE_DEBUG == 'true') console.log('fillNearbyVacantIndicatorPoints, buffer:', buffer);
 
         const url = 'https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/Vacant_Indicators_Points/FeatureServer/0/query?';
-        const xyCoords = buffer.geometries[0].rings[0];
-        let xyCoordsReduced = [[ parseFloat(xyCoords[0][0].toFixed(6)), parseFloat(xyCoords[0][1].toFixed(6)) ]];
-        var i;
-        for (i = 0; i < xyCoords.length; i++) {
-          if (i%3 == 0) {
-            let newXyCoordReduced = [ parseFloat(xyCoords[i][0].toFixed(6)), parseFloat(xyCoords[i][1].toFixed(6)) ];
-            xyCoordsReduced.push(newXyCoordReduced);
-          }
-        }
-        xyCoordsReduced.push([ parseFloat(xyCoords[0][0].toFixed(6)), parseFloat(xyCoords[0][1].toFixed(6)) ]);
 
         const params = {
           'returnGeometry': true,
@@ -325,7 +316,7 @@ export const useNearbyActivityStore = defineStore('NearbyActivityStore', {
           'geometryType': 'esriGeometryPolygon',
           'spatialRel': 'esriSpatialRelContains',
           'f': 'geojson',
-          'geometry': JSON.stringify({ "rings": [xyCoordsReduced], "spatialReference": { "wkid": 4326 }}),
+          'geometry': JSON.stringify({ "rings": buffer, "spatialReference": { "wkid": 4326 }}),
         };
 
         const response = await axios.get(url, { params });
@@ -333,7 +324,6 @@ export const useNearbyActivityStore = defineStore('NearbyActivityStore', {
           const data = await response.data;
 
           let features = (data || {}).features;
-          // const GeocodeStore = useGeocodeStore();
           const feature = GeocodeStore.aisData.features[0];
           const from = point(feature.geometry.coordinates);
 
