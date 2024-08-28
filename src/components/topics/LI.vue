@@ -474,9 +474,9 @@ const businessLicensesTableData = computed(() => {
         />
         <span v-else>({{ zoningDocsTableData.rows.length }})</span>
       </h2>
-      <h3 class="subtitle is-6 table-subtitle">
-        Formerly "Zoning Archive"
-      </h3>
+      <p class="title-addition">
+        formerly "Zoning Archive"
+      </p>
       <div
         v-if="zoningDocsTableData.rows"
         class="horizontal-table"
@@ -691,6 +691,11 @@ const businessLicensesTableData = computed(() => {
 #li-building-div {
   padding: 0px !important;
   margin-bottom: 1.5rem;
+}
+
+.title-addition {
+  font-family: 'Montserrat';
+  font-size: .95rem
 }
 
 @media 
