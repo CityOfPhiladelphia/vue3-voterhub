@@ -41,23 +41,41 @@ onBeforeMount(() => {
   }
 });
 
-const longCode = computed(() => {
+const longCodes = computed(() => {
   if (ZoningStore.zoningBase[selectedParcelId.value] && ZoningStore.zoningBase[selectedParcelId.value].rows) {
-    return ZoningStore.zoningBase[selectedParcelId.value].rows[0].long_code;
+    const codes = [];
+    for (let row of ZoningStore.zoningBase[selectedParcelId.value].rows) {
+      codes.push(row.long_code);
+    }
+    return codes;
   }
 });
 
-const hexForLongCode = computed(() => {
-  if (ZoningStore.zoningBase[selectedParcelId.value] && ZoningStore.zoningBase[selectedParcelId.value].rows) {
-    const longCode = ZoningStore.zoningBase[selectedParcelId.value].rows[0].long_code;
-    return $config.ZONING_CODE_MAP[longCode].color;
+const hexesForLongCodes = computed(() => {
+  const hexes = [];
+  if (longCodes.value) {
+    for (let code of longCodes.value) {
+      hexes.push($config.ZONING_CODE_MAP[code].color);
+    }
   }
+  return hexes;
+  // if (ZoningStore.zoningBase[selectedParcelId.value] && ZoningStore.zoningBase[selectedParcelId.value].rows) {
+  //   const longCode = ZoningStore.zoningBase[selectedParcelId.value].rows[0].long_code;
+  //   return $config.ZONING_CODE_MAP[longCode].color;
+  // }
 });
 
-const description = computed(() => {
-  if (ZoningStore.zoningBase[selectedParcelId.value] && ZoningStore.zoningBase[selectedParcelId.value].rows) {
-    return $config.ZONING_CODE_MAP[ZoningStore.zoningBase[selectedParcelId.value].rows[0].long_code].description;
+const descriptions = computed(() => {
+  const descriptions = [];
+  if (longCodes.value) {
+    for (let code of longCodes.value) {
+      descriptions.push($config.ZONING_CODE_MAP[code].description);
+    }
   }
+  return descriptions;
+  // if (ZoningStore.zoningBase[selectedParcelId.value] && ZoningStore.zoningBase[selectedParcelId.value].rows) {
+  //   return $config.ZONING_CODE_MAP[ZoningStore.zoningBase[selectedParcelId.value].rows[0].long_code].description;
+  // }
 })
 
 const pendingBillsTableData = computed(() => {
@@ -193,56 +211,41 @@ const rcosTableData = computed(() => {
       <div class="data-section has-text-centered">
         <div
           v-if="selectedParcel"
-          class="columns mt-3"
+          class="columns mt-6 mb-5"
         >
-          <div class="columns is-multiline is-mobile column is-8 is-offset-2 has-text-centered badge">
-            <div class="column is-12 badge-title">
-              <b>Base District</b>
+          <div class="columns is-multiline column is-8 is-offset-2 has-text-centered badge">
+            <div class="column is-12 columns pt-0 pb-0">
+              <div class="column is-12 badge-title">
+                <b v-if="longCodes && longCodes.length > 1">Base Districts</b>
+                <b v-else>Base District</b>
+              </div>
             </div>
             <div
-              v-if="hexForLongCode"
-              class="column is-2 badge-cell"
+              v-if="longCodes"
+              v-for="longCode in longCodes"
+              class="column is-12 columns is-mobile pt-0 pb-0"
             >
-              <div :style="{ 'height': '36px', 'width': '36px', 'background-color': hexForLongCode }" />
-            </div>
-            <div
-              v-else
-              class="column is-2 badge-cell"
-            >
-              <font-awesome-icon
-                icon="fa-solid fa-spinner"
-                spin
-              />
-            </div>
-            <div
-              v-if="longCode"
-              class="column is-3 badge-cell"
-            >
-              <b>{{ longCode }}</b>
+              <div class="column is-2 badge-cell">
+                <div :style="{ 'height': '36px', 'width': '36px', 'background-color': $config.ZONING_CODE_MAP[longCode].color }" />
+              </div>
+              <div class="column is-3 badge-cell">
+                <b>{{ longCode }}</b>
+              </div>
+              <div class="column is-7 badge-cell">
+                {{ $config.ZONING_CODE_MAP[longCode].description }}
+              </div>
             </div>
             <div
               v-else
-              class="column is-3 badge-cell"
+              class="column is-12 columns pt-0 pb-0"
             >
-              <font-awesome-icon
-                icon="fa-solid fa-spinner"
-                spin
-              />
-            </div>
-            <div
-              v-if="description"
-              class="column is-7 badge-cell"
-            >
-              {{ description }}
-            </div>
-            <div
-              v-else
-              class="column is-7 badge-cell"
-            >
-              <font-awesome-icon
-                icon="fa-solid fa-spinner"
-                spin
-              />
+              <div class="column is-12 badge-spinning pt-2 pb-2">
+                <font-awesome-icon
+                  icon="fa-solid fa-spinner"
+                  size="2x"
+                  spin
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -448,11 +451,17 @@ const rcosTableData = computed(() => {
   padding-top: 0.25rem !important;
   height: 2rem;
   color: white;
+  /* background-color: #f0f0f0; */
   background-color: rgb(68, 68, 68);
-  /* background-color: #58c04d; */
   border-style: solid;
   border-color: white;
   border-width: 1px;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+
+.badge-spinning {
+  background-color: #f0f0f0;
 }
 
 .badge-cell {
@@ -463,6 +472,7 @@ const rcosTableData = computed(() => {
   display: flex !important;
   align-items: center;
   justify-content: center;
+  /* padding: 0px; */
 }
 
 @media 
