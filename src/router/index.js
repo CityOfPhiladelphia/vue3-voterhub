@@ -52,7 +52,12 @@ const getGeocodeAndPutInStore = async(address) => {
   } else if (!GeocodeStore.aisData.features) {
     return;
   }
-  const currentAddress = GeocodeStore.aisData.features[0].properties.street_address;
+  let currentAddress;
+  if (GeocodeStore.aisData.features[0].properties.street_address) {
+    currentAddress = GeocodeStore.aisData.features[0].properties.street_address;
+  } else if (GeocodeStore.aisData.features[0].street_address) {
+    currentAddress = GeocodeStore.aisData.features[0].street_address;
+  }
   MainStore.setCurrentAddress(currentAddress);
 }
 
