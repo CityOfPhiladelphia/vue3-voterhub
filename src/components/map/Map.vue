@@ -252,7 +252,7 @@ watch(
     if (import.meta.env.VITE_DEBUG == 'true') console.log('MapStore aisData watch, newAddress:', newAddress);
     if (newAddress.features && newAddress.features[0].geometry.coordinates.length) {
       const newCoords = newAddress.features[0].geometry.coordinates;
-      if (MainStore.lastSearchMethod === 'address') {
+      if (MainStore.lastSearchMethod !== 'mapClick') {
         map.setCenter(newCoords);
         map.setZoom(17);
       }
