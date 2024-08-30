@@ -79,17 +79,26 @@ const getParcelsAndPutInStore = async(lng, lat) => {
   }
   ParcelsStore.pwd = ParcelsStore.pwdChecked;
   ParcelsStore.dor = ParcelsStore.dorChecked;
+
+  const otherParcelLayer = parcelLayer === 'pwd' ? 'dor' : 'pwd';
   
   const addressField = parcelLayer === 'pwd' ? 'ADDRESS' : 'ADDR_SOURCE';
+  const otherAddressField = otherParcelLayer === 'pwd' ? 'ADDRESS' : 'ADDR_SOURCE';
+  
   if (import.meta.env.VITE_DEBUG == 'true') console.log('parcelLayer:', parcelLayer);
   if (ParcelsStore[parcelLayer].features) {
     for (let i = 0; i < ParcelsStore[parcelLayer].features.length; i++) {
-      if (ParcelsStore[parcelLayer].features[i].properties[addressField] !== ' ') {
+      if (ParcelsStore[parcelLayer].features[i].properties[addressField] && ParcelsStore[parcelLayer].features[i].properties[addressField] !== ' ') {
         currentAddress = ParcelsStore[parcelLayer].features[i].properties[addressField];
+        if (import.meta.env.VITE_DEBUG == 'true') console.log('currentAddress:', currentAddress);
         break;
+      } else {
+        currentAddress = ParcelsStore[otherParcelLayer].features[i].properties[otherAddressField];
+        if (import.meta.env.VITE_DEBUG == 'true') console.log('else currentAddress:', currentAddress);
       }
     }
   }
+  if (import.meta.env.VITE_DEBUG == 'true') console.log('currentAddress:', currentAddress);
   if (currentAddress) MainStore.setCurrentAddress(currentAddress);
 }
 
@@ -126,8 +135,11 @@ const dataFetch = async(to, from) => {
   if ($config.addressDoubles.includes(address) || routeAddressChanged) {
     // if there is no geocode or the geocode does not match the address in the route, get the geocode
     if (!GeocodeStore.aisData.normalized || GeocodeStore.aisData.normalized && GeocodeStore.aisData.normalized !== address) {
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('in datafetch, right before geocode, GeocodeStore.aisData:', GeocodeStore.aisData);
       await getGeocodeAndPutInStore(address);
     }
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('in datafetch, after geocode, GeocodeStore.aisData:', GeocodeStore.aisData);
+
     // if this was NOT started by a map click, get the parcels
     if (MainStore.lastSearchMethod !== 'mapClick') {
       if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch, inside if routeAddressChanged:', routeAddressChanged);

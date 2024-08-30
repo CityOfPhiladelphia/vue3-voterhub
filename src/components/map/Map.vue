@@ -334,7 +334,7 @@ watch(
   () => route.params.topic,
   async newTopic => {
     MainStore.currentTopic = route.params.topic;
-    // if (import.meta.env.VITE_DEBUG == 'true') console.log('Map route.params.topic watch, newTopic:', newTopic);
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('Map route.params.topic watch, newTopic:', newTopic);
     const popup = document.getElementsByClassName('maplibregl-popup');
     if (popup.length) {
       popup[0].remove();
@@ -348,10 +348,12 @@ watch(
       }
       const addressMarker = map.getSource('addressMarker');
       const dorParcel = map.getSource('dorParcel');
-      if (addressMarker && dorParcel && pwdCoordinates.value.length) {
+      if (addressMarker && pwdCoordinates.value.length) {
         if (import.meta.env.VITE_DEBUG == 'true') console.log('pwdCoordinates.value:', pwdCoordinates.value);
         // if (import.meta.env.VITE_DEBUG == 'true') console.log('1 map.layers:', map.getStyle().layers, map.getStyle().sources);
         addressMarker.setData(point(pwdCoordinates.value));
+      }
+      if (dorParcel) {
         if ($config.parcelLayerForTopic[newTopic] == 'dor') {
           let newParcel;
           if (dorCoordinates.value.length > 3) {
@@ -385,12 +387,14 @@ watch(
       }
       const addressMarker = map.getSource('addressMarker');
       const dorParcel = map.getSource('dorParcel');
-      if (addressMarker && dorParcel) {
+      if (addressMarker) {
         // if (import.meta.env.VITE_DEBUG == 'true') console.log('1 map.layers:', map.getStyle().layers, map.getStyle().sources);
         if (pwdCoordinates.value.length) {
           addressMarker.setData(point(pwdCoordinates.value));
         }
         if (import.meta.env.VITE_DEBUG == 'true') console.log('dorCoordinates.value:', dorCoordinates.value);
+      }
+      if (dorParcel) {
         let newParcel;
         if ($config.parcelLayerForTopic[newTopic] == 'dor') {
           if (dorCoordinates.value.length > 3) {
