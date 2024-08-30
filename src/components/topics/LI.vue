@@ -358,7 +358,7 @@ const businessLicensesTableData = computed(() => {
 
           <!-- Building Certs Table -->
           <h2 class="subtitle mb-3 is-5 table-title">
-            Building Certifications (Selected Building)
+            Building Certifications
             <font-awesome-icon
               v-if="LiStore.loadingLiBuildingCerts"
               icon="fa-solid fa-spinner"
@@ -366,6 +366,9 @@ const businessLicensesTableData = computed(() => {
             />
             <span v-else>({{ buildingCertsTableData.rows.length }})</span>
           </h2>
+          <p class="title-addition">
+            (Selected Building)
+          </p>
           <div
             v-if="selectedBuildingCerts"
             class="horizontal-table"
@@ -407,7 +410,7 @@ const businessLicensesTableData = computed(() => {
             <a
               target="_blank"
               :href="`https://li.phila.gov/Property-History/search?address=${encodeURIComponent(MainStore.currentAddress)}`"
-            >See all {{ LiStore.liBuildingCerts.rows.length || '' }} building certifications for this property at L&I Property History <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
+            >See all building certifications for this property at L&I Property History <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
           </div>
         </div>
       </div>
@@ -462,7 +465,7 @@ const businessLicensesTableData = computed(() => {
         class="table-link"
         target="_blank"
         :href="`https://li.phila.gov/Property-History/search?address=${encodeURIComponent(MainStore.currentAddress)}`"
-      >See all {{ permitsLength }} permits at L&I Property History <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
+      >See all permits at L&I Property History <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
     </div>
     
     <!-- liAisZoningDocs and liEclipseZoningDocs Table-->
@@ -564,7 +567,7 @@ const businessLicensesTableData = computed(() => {
         class="table-link"
         target="_blank"
         :href="`https://li.phila.gov/Property-History/search?address=${encodeURIComponent(MainStore.currentAddress)}`"
-      >See all {{ inspectionsLength }} inspections at L&I Property History <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
+      >See all inspections at L&I Property History <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
     </div>
     
     <!-- Li Violations Table -->
@@ -616,7 +619,7 @@ const businessLicensesTableData = computed(() => {
         class="table-link"
         target="_blank"
         :href="`https://li.phila.gov/Property-History/search?address=${encodeURIComponent(MainStore.currentAddress)}`"
-      >See all {{ violationsLength }} violations at L&I Property History <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
+      >See all violations at L&I Property History <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
     </div>
 
     <!-- Li Business Licenses Table -->
@@ -668,7 +671,7 @@ const businessLicensesTableData = computed(() => {
         class="table-link"
         target="_blank"
         :href="`https://li.phila.gov/Property-History/search?address=${encodeURIComponent(MainStore.currentAddress)}`"
-      >See all {{ businessLicensesLength }} business licenses at L&I Property History <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
+      >See all business licenses at L&I Property History <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
     </div>
   </section>
 </template>
