@@ -158,7 +158,11 @@ export const useLiStore = defineStore('LiStore', {
         const url = baseUrl += `SELECT * FROM building_certs WHERE bin IN ('${bin}')`;
         const response = await fetch(url);
         if (response.ok) {
-          this.liBuildingCerts = await response.json();
+          let data = await response.json();
+          data.rows.forEach((item) => {
+            item.link = `<a target='_blank' href='https://li.phila.gov/property-history/search/building-certification-detail?address="${encodeURIComponent(item.address)}"&Id=${item.bin}'>${item.buildingcerttype} <i class='fa fa-external-link-alt'></i></a>`;
+          })
+          this.liBuildingCerts = data;
         } else {
           if (import.meta.env.VITE_DEBUG == 'true') console.warn('liBuildingCerts - await resolved but HTTP status was not successful')
         }

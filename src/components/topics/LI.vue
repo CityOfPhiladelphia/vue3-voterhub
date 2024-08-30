@@ -139,7 +139,8 @@ const buildingCertsTableData = ref({
   columns: [
     {
       label: 'Inspection Type',
-      field: 'buildingcerttype',
+      field: 'link',
+      html: true,
     },
     {
       label: 'Date Inspected',
