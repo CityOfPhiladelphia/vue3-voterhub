@@ -236,7 +236,7 @@ const inspectionsTableData = computed(() => {
       },
       {
         label: 'Description',
-        field: 'investigationtype',
+        field: 'description',
       },
       {
         label: 'Status',

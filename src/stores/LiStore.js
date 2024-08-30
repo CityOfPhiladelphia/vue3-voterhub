@@ -328,6 +328,16 @@ export const useLiStore = defineStore('LiStore', {
               address += ' Unit ' + item.unit_num;
             }
             item.link = "<a target='_blank' href='https://li.phila.gov/Property-History/search/Violation-Detail?address="+encodeURIComponent(address)+"&Id="+item.casenumber+"'>"+item.casenumber+" <i class='fa fa-external-link-alt'></i></a>";
+          
+            let description;
+            if (item.investigationtype) {
+              description = item.investigationtype;
+            } else if (item.caseresponsibility) {
+              description = item.caseresponsibility;
+            } else if (item.casetype) {
+              description = item.casetype;
+            }
+            item.description = description;
           });
           this.liInspections = data;
           this.loadingLiInspections = false;
