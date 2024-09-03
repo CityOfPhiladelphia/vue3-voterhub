@@ -19,8 +19,8 @@ import useRouting from '@/composables/useRouting';
 const { routeApp } = useRouting();
 
 // this runs on address search and as part of datafetch()
-const getGeocodeAndPutInStore = async(address) => {
-  if (import.meta.env.VITE_DEBUG == 'true') console.log('getGeocodeAndPutInStore is running, address:', address);
+const clearStoreData = async() => {
+  if (import.meta.env.VITE_DEBUG == 'true') console.log('clearStoreData is running');
   const MainStore = useMainStore();
   MainStore.clearDataSourcesLoadedArray();
 
@@ -42,7 +42,11 @@ const getGeocodeAndPutInStore = async(address) => {
   const CondosStore = useCondosStore();
   CondosStore.lastPageUsed = 1;
   CondosStore.condosData.pages = { page_1: { features: [] } };
+}
+
+const getGeocodeAndPutInStore = async(address) => {
   const GeocodeStore = useGeocodeStore();
+  const MainStore = useMainStore();
   await GeocodeStore.fillAisData(address);
   if (MainStore.lastSearchMethod == 'address' && !GeocodeStore.aisData.features) {
     MainStore.currentAddress = null;
@@ -64,7 +68,7 @@ const getGeocodeAndPutInStore = async(address) => {
 // this ONLY runs on map click
 const getParcelsAndPutInStore = async(lng, lat) => {
   if (import.meta.env.VITE_DEBUG == 'true') console.log('getParcelsAndPutInStore is running');
-  let currentAddress;
+  // let currentParcelAddress, otherParcelAddress, currentParcelGeocodeParameter, otherParcelGeocodeParameter;
   const MainStore = useMainStore();
   let currentTopic = MainStore.currentTopic;
   const parcelLayer = $config.parcelLayerForTopic[currentTopic] || 'pwd';
@@ -84,22 +88,59 @@ const getParcelsAndPutInStore = async(lng, lat) => {
   
   const addressField = parcelLayer === 'pwd' ? 'ADDRESS' : 'ADDR_SOURCE';
   const otherAddressField = otherParcelLayer === 'pwd' ? 'ADDRESS' : 'ADDR_SOURCE';
+
+  const geocodeParameterField = parcelLayer === 'pwd' ? 'PARCELID' : 'MAPREG';
+  const otherGeocodeParameterField = otherParcelLayer === 'pwd' ? 'PARCELID' : 'MAPREG';
   
   if (import.meta.env.VITE_DEBUG == 'true') console.log('parcelLayer:', parcelLayer);
   if (ParcelsStore[parcelLayer].features) {
     for (let i = 0; i < ParcelsStore[parcelLayer].features.length; i++) {
       if (ParcelsStore[parcelLayer].features[i].properties[addressField] && ParcelsStore[parcelLayer].features[i].properties[addressField] !== ' ') {
-        currentAddress = ParcelsStore[parcelLayer].features[i].properties[addressField];
-        if (import.meta.env.VITE_DEBUG == 'true') console.log('currentAddress:', currentAddress);
+        MainStore.currentParcelAddress = ParcelsStore[parcelLayer].features[i].properties[addressField];
+        MainStore.currentParcelGeocodeParameter = ParcelsStore[parcelLayer].features[i].properties[geocodeParameterField]
+        if (import.meta.env.VITE_DEBUG == 'true') console.log('ParcelsStore[parcelLayer].features[i].properties[geocodeParameterField]:', ParcelsStore[parcelLayer].features[i].properties[geocodeParameterField], 'ParcelsStore[parcelLayer].features[i].properties[otherGeocodeParameterField]:', ParcelsStore[parcelLayer].features[i].properties[otherGeocodeParameterField]);
+        if (import.meta.env.VITE_DEBUG == 'true') console.log('MainStore.currentParcelAddress:', MainStore.currentParcelAddress);
         break;
       } else {
-        currentAddress = ParcelsStore[otherParcelLayer].features[i].properties[otherAddressField];
-        if (import.meta.env.VITE_DEBUG == 'true') console.log('else currentAddress:', currentAddress);
+        if (ParcelsStore[otherParcelLayer].features) {
+          MainStore.otherParcelAddress = ParcelsStore[otherParcelLayer].features[i].properties[otherAddressField];
+          MainStore.otherParcelGeocodeParameter = ParcelsStore[otherParcelLayer].features[i].properties[otherGeocodeParameterField]
+          if (import.meta.env.VITE_DEBUG == 'true') console.log('else MainStore.otherParcelAddress:', MainStore.otherParcelAddress);
+          break;
+        }
       }
     }
   }
-  if (import.meta.env.VITE_DEBUG == 'true') console.log('currentAddress:', currentAddress);
-  if (currentAddress) MainStore.setCurrentAddress(currentAddress);
+}
+
+const checkParcelInAis = async() => {
+  if (import.meta.env.VITE_DEBUG == 'true') console.log('checkParcelInAis starting');
+  const GeocodeStore = useGeocodeStore();
+  const MainStore = useMainStore();
+  await GeocodeStore.checkAisData(MainStore.currentParcelGeocodeParameter);
+  if (GeocodeStore.aisDataChecked.features[0]) {
+    MainStore.currentAddress = GeocodeStore.aisDataChecked.features[0].properties.street_address;
+  } else {
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('checkParcelInAis, noAisData currentParcelGeocodeParameter');
+    await GeocodeStore.checkAisData(MainStore.otherParcelGeocodeParameter);
+    if (GeocodeStore.aisDataChecked.features[0]) {
+      MainStore.currentAddress = GeocodeStore.aisDataChecked.features[0].properties.street_address;
+    } else {
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('checkParcelInAis, noAisData otherParcelGeocodeParameter');
+      await GeocodeStore.checkAisData(MainStore.currentParcelAddress);
+      if (GeocodeStore.aisDataChecked.features[0]) {
+        MainStore.currentAddress = GeocodeStore.aisDataChecked.features[0].properties.street_address;
+      } else {
+        if (import.meta.env.VITE_DEBUG == 'true') console.log('checkParcelInAis, noAisData currentParcelAddress');
+        await GeocodeStore.checkAisData(MainStore.currentParcelAddress);
+        if (GeocodeStore.aisDataChecked.features[0]) {
+          MainStore.currentAddress = GeocodeStore.aisDataChecked.features[0].properties.street_address;
+        } else {
+          if (import.meta.env.VITE_DEBUG == 'true') console.log('checkParcelInAis, noAisData otherParcelAddress');
+        }
+      }
+    }
+  }
 }
 
 // this is called on every route change, including address searches, topic changes, initial app load, and back button clicks
@@ -124,19 +165,36 @@ const dataFetch = async(to, from) => {
     }
   }
   
+  // let currentParcelGeocodeParameter = MainStore.currentParcelGeocodeParameter;
   let address, topic;
   if (to.params.address) { address = to.params.address } else if (to.query.address) { address = to.query.address }
   if (to.params.topic) { topic = to.params.topic.toLowerCase() }
 
+  // let geocodeParameter
+  // if (currentParcelGeocodeParameter) {
+  //   geocodeParameter = currentParcelGeocodeParameter;
+  // } else {
+  //   geocodeParameter = address;
+  // }
+
+  // if (import.meta.env.VITE_DEBUG == 'true') console.log('geocodeParameter:', geocodeParameter, 'storeGeocodeParameter:', storeGeocodeParameter, 'address:', address);
+
   if (import.meta.env.VITE_DEBUG == 'true') console.log('address:', address, 'to.params.address:', to.params.address, 'from.params.address:', from.params.address, 'GeocodeStore.aisData.normalized:', GeocodeStore.aisData.normalized);
   
-  let routeAddressChanged = to.params.address !== from.params.address;
+  let routeAddressChanged;
+  if (from.params.address) {
+    routeAddressChanged = to.params.address.trim() !== from.params.address.trim();
+  } else {
+    routeAddressChanged = to.params.address !== from.params.address;
+  }
 
   if ($config.addressDoubles.includes(address) || routeAddressChanged) {
     // if there is no geocode or the geocode does not match the address in the route, get the geocode
     if (!GeocodeStore.aisData.normalized || GeocodeStore.aisData.normalized && GeocodeStore.aisData.normalized !== address) {
-      if (import.meta.env.VITE_DEBUG == 'true') console.log('in datafetch, right before geocode, GeocodeStore.aisData:', GeocodeStore.aisData);
-      await getGeocodeAndPutInStore(address);
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('in datafetch, routeAddressChanged:', routeAddressChanged, 'right before geocode, GeocodeStore.aisData:', GeocodeStore.aisData);
+      await clearStoreData();
+      GeocodeStore.aisData = GeocodeStore.aisDataChecked;
+      // await getGeocodeAndPutInStore(address);
     }
     if (import.meta.env.VITE_DEBUG == 'true') console.log('in datafetch, after geocode, GeocodeStore.aisData:', GeocodeStore.aisData);
 
@@ -295,11 +353,13 @@ const router = createRouter({
         } else if (address && address !== '') {
           if (import.meta.env.VITE_DEBUG == 'true') console.log('search route beforeEnter, address:', address);
           MainStore.setLastSearchMethod('address');
+          await clearStoreData();
           await getGeocodeAndPutInStore(address);
           routeApp(router);
         } else if (lat && lng) {
           MainStore.setLastSearchMethod('mapClick');
           await getParcelsAndPutInStore(lng, lat);
+          await checkParcelInAis();
           routeApp(router);
         } else {
           return false;
