@@ -95,21 +95,23 @@ const getParcelsAndPutInStore = async(lng, lat) => {
   if (import.meta.env.VITE_DEBUG == 'true') console.log('parcelLayer:', parcelLayer);
   if (ParcelsStore[parcelLayer].features) {
     // for (let i = 0; i < ParcelsStore[parcelLayer].features.length; i++) {
-    if (ParcelsStore[parcelLayer].features[0].properties[addressField] && ParcelsStore[parcelLayer].features[0].properties[addressField] !== ' ') {
+    // if (ParcelsStore[parcelLayer].features[0].properties[addressField] && ParcelsStore[parcelLayer].features[0].properties[addressField] !== ' ') {
       MainStore.currentParcelAddress = ParcelsStore[parcelLayer].features[0].properties[addressField];
       MainStore.currentParcelGeocodeParameter = ParcelsStore[parcelLayer].features[0].properties[geocodeParameterField]
       if (import.meta.env.VITE_DEBUG == 'true') console.log('ParcelsStore[parcelLayer].features[i].properties[geocodeParameterField]:', ParcelsStore[parcelLayer].features[0].properties[geocodeParameterField], 'ParcelsStore[parcelLayer].features[i].properties[otherGeocodeParameterField]:', ParcelsStore[parcelLayer].features[0].properties[otherGeocodeParameterField]);
       if (import.meta.env.VITE_DEBUG == 'true') console.log('MainStore.currentParcelAddress:', MainStore.currentParcelAddress);
       // break;
-    }
+    // }
+  } else {
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('in else, ParcelsStore[parcelLayer].features:', ParcelsStore[parcelLayer].features);
   }
   if (ParcelsStore[otherParcelLayer].features) {
-    if (ParcelsStore[otherParcelLayer].features[0].properties[otherAddressField] && ParcelsStore[otherParcelLayer].features[0].properties[otherAddressField] !== ' ') {
+    // if (ParcelsStore[otherParcelLayer].features[0].properties[otherAddressField] && ParcelsStore[otherParcelLayer].features[0].properties[otherAddressField] !== ' ') {
     MainStore.otherParcelAddress = ParcelsStore[otherParcelLayer].features[0].properties[otherAddressField];
     MainStore.otherParcelGeocodeParameter = ParcelsStore[otherParcelLayer].features[0].properties[otherGeocodeParameterField]
     if (import.meta.env.VITE_DEBUG == 'true') console.log('else MainStore.otherParcelAddress:', MainStore.otherParcelAddress);
     // break;
-  }
+    // }
   }
 }
 
