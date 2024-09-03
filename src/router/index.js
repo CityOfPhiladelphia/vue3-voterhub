@@ -94,22 +94,22 @@ const getParcelsAndPutInStore = async(lng, lat) => {
   
   if (import.meta.env.VITE_DEBUG == 'true') console.log('parcelLayer:', parcelLayer);
   if (ParcelsStore[parcelLayer].features) {
-    for (let i = 0; i < ParcelsStore[parcelLayer].features.length; i++) {
-      if (ParcelsStore[parcelLayer].features[i].properties[addressField] && ParcelsStore[parcelLayer].features[i].properties[addressField] !== ' ') {
-        MainStore.currentParcelAddress = ParcelsStore[parcelLayer].features[i].properties[addressField];
-        MainStore.currentParcelGeocodeParameter = ParcelsStore[parcelLayer].features[i].properties[geocodeParameterField]
-        if (import.meta.env.VITE_DEBUG == 'true') console.log('ParcelsStore[parcelLayer].features[i].properties[geocodeParameterField]:', ParcelsStore[parcelLayer].features[i].properties[geocodeParameterField], 'ParcelsStore[parcelLayer].features[i].properties[otherGeocodeParameterField]:', ParcelsStore[parcelLayer].features[i].properties[otherGeocodeParameterField]);
-        if (import.meta.env.VITE_DEBUG == 'true') console.log('MainStore.currentParcelAddress:', MainStore.currentParcelAddress);
-        break;
-      } else {
-        if (ParcelsStore[otherParcelLayer].features) {
-          MainStore.otherParcelAddress = ParcelsStore[otherParcelLayer].features[i].properties[otherAddressField];
-          MainStore.otherParcelGeocodeParameter = ParcelsStore[otherParcelLayer].features[i].properties[otherGeocodeParameterField]
-          if (import.meta.env.VITE_DEBUG == 'true') console.log('else MainStore.otherParcelAddress:', MainStore.otherParcelAddress);
-          break;
-        }
-      }
+    // for (let i = 0; i < ParcelsStore[parcelLayer].features.length; i++) {
+    if (ParcelsStore[parcelLayer].features[0].properties[addressField] && ParcelsStore[parcelLayer].features[0].properties[addressField] !== ' ') {
+      MainStore.currentParcelAddress = ParcelsStore[parcelLayer].features[0].properties[addressField];
+      MainStore.currentParcelGeocodeParameter = ParcelsStore[parcelLayer].features[0].properties[geocodeParameterField]
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('ParcelsStore[parcelLayer].features[i].properties[geocodeParameterField]:', ParcelsStore[parcelLayer].features[0].properties[geocodeParameterField], 'ParcelsStore[parcelLayer].features[i].properties[otherGeocodeParameterField]:', ParcelsStore[parcelLayer].features[0].properties[otherGeocodeParameterField]);
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('MainStore.currentParcelAddress:', MainStore.currentParcelAddress);
+      // break;
     }
+  }
+  if (ParcelsStore[otherParcelLayer].features) {
+    if (ParcelsStore[otherParcelLayer].features[0].properties[otherAddressField] && ParcelsStore[otherParcelLayer].features[0].properties[otherAddressField] !== ' ') {
+    MainStore.otherParcelAddress = ParcelsStore[otherParcelLayer].features[0].properties[otherAddressField];
+    MainStore.otherParcelGeocodeParameter = ParcelsStore[otherParcelLayer].features[0].properties[otherGeocodeParameterField]
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('else MainStore.otherParcelAddress:', MainStore.otherParcelAddress);
+    // break;
+  }
   }
 }
 
@@ -118,22 +118,22 @@ const checkParcelInAis = async() => {
   const GeocodeStore = useGeocodeStore();
   const MainStore = useMainStore();
   await GeocodeStore.checkAisData(MainStore.currentParcelGeocodeParameter);
-  if (GeocodeStore.aisDataChecked.features[0]) {
+  if (GeocodeStore.aisDataChecked.features) {
     MainStore.currentAddress = GeocodeStore.aisDataChecked.features[0].properties.street_address;
   } else {
     if (import.meta.env.VITE_DEBUG == 'true') console.log('checkParcelInAis, noAisData currentParcelGeocodeParameter');
     await GeocodeStore.checkAisData(MainStore.otherParcelGeocodeParameter);
-    if (GeocodeStore.aisDataChecked.features[0]) {
+    if (GeocodeStore.aisDataChecked.features) {
       MainStore.currentAddress = GeocodeStore.aisDataChecked.features[0].properties.street_address;
     } else {
       if (import.meta.env.VITE_DEBUG == 'true') console.log('checkParcelInAis, noAisData otherParcelGeocodeParameter');
       await GeocodeStore.checkAisData(MainStore.currentParcelAddress);
-      if (GeocodeStore.aisDataChecked.features[0]) {
+      if (GeocodeStore.aisDataChecked.features) {
         MainStore.currentAddress = GeocodeStore.aisDataChecked.features[0].properties.street_address;
       } else {
         if (import.meta.env.VITE_DEBUG == 'true') console.log('checkParcelInAis, noAisData currentParcelAddress');
-        await GeocodeStore.checkAisData(MainStore.currentParcelAddress);
-        if (GeocodeStore.aisDataChecked.features[0]) {
+        await GeocodeStore.checkAisData(MainStore.otherParcelAddress);
+        if (GeocodeStore.aisDataChecked.features) {
           MainStore.currentAddress = GeocodeStore.aisDataChecked.features[0].properties.street_address;
         } else {
           if (import.meta.env.VITE_DEBUG == 'true') console.log('checkParcelInAis, noAisData otherParcelAddress');
@@ -193,8 +193,12 @@ const dataFetch = async(to, from) => {
     if (!GeocodeStore.aisData.normalized || GeocodeStore.aisData.normalized && GeocodeStore.aisData.normalized !== address) {
       if (import.meta.env.VITE_DEBUG == 'true') console.log('in datafetch, routeAddressChanged:', routeAddressChanged, 'right before geocode, GeocodeStore.aisData:', GeocodeStore.aisData);
       await clearStoreData();
-      GeocodeStore.aisData = GeocodeStore.aisDataChecked;
-      // await getGeocodeAndPutInStore(address);
+      if (GeocodeStore.aisDataChecked.features) {
+        GeocodeStore.aisData = GeocodeStore.aisDataChecked;
+        GeocodeStore.aisDataChecked = {};
+      } else {
+        await getGeocodeAndPutInStore(address);
+      }
     }
     if (import.meta.env.VITE_DEBUG == 'true') console.log('in datafetch, after geocode, GeocodeStore.aisData:', GeocodeStore.aisData);
 
