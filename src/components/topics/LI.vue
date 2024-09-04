@@ -368,7 +368,7 @@ const businessLicensesTableData = computed(() => {
             <span v-else>({{ buildingCertsTableData.rows.length }})</span>
           </h2>
           <p class="title-addition">
-            (Selected Building)
+            Selected Building
           </p>
           <div
             v-if="selectedBuildingCerts"
