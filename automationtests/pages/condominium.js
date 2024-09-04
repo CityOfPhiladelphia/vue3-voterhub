@@ -68,6 +68,7 @@ describe("Condominiums | Tests are in progress", function () {
 
   it("Verify Topic Condominiums", async function () {
     try {
+      await driver.sleep(5000);
       await driver.manage().setTimeouts({ implicit: 60000 });
       await performSearch(condoAddressData.address);
       await driver.wait(until.elementLocated(By.xpath("//h1[normalize-space()='Property Assessments']")), 60000);
@@ -101,6 +102,7 @@ describe("Condominiums | Tests are in progress", function () {
 
   it("Verify Topic Deeds", async function () {
     try {
+      await driver.sleep(5000);
       await driver.manage().setTimeouts({ implicit: 60000 });
       await driver.wait(until.elementLocated(By.css("section[id='Deeds-topic'] div[class='topic-name']")), 60000);
       await driver
@@ -127,6 +129,7 @@ describe("Condominiums | Tests are in progress", function () {
 
   it("Verify Topic Licenses and Inspection", async function () {
     try {
+      await driver.sleep(5000);
       await driver.manage().setTimeouts({ implicit: 60000 });
       await driver.wait(until.elementLocated(By.css("section[id='Licenses & Inspections-topic'] button[class='topic is-vcentered']")), 60000);
       await driver
@@ -150,6 +153,7 @@ describe("Condominiums | Tests are in progress", function () {
 
   it("Verify Topic Zoning", async function () {
     try {
+      await driver.sleep(5000);
       //closing the LI tab
       await driver
       .findElement(
@@ -182,6 +186,7 @@ describe("Condominiums | Tests are in progress", function () {
 
   it("Verify Topic Voting", async function () {
     try {
+      await driver.sleep(5000);
       await driver.manage().setTimeouts({ implicit: 60000 });
       await driver.wait(until.elementLocated(By.css("section[id='Voting-topic'] div[class='topic-name']")), 60000);
       await driver
@@ -203,6 +208,7 @@ describe("Condominiums | Tests are in progress", function () {
 
   it("Verify Topic Nearby", async function () {
     try {
+      await driver.sleep(5000);
       await driver.manage().setTimeouts({ implicit: 60000 });
       await driver.wait(until.elementLocated(By.css("section[id='Nearby Activity-topic'] button[class='topic is-vcentered']")), 60000);
       await driver

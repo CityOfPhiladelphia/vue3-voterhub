@@ -118,6 +118,7 @@ describe("Building Search Page | Tests are in progress", function () {
 
   it("Verify Topic Property Assessment", async function () {
     try {
+      await driver.sleep(5000);
       await driver.manage().setTimeouts({ implicit: 60000 });
       const table = await driver.wait(until.elementLocated(By.css("table")), 60000);
       const tableText = await table.getText();
@@ -139,6 +140,7 @@ describe("Building Search Page | Tests are in progress", function () {
 
   it("Verify Topic Deeds", async function () {
     try {
+      await driver.sleep(5000);
       await driver.manage().setTimeouts({ implicit: 60000 });
       const deedsTopic = await driver.wait(
         until.elementLocated(
@@ -168,6 +170,7 @@ describe("Building Search Page | Tests are in progress", function () {
 
   it("Verify Topic Licenses and Inspection", async function () {
     try {
+      await driver.sleep(5000);
       await driver.manage().setTimeouts({ implicit: 60000 });
       const licensesAndInspectionsTopic = await driver.wait(
         until.elementLocated(
@@ -191,6 +194,7 @@ describe("Building Search Page | Tests are in progress", function () {
 
   it("Verify Topic Zoning", async function () {
     try {
+      await driver.sleep(5000);
       //closing the LI tab
       await driver
       .findElement(
@@ -224,6 +228,7 @@ describe("Building Search Page | Tests are in progress", function () {
 
   it("Verify Topic Voting", async function () {
     try {
+      await driver.sleep(5000);
       await driver.manage().setTimeouts({ implicit: 60000 });
       const votingTopic = await driver.wait(
         until.elementLocated(
@@ -245,6 +250,7 @@ describe("Building Search Page | Tests are in progress", function () {
 
   it("Verify Topic Nearby", async function () {
     try {
+      await driver.sleep(5000);
       await driver.manage().setTimeouts({ implicit: 60000 });
       const nearbyActivityTopic = await driver.wait(
         until.elementLocated(
