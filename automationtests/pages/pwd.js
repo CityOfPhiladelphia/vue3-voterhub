@@ -68,6 +68,7 @@ describe("PWD | Tests are in progress", function () {
 
   it("PWD | Search Functionality", async function () {
     try {
+      await driver.sleep(5000);
       await driver.get(URL);
       await driver.sleep(4000); // Adjust sleep time if necessary
       await driver.manage().setTimeouts({ implicit: 60000 });
@@ -98,6 +99,7 @@ describe("PWD | Tests are in progress", function () {
 
   it("Verify Topic Deeds", async function () {
     try {
+      await driver.sleep(5000);
       await driver.manage().setTimeouts({ implicit: 60000 });
       await performSearch(pwdAddressData.address);
       await driver.wait(until.elementLocated(By.css("section[id='Deeds-topic'] div[class='topic-name']")), 60000);
@@ -125,6 +127,7 @@ describe("PWD | Tests are in progress", function () {
 
   it("Verify Topic Licenses and Inspection", async function () {
     try {
+      await driver.sleep(5000);
       await driver.manage().setTimeouts({ implicit: 60000 });
       await performSearch(pwdAddressData.address);
       await driver.wait(until.elementLocated(By.css("section[id='Licenses & Inspections-topic'] button[class='topic is-vcentered']")), 60000);
@@ -148,6 +151,7 @@ describe("PWD | Tests are in progress", function () {
 
   it("Verify Topic Zoning", async function () {
     try {
+      await driver.sleep(5000);
       //closing the LI tab
       await driver
       .findElement(
@@ -164,9 +168,9 @@ describe("PWD | Tests are in progress", function () {
           By.css("section[id='Zoning-topic'] div[class='topic-name']")
         )
         .click();
-      await driver.wait(until.elementLocated(By.css("div[class='column is-3 code'] b")), 60000);
+      await driver.wait(until.elementLocated(By.css("div[class='column is-3 badge-cell'] b")), 60000);
       const table = await driver.findElement(
-        By.css("div[class='column is-3 code'] b")
+        By.css("div[class='column is-3 badge-cell'] b")
       );
       const tableText = await table.getText();
 
@@ -181,6 +185,7 @@ describe("PWD | Tests are in progress", function () {
 
   it("Verify Topic Voting", async function () {
     try {
+      await driver.sleep(5000);
       await driver.manage().setTimeouts({ implicit: 60000 });
       await performSearch(pwdAddressData.address);
       await driver.wait(until.elementLocated(By.css("section[id='Voting-topic'] div[class='topic-name']")), 60000);
@@ -202,6 +207,7 @@ describe("PWD | Tests are in progress", function () {
 
   it("Verify Topic Nearby", async function () {
     try {
+      await driver.sleep(5000);
       await driver.manage().setTimeouts({ implicit: 60000 });
       await performSearch(pwdAddressData.address);
       await driver.wait(until.elementLocated(By.css("section[id='Nearby Activity-topic'] button[class='topic is-vcentered']")), 60000);

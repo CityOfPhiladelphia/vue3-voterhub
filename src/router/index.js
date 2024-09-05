@@ -14,8 +14,8 @@ import useRouting from '@/composables/useRouting';
 const { routeApp } = useRouting();
 
 // this runs on address search and as part of datafetch()
-const getGeocodeAndPutInStore = async(address) => {
-  if (import.meta.env.VITE_DEBUG == 'true') console.log('getGeocodeAndPutInStore is running, address:', address);
+const clearStoreData = async() => {
+  if (import.meta.env.VITE_DEBUG == 'true') console.log('clearStoreData is running');
   const MainStore = useMainStore();
   MainStore.clearDataSourcesLoadedArray();
 
@@ -28,7 +28,14 @@ const getGeocodeAndPutInStore = async(address) => {
   const ElectedOfficialsStore = useElectedOfficialsStore();
   ElectedOfficialsStore.clearAllElectedOfficialsData();
 
+  // const CondosStore = useCondosStore();
+  // CondosStore.lastPageUsed = 1;
+  // CondosStore.condosData.pages = { page_1: { features: [] } };
+}
+
+const getGeocodeAndPutInStore = async(address) => {
   const GeocodeStore = useGeocodeStore();
+  const MainStore = useMainStore();
   await GeocodeStore.fillAisData(address);
   if (MainStore.lastSearchMethod == 'address' && !GeocodeStore.aisData.features) {
     MainStore.currentAddress = null;
@@ -38,18 +45,21 @@ const getGeocodeAndPutInStore = async(address) => {
   } else if (!GeocodeStore.aisData.features) {
     return;
   }
-  const currentAddress = GeocodeStore.aisData.features[0].properties.street_address;
+  let currentAddress;
+  if (GeocodeStore.aisData.features[0].properties.street_address) {
+    currentAddress = GeocodeStore.aisData.features[0].properties.street_address;
+  } else if (GeocodeStore.aisData.features[0].street_address) {
+    currentAddress = GeocodeStore.aisData.features[0].street_address;
+  }
   MainStore.setCurrentAddress(currentAddress);
 }
 
 // this ONLY runs on map click
 const getParcelsAndPutInStore = async(lng, lat) => {
   if (import.meta.env.VITE_DEBUG == 'true') console.log('getParcelsAndPutInStore is running');
-  let currentAddress;
   const MainStore = useMainStore();
   let currentTopic = MainStore.currentTopic;
   const parcelLayer = $config.parcelLayerForTopic[currentTopic] || 'pwd';
-  // const otherLayer = parcelLayer === 'pwd' ? 'dor' : 'pwd';
   const ParcelsStore = useParcelsStore();
   await ParcelsStore.checkParcelDataByLngLat(lng, lat, 'pwd');
   await ParcelsStore.checkParcelDataByLngLat(lng, lat, 'dor');
@@ -60,18 +70,58 @@ const getParcelsAndPutInStore = async(lng, lat) => {
   }
   ParcelsStore.pwd = ParcelsStore.pwdChecked;
   ParcelsStore.dor = ParcelsStore.dorChecked;
-  
+
+  // collects 4 things to attempt to geocode from the parcels clicked
+  const otherParcelLayer = parcelLayer === 'pwd' ? 'dor' : 'pwd';
   const addressField = parcelLayer === 'pwd' ? 'ADDRESS' : 'ADDR_SOURCE';
-  if (import.meta.env.VITE_DEBUG == 'true') console.log('parcelLayer:', parcelLayer);
+  const otherAddressField = otherParcelLayer === 'pwd' ? 'ADDRESS' : 'ADDR_SOURCE';
+  const geocodeParameterField = parcelLayer === 'pwd' ? 'PARCELID' : 'MAPREG';
+  const otherGeocodeParameterField = otherParcelLayer === 'pwd' ? 'PARCELID' : 'MAPREG';
+  
+  // if (import.meta.env.VITE_DEBUG == 'true') console.log('parcelLayer:', parcelLayer);
   if (ParcelsStore[parcelLayer].features) {
-    for (let i = 0; i < ParcelsStore[parcelLayer].features.length; i++) {
-      if (ParcelsStore[parcelLayer].features[i].properties[addressField] !== ' ') {
-        currentAddress = ParcelsStore[parcelLayer].features[i].properties[addressField];
-        break;
+    MainStore.currentParcelAddress = ParcelsStore[parcelLayer].features[0].properties[addressField];
+    MainStore.currentParcelGeocodeParameter = ParcelsStore[parcelLayer].features[0].properties[geocodeParameterField]
+    // if (import.meta.env.VITE_DEBUG == 'true') console.log('ParcelsStore[parcelLayer].features[i].properties[geocodeParameterField]:', ParcelsStore[parcelLayer].features[0].properties[geocodeParameterField], 'ParcelsStore[parcelLayer].features[i].properties[otherGeocodeParameterField]:', ParcelsStore[parcelLayer].features[0].properties[otherGeocodeParameterField]);
+    // if (import.meta.env.VITE_DEBUG == 'true') console.log('MainStore.currentParcelAddress:', MainStore.currentParcelAddress);
+  }
+  if (ParcelsStore[otherParcelLayer].features) {
+    MainStore.otherParcelAddress = ParcelsStore[otherParcelLayer].features[0].properties[otherAddressField];
+    MainStore.otherParcelGeocodeParameter = ParcelsStore[otherParcelLayer].features[0].properties[otherGeocodeParameterField]
+    // if (import.meta.env.VITE_DEBUG == 'true') console.log('else MainStore.otherParcelAddress:', MainStore.otherParcelAddress);
+  }
+}
+
+// it should only show an address at the top that has been found in AIS for the top line address, so, if map clicked, it
+// goes through all of the clicked parcel info, running it against AIS until it gets a match
+const checkParcelInAis = async() => {
+  // if (import.meta.env.VITE_DEBUG == 'true') console.log('checkParcelInAis starting');
+  const GeocodeStore = useGeocodeStore();
+  const MainStore = useMainStore();
+  await GeocodeStore.checkAisData(MainStore.currentParcelGeocodeParameter);
+  if (GeocodeStore.aisDataChecked.features) {
+    MainStore.currentAddress = GeocodeStore.aisDataChecked.features[0].properties.street_address;
+  } else {
+    // if (import.meta.env.VITE_DEBUG == 'true') console.log('checkParcelInAis, noAisData currentParcelGeocodeParameter');
+    await GeocodeStore.checkAisData(MainStore.otherParcelGeocodeParameter);
+    if (GeocodeStore.aisDataChecked.features) {
+      MainStore.currentAddress = GeocodeStore.aisDataChecked.features[0].properties.street_address;
+    } else {
+      // if (import.meta.env.VITE_DEBUG == 'true') console.log('checkParcelInAis, noAisData otherParcelGeocodeParameter');
+      await GeocodeStore.checkAisData(MainStore.currentParcelAddress);
+      if (GeocodeStore.aisDataChecked.features) {
+        MainStore.currentAddress = GeocodeStore.aisDataChecked.features[0].properties.street_address;
+      } else {
+        // if (import.meta.env.VITE_DEBUG == 'true') console.log('checkParcelInAis, noAisData currentParcelAddress');
+        await GeocodeStore.checkAisData(MainStore.otherParcelAddress);
+        if (GeocodeStore.aisDataChecked.features) {
+          MainStore.currentAddress = GeocodeStore.aisDataChecked.features[0].properties.street_address;
+        } else {
+          // if (import.meta.env.VITE_DEBUG == 'true') console.log('checkParcelInAis, noAisData otherParcelAddress');
+        }
       }
     }
   }
-  if (currentAddress) MainStore.setCurrentAddress(currentAddress);
 }
 
 // this is called on every route change, including address searches, topic changes, initial app load, and back button clicks
@@ -102,13 +152,29 @@ const dataFetch = async(to, from) => {
 
   if (import.meta.env.VITE_DEBUG == 'true') console.log('address:', address, 'to.params.address:', to.params.address, 'from.params.address:', from.params.address, 'GeocodeStore.aisData.normalized:', GeocodeStore.aisData.normalized);
   
-  let routeAddressChanged = to.params.address !== from.params.address;
+  let routeAddressChanged;
+  if (from.params.address) {
+    routeAddressChanged = to.params.address.trim() !== from.params.address.trim();
+  } else {
+    routeAddressChanged = to.params.address !== from.params.address;
+  }
 
-  if (routeAddressChanged) {
+  // In the config, there is a list called "addressDoubles" of addresses we know of that are used by multiple properties.
+  // An exception has to be made for them, in the case that someone clicks from one of them to the other.
+  if ($config.addressDoubles.includes(address) || routeAddressChanged) {
     // if there is no geocode or the geocode does not match the address in the route, get the geocode
     if (!GeocodeStore.aisData.normalized || GeocodeStore.aisData.normalized && GeocodeStore.aisData.normalized !== address) {
-      await getGeocodeAndPutInStore(address);
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('in datafetch, routeAddressChanged:', routeAddressChanged, 'right before geocode, GeocodeStore.aisData:', GeocodeStore.aisData);
+      await clearStoreData();
+      if (GeocodeStore.aisDataChecked.features) {
+        GeocodeStore.aisData = GeocodeStore.aisDataChecked;
+        GeocodeStore.aisDataChecked = {};
+      } else {
+        await getGeocodeAndPutInStore(address);
+      }
     }
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('in datafetch, after geocode, GeocodeStore.aisData:', GeocodeStore.aisData);
+
     // if this was NOT started by a map click, get the parcels
     if (MainStore.lastSearchMethod !== 'mapClick') {
       if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch, inside if routeAddressChanged:', routeAddressChanged);
@@ -255,11 +321,13 @@ const router = createRouter({
         } else if (address && address !== '') {
           if (import.meta.env.VITE_DEBUG == 'true') console.log('search route beforeEnter, address:', address);
           MainStore.setLastSearchMethod('address');
+          await clearStoreData();
           await getGeocodeAndPutInStore(address);
           routeApp(router);
         } else if (lat && lng) {
           MainStore.setLastSearchMethod('mapClick');
           await getParcelsAndPutInStore(lng, lat);
+          await checkParcelInAis();
           routeApp(router);
         } else {
           return false;

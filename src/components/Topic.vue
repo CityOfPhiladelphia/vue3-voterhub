@@ -146,7 +146,6 @@ const handleTopicClick = () => {
   background-color: #f0f0f0;
   color: #0f4d90;
   border: 0px solid #cfcfcf;
-  /* border-radius: 2px; */
   /* margin-top: 16px; */
   margin-top: .5em;
   padding: .25em;

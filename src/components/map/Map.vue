@@ -47,7 +47,7 @@ import EagleviewControl from '@/components/map/EagleviewControl.vue';
 // import OverlayLegend from '@/components/map/OverlayLegend.vue';
 import EagleviewPanel from '@/components/map/EagleviewPanel.vue';
 import CyclomediaPanel from '@/components/map/CyclomediaPanel.vue';
-import CyclomediaRecordingsClient from '@/components/map/recordings-client.js';
+import CyclomediaRecordingsClient from '@/util/recordings-client.js';
 
 let map;
 
@@ -249,7 +249,7 @@ watch(
     if (import.meta.env.VITE_DEBUG == 'true') console.log('MapStore aisData watch, newAddress:', newAddress);
     if (newAddress.features && newAddress.features[0].geometry.coordinates.length) {
       const newCoords = newAddress.features[0].geometry.coordinates;
-      if (MainStore.lastSearchMethod === 'address') {
+      if (MainStore.lastSearchMethod !== 'mapClick') {
         map.setCenter(newCoords);
         map.setZoom(17);
       }
@@ -330,7 +330,7 @@ watch(
 watch(
   () => route.params.topic,
   async newTopic => {
-    // maybe should set store currentTopic from route here
+    MainStore.currentTopic = route.params.topic;
     if (import.meta.env.VITE_DEBUG == 'true') console.log('Map route.params.topic watch, newTopic:', newTopic);
     const popup = document.getElementsByClassName('maplibregl-popup');
     if (popup.length) {
@@ -342,14 +342,17 @@ watch(
       if (MapStore.imageryOn) {
         map.addLayer($config.mapLayers[imagerySelected.value], 'cyclomediaRecordings')
         map.addLayer($config.mapLayers.imageryLabels, 'cyclomediaRecordings')
+        map.addLayer($config.mapLayers.imageryParcelOutlines, 'cyclomediaRecordings')
       }
       if (import.meta.env.VITE_DEBUG == 'true') console.log('map:', map);
       const addressMarker = map.getSource('addressMarker');
       const dorParcel = map.getSource('dorParcel');
-      if (addressMarker && dorParcel && pwdCoordinates.value.length) {
+      if (addressMarker && pwdCoordinates.value.length) {
         if (import.meta.env.VITE_DEBUG == 'true') console.log('pwdCoordinates.value:', pwdCoordinates.value);
         // if (import.meta.env.VITE_DEBUG == 'true') console.log('1 map.layers:', map.getStyle().layers, map.getStyle().sources);
         addressMarker.setData(point(pwdCoordinates.value));
+      }
+      if (dorParcel) {
         if ($config.parcelLayerForTopic[newTopic] == 'dor') {
           let newParcel;
           if (dorCoordinates.value.length > 3) {
@@ -383,12 +386,14 @@ watch(
       }
       const addressMarker = map.getSource('addressMarker');
       const dorParcel = map.getSource('dorParcel');
-      if (addressMarker && dorParcel) {
+      if (addressMarker) {
         // if (import.meta.env.VITE_DEBUG == 'true') console.log('1 map.layers:', map.getStyle().layers, map.getStyle().sources);
         if (pwdCoordinates.value.length) {
           addressMarker.setData(point(pwdCoordinates.value));
         }
         if (import.meta.env.VITE_DEBUG == 'true') console.log('dorCoordinates.value:', dorCoordinates.value);
+      }
+      if (dorParcel) {
         let newParcel;
         if ($config.parcelLayerForTopic[newTopic] == 'dor') {
           if (dorCoordinates.value.length > 3) {
@@ -422,11 +427,13 @@ const toggleImagery = () => {
     MapStore.imageryOn = true;
     map.addLayer($config.mapLayers[imagerySelected.value], 'cyclomediaRecordings')
     map.addLayer($config.mapLayers.imageryLabels, 'cyclomediaRecordings')
+    map.addLayer($config.mapLayers.imageryParcelOutlines, 'cyclomediaRecordings')
   } else {
     if (import.meta.env.VITE_DEBUG == 'true') console.log('map.getStyle().layers:', map.getStyle().layers);
     MapStore.imageryOn = false;
     map.removeLayer(imagerySelected.value);
     map.removeLayer('imageryLabels');
+    map.removeLayer('imageryParcelOutlines')
     if (!route.params.topic) {
       map.setStyle($config['pwdDrawnMapStyle']);
       if (pwdCoordinates.value.length) {
@@ -443,7 +450,7 @@ const setImagery = async (newImagery) => {
   }
   // if (import.meta.env.VITE_DEBUG == 'true') console.log('setImagery, newImagery:', newImagery, 'oldLayer:', oldLayer, 'imagerySelected.value:', imagerySelected.value);
   MapStore.imagerySelected = newImagery;
-  await map.addLayer($config.mapLayers[imagerySelected.value], 'cyclomediaRecordings')
+  await map.addLayer($config.mapLayers[imagerySelected.value], 'imageryLabels')
   map.removeLayer(oldLayer);
 }
 
@@ -465,7 +472,7 @@ watch(
         map.removeSource('regmap');
       }
       if (import.meta.env.VITE_DEBUG == 'true') console.log('add newRegmap:', newRegmap);
-      const tiles =  `https://ags-regmaps.phila.gov/arcgis/rest/services/RegMaps/MapServer/export?dpi=96&layerDefs=0:NAME='g${newRegmap.toLowerCase()}.tif'&transparent=true&format=png24&bbox={bbox-epsg-3857}&bboxSR=3857&imageSR=3857&size=700,700&f=image&layers=show%3A0`;
+      const tiles =  `https://ags-regmaps.phila.gov/arcgis/rest/services/RegMaps/MapServer/export?dpi=96&layerDefs=0:NAME='g${newRegmap.toLowerCase().trim()}.tif'&transparent=true&format=png24&bbox={bbox-epsg-3857}&bboxSR=3857&imageSR=3857&size=700,700&f=image&layers=show%3A0`;
       $config.dorDrawnMapStyle.sources.regmap = {
         type: 'raster',
         tiles: [tiles],
@@ -482,7 +489,7 @@ watch(
     } else {
       map.removeLayer('regmap');
       map.removeSource('regmap');
-      const tiles =  `https://ags-regmaps.phila.gov/arcgis/rest/services/RegMaps/MapServer/export?dpi=96&layerDefs=0:NAME='g${newRegmap.toLowerCase()}.tif'&transparent=true&format=png24&bbox={bbox-epsg-3857}&bboxSR=3857&imageSR=3857&size=700,700&f=image&layers=show%3A0`;
+      const tiles =  `https://ags-regmaps.phila.gov/arcgis/rest/services/RegMaps/MapServer/export?dpi=96&layerDefs=0:NAME='g${newRegmap.toLowerCase().trim()}.tif'&transparent=true&format=png24&bbox={bbox-epsg-3857}&bboxSR=3857&imageSR=3857&size=700,700&f=image&layers=show%3A0`;
       $config.dorDrawnMapStyle.sources.regmap = {
         type: 'raster',
         tiles: [tiles],
@@ -565,7 +572,7 @@ const clickedRow = computed(() => { return MainStore.clickedRow; })
 watch(
   () => clickedRow.value,
   newClickedRow => {
-    // if (import.meta.env.VITE_DEBUG == 'true') console.log('Map.vue clickedRow watch, newClickedRow:', newClickedRow);
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('Map.vue clickedRow watch, newClickedRow:', newClickedRow, 'newClickedRow.type:', newClickedRow.type);
     if (newClickedRow) map.flyTo({ center: newClickedRow.lngLat });
     let idField, infoField, row;
     if (MainStore.currentTopic == 'mail-in-voting') {
@@ -573,7 +580,7 @@ watch(
       infoField = MailinVotingStore.dataFields[newClickedRow.type].info_field;
       row = MailinVotingStore[newClickedRow.type].rows.filter(row => row[idField] === newClickedRow.id)[0];
     }
-    // if (import.meta.env.VITE_DEBUG == 'true') console.log('nearby click, idField:', idField, 'row:', row);
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('nearby click, newClickedRow:', newClickedRow, 'idField:', idField, 'row:', row);
     if (row.properties) row[infoField] = row.properties[infoField];
     const popup = document.getElementsByClassName('maplibregl-popup');
     if (popup.length) {
@@ -924,17 +931,17 @@ const toggleEagleview = () => {
     <EagleviewControl @toggle-eagleview="toggleEagleview" />
     <CyclomediaControl @toggle-cyclomedia="toggleCyclomedia" />
     <!-- <OpacitySlider
-      v-if="MainStore.currentTopic == 'Deeds' && selectedRegmap"
+      v-if="MainStore.currentTopic == 'deeds' && selectedRegmap"
       :initial-opacity="MapStore.regmapOpacity"
       @opacity-change="handleRegmapOpacityChange"
     />
     <OpacitySlider
-      v-if="MainStore.currentTopic == 'Zoning'"
+      v-if="MainStore.currentTopic == 'zoning'"
       :initial-opacity="MapStore.zoningOpacity"
       @opacity-change="handleZoningOpacityChange"
     />
     <OpacitySlider
-      v-if="MainStore.currentTopic == 'Stormwater'"
+      v-if="MainStore.currentTopic == 'stormwater'"
       :initial-opacity="MapStore.stormwaterOpacity"
       @opacity-change="handleStormwaterOpacityChange"
     /> -->
@@ -945,12 +952,12 @@ const toggleEagleview = () => {
       @drawCancel="drawCancel"
     />
     <!-- <OverlayLegend
-      v-show="!MapStore.imageryOn && ['Stormwater'].includes(MainStore.currentTopic)"
+      v-show="!MapStore.imageryOn && ['stormwater'].includes(MainStore.currentTopic)"
       :items="$config.stormwaterLegendData"
       :options="{ shape: 'square' }"
     />
     <OverlayLegend
-      v-show="!MapStore.imageryOn && ['Deeds', 'Zoning'].includes(MainStore.currentTopic)"
+      v-show="!MapStore.imageryOn && ['deeds', 'zoning'].includes(MainStore.currentTopic)"
       :items="$config.dorLegendData"
       :options="{ shape: 'square' }"
     /> -->
