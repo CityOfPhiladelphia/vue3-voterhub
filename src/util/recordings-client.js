@@ -9,7 +9,7 @@ class RecordingsClient {
     this.proxy = proxy;
   }
 
-  // this takes leaflet map bonds and an EPSG coordinate system id, e.g. 3857
+  // this takes map bounds and an EPSG coordinate system id, e.g. 3857
   // and returns an array of cyclomedia recording points
   getRecordings(bounds, callback) {
     if (import.meta.env.VITE_DEBUG == 'true') console.log('recordings-client.js, getRecordings is running, bounds:', bounds);

@@ -20,7 +20,9 @@ npm run dev
 create an .env.local file and add the following:
 
 VITE_PUBLICPATH=/ - this is needed for accessing images in the public folder
+
 VITE_DEBUG=true - this will allow many console.logs to show in your dev envt
+
 VITE_VERSION=atlas - switch this to cityatlas to see the cityatlas version of the app
 
 ### Other environmental variables for .env.local

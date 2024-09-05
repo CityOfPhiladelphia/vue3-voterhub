@@ -55,13 +55,13 @@ const yPosition = computed(() => {
         <label
           :for="inputId"
           class="search-label"
-        >Search an address or OPA number</label>
+        >Search for an address, OPA account, or DOR number</label>
         <input
           :id="inputId"
           v-model="MainStore.addressSearchValue"
           class="input address-input"
           type="text"
-          placeholder="Search an address, OPA, or DOR number"
+          placeholder="Search for an address, OPA account, or DOR number"
           @keydown.enter="router.replace({ name: 'search', query: { address: MainStore.addressSearchValue, lang: MainStore.currentLang }})"
         >
       </div>
