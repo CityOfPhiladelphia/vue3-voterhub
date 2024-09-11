@@ -154,7 +154,7 @@ const dataFetch = async(to, from) => {
   if (import.meta.env.VITE_DEBUG == 'true') console.log('address:', address, 'to.params.address:', to.params.address, 'from.params.address:', from.params.address, 'GeocodeStore.aisData.normalized:', GeocodeStore.aisData.normalized);
   
   let routeAddressChanged;
-  if (from.params.address) {
+  if (to.params.address && from.params.address) {
     routeAddressChanged = to.params.address.trim() !== from.params.address.trim();
   } else {
     routeAddressChanged = to.params.address !== from.params.address;
@@ -267,6 +267,7 @@ const router = createRouter({
         if (topics.includes(to.params.addressOrTopic.toLowerCase())) {
           if (import.meta.env.VITE_DEBUG === 'true') console.log('inside if, routing to topic');
           MainStore.currentTopic = to.params.addressOrTopic;
+          MainStore.currentAddress = null;
           MainStore.currentLang = to.query.lang;
           routeApp(router);
         } else {
@@ -349,7 +350,7 @@ router.afterEach(async (to, from) => {
   }
   if (to.name === 'address-or-topic') {
     return;
-  } else if (to.name !== 'not-found' && to.name !== 'search') {
+  } else if (to.name !== 'not-found' && to.name !== 'search' && to.name !== 'topic') {
     await dataFetch(to, from);
   } else if (to.name == 'not-found') {
     const MainStore = useMainStore();
