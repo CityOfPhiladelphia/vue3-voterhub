@@ -121,39 +121,36 @@ export const useMailinVotingStore = defineStore("MailinVotingStore", {
     setDataError(error) {
       this.dataError = error;
     },
-    async fillAllMailinVotingData() {
-      this.fillVotingSites();
-    },
     async clearAllMailinVotingData() {
       this.dataError = false;
       this.loadingData = true;
       this.mailinVoting = {};
     },
     async fillVotingSites() {
-      if (import.meta.env.VITE_DEBUG == 'true') console.log('findVotingSites is running');
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('fillVotingSites is running');
       try {
         const GeocodeStore = useGeocodeStore();
         this.setLoadingData(true);
-        const feature = GeocodeStore.aisData.features[0];
-
+        
         let dataSource = {
           url: 'https://phl.carto.com:443/api/v2/sql?',
           options: {
             table: 'voting_sites',
             distances: 35000,
-            // where: "typeofwork like '%NEW CONSTRUCTION%'",
-            // dateMinNum: 1,
-            // dateMinType: 'year',
-            // dateField: 'permitissuedate',
           },
         };
-        // let baseUrl = 'https://phl.carto.com:443/api/v2/sql?q=';
-        // const url = baseUrl += `select * from voting_sites`
-        let params = fetchNearby(feature, dataSource);
-        const response = await axios.get(dataSource.url, { params })
+        
+        let feature, params;
+        if (GeocodeStore.aisData.features) {
+          feature = GeocodeStore.aisData.features[0];
+          params = fetchNearby(feature, dataSource);
+        } else {
+          params = {'q': 'select * from voting_sites'}
+        }
+        
+        console.log('fillVotingSites params:', params);
+        const response = await axios.get(dataSource.url, { params });
         if (response.status === 200) {
-        // const response = await fetch(url);
-        // if (response.ok) {
           const data = response.data;
           data.rows.forEach(row => {
             row.distance_miles = (row.distance * 0.000621371).toFixed(2) + ' miles';

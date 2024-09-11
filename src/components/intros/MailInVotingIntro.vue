@@ -1,8 +1,46 @@
 <script setup>
+
+// import { computed, watch } from 'vue'
+// import { point, featureCollection } from '@turf/helpers';
+
 import { useMainStore } from '@/stores/MainStore.js'
 const MainStore = useMainStore();
+// import { useMapStore } from '@/stores/MapStore.js'
+// const MapStore = useMapStore();
+// import { useMailinVotingStore } from '@/stores/MailinVotingStore.js'
+// const MailinVotingStore = useMailinVotingStore();
 
 import AddressSearchControl from '@/components/AddressSearchControl.vue';
+
+// const mailinVoting = computed(() => {
+//   let data;
+//   if (MailinVotingStore.mailinVoting.rows) {
+//     data = [ ...MailinVotingStore.mailinVoting.rows ]
+//   }
+//   return data;
+// })
+
+// const mailinVotingGeojson = computed(() => {
+//   if (!mailinVoting.value) return [point([0,0])];
+//   return mailinVoting.value.map(item => point([item.lon, item.lat], { id: item.cartodb_id, type: 'mailinVoting' }));
+// })
+
+// watch(
+//   () => MailinVotingStore.mailinVoting,
+//     async newGeojson => {
+//     if (import.meta.env.VITE_DEBUG == 'true') console.log('MailinVotingIntro watch mailinVotingGeojson, newGeojson:', newGeojson, 'MapStore.map:', MapStore.map);
+//     const map = MapStore.map;
+//     if (!MailinVotingStore.loadingData && mailinVotingGeojson.value.length > 0 && map.getSource) { map.getSource('nearby').setData(featureCollection(mailinVotingGeojson.value)) }
+//   }
+// )
+
+// watch(
+//   () => MapStore.map,
+//     async newMap => {
+//     if (import.meta.env.VITE_DEBUG == 'true') console.log('MailinVotingIntro watch mailinVotingGeojson, newMap:', newMap, 'MapStore.map:', MapStore.map);
+//     if (!MailinVotingStore.loadingData && mailinVotingGeojson.value.length > 0 && newMap.getSource) { newMap.getSource('nearby').setData(featureCollection(mailinVotingGeojson.value)) }
+//   }
+// )
 
 </script>
 

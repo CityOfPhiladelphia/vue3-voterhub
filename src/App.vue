@@ -14,6 +14,9 @@ const languages = i18nFromFiles.i18n.languages;
 import { useMainStore } from '@/stores/MainStore.js'
 const MainStore = useMainStore();
 
+// import { useMailinVotingStore } from '@/stores/MailinVotingStore'
+// const MailinVotingStore = useMailinVotingStore();
+
 if (!import.meta.env.VITE_PUBLICPATH) {
   MainStore.publicPath = '/';
 } else {
@@ -51,6 +54,10 @@ onMounted(async () => {
   } //else {
   //   MainStore.currentTopic = null;
   // }
+  // if (route.name == 'topic' && route.params.topic == 'mail-in-voting') {
+  //   MailinVotingStore.fillVotingSites()
+  // }
+
   if (route.query.lang) {
     // const instance = getCurrentInstance();
     if (import.meta.env.VITE_DEBUG == 'true') console.log('instance:', instance);
