@@ -10,11 +10,14 @@ import AddressSearchControl from '@/components/AddressSearchControl.vue';
 </script>
 
 <template>
-  <div id="topic-panel-set-content">
+  <div
+    id="topic-panel-no-topics"
+    class="section"
+  >
     <div v-if="MainStore.fullScreenTopicsEnabled">
       <address-search-control :input-id="'address-bar-search-input'" />
     </div>
-    <div class="topic-panel-final-content">
+    <div :class="MainStore.fullScreenTopicsEnabled ? 'topic-panel-half': ''">
       <h1 class="subtitle is-3">
         {{ $t('default.introPage.introTitle') }}
       </h1>
@@ -34,7 +37,7 @@ import AddressSearchControl from '@/components/AddressSearchControl.vue';
         class="section-header"
         :style="{ 'background-color': '#F0F0F0', 'color': 'black' }"
       >
-        <b>{{ t('default.introPage.relatedContent') }}</b>
+        <b>{{ $t('default.introPage.relatedContent') }}</b>
       </div>
       <div class="custom-section">
         <ul class="custom-ul">
