@@ -40,7 +40,7 @@ import AddressSearchControl from '@/components/AddressSearchControl.vue';
           <li><a target="_blank" href="https://vote.phila.gov/voting/current-elected-officials/">{{ $t('default.introPage.link9') }}</a></li>
           <li><a href="/polling-place">{{ $t('default.introPage.link2') }}</a></li>
           <li><a target="_blank" href="https://www.pavoterservices.pa.gov/pages/voterregistrationstatus.aspx">{{ $t('default.introPage.link1') }}</a></li>
-          <li><a href="/ballot">{{ $t('default.introPage.link7') }}</a></li>
+          <li><a href="/elections-and-ballots">{{ $t('default.introPage.link7') }}</a></li>
           <li><a target="_blank" href="https://vote.phila.gov/candidates-campaigns/campaign-finance/">{{ $t('default.introPage.link10') }}</a></li>
         </ul>
       </div>

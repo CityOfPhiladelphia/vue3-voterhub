@@ -44,9 +44,9 @@ import AddressSearchControl from '@/components/AddressSearchControl.vue';
       <div class="custom-section">
         <ul class="bullet-list">
           <li><a target="_blank" href="https://vote.phila.gov/voting/vote-by-mail/vote-by-mail/">{{ $t('default.introPage.link8') }}</a></li>
-          <li><a target="_blank" href="https://www.pavoterservices.pa.gov/pages/mailInVotingtracking.aspx">{{ $t('default.introPage.link3') }}</a></li>
+          <li><a target="_blank" href="https://www.pavoterservices.pa.gov/pages/ballottracking.aspx">{{ $t('default.introPage.link3') }}</a></li>
           <li><a target="_blank" href="https://www.pavoterservices.pa.gov/pages/voterregistrationstatus.aspx">{{ $t('default.introPage.link1') }}</a></li>
-          <li><a href="/ballot">{{ $t('default.introPage.link7') }}</a></li>
+          <li><a href="/elections-and-ballots">{{ $t('default.introPage.link7') }}</a></li>
           <li><a href="/polling-place">{{ $t('default.introPage.link2') }}</a></li>
         </ul>
       </div>
