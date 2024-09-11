@@ -1,8 +1,8 @@
 <script setup>
 if (import.meta.env.VITE_DEBUG == 'true') console.log('App.vue setup is running in debug mode');
 
-import { useI18n } from 'vue-i18n'
-const { t } = useI18n()
+// import { useI18n } from 'vue-i18n'
+// const { t } = useI18n()
 
 import isMobileDevice from './util/is-mobile-device';
 import isMac from './util/is-mac'; // this can probably be removed from App.vue, and only run in main.js

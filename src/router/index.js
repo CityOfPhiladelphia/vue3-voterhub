@@ -40,6 +40,7 @@ const getGeocodeAndPutInStore = async(address) => {
   if (MainStore.lastSearchMethod == 'address' && !GeocodeStore.aisData.features) {
     MainStore.currentAddress = null;
     if (import.meta.env.VITE_DEBUG == 'true') console.log('getGeocodeAndPutInStore, calling not-found');
+    MainStore.currentTopic = null;
     router.push({ name: 'not-found' });
     return;
   } else if (!GeocodeStore.aisData.features) {
@@ -227,9 +228,9 @@ const topicDataFetch = async (topic, data) => {
   }
 
   if (topic && topic.toLowerCase() === 'mail-in-voting') {
-    const MailInPollingPlaceStore = useMailinVotingStore();
-    await MailInPollingPlaceStore.fillAllMailinVotingData();
-    MailInPollingPlaceStore.loadingData = false;
+    const MailinVotingStore = useMailinVotingStore();
+    await MailinVotingStore.fillVotingSites();
+    MailinVotingStore.loadingData = false;
   }
 
   if (topic && topic.toLowerCase() === 'elected-officials') {
@@ -354,6 +355,7 @@ router.afterEach(async (to, from) => {
     const MainStore = useMainStore();
     MainStore.currentTopic = "elections-and-ballots"
   }
+  console.log('router afterEach, to.name:', to.name);
 });
 
 export default router
