@@ -148,7 +148,10 @@ const dataFetch = async(to, from) => {
   }
   
   let address, topic;
-  if (to.params.address) { address = to.params.address } else if (to.query.address) { address = to.query.address }
+  if (to.params.address) {
+    address = to.params.address;
+    MainStore.currentAddress = to.params.address;
+  } else if (to.query.address) { address = to.query.address }
   if (to.params.topic) { topic = to.params.topic.toLowerCase() }
 
   if (import.meta.env.VITE_DEBUG == 'true') console.log('address:', address, 'to.params.address:', to.params.address, 'from.params.address:', from.params.address, 'GeocodeStore.aisData.normalized:', GeocodeStore.aisData.normalized);
