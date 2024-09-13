@@ -63,11 +63,14 @@ const mailinVotingTableData = computed(() => {
     columns: [
       {
         label: 'Location',
-        field: 'site_name',
+        field: 'name_and_address',
+        html: true,
+        // field: 'site_name',
       },
       {
         label: 'Type and Hours',
-        field: 'site_type',
+        field: typeFieldFn,
+        // field: 'site_type',
       },
       {
         label: 'Distance',
@@ -77,6 +80,10 @@ const mailinVotingTableData = computed(() => {
     rows: mailinVoting.value || [],
   }
 });
+
+const typeFieldFn = (row) => {
+  return row.site_type;
+}
 
 const clickedMarkerId = computed(() => { return MainStore.clickedMarkerId; });
 

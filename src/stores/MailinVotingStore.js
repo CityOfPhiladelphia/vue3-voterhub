@@ -154,6 +154,7 @@ export const useMailinVotingStore = defineStore("MailinVotingStore", {
           const data = response.data;
           data.rows.forEach(row => {
             row.distance_miles = (row.distance * 0.000621371).toFixed(2) + ' miles';
+            row.name_and_address = row.site_name+'<br/>'+row.street_address+'<br/>Philadelphia, PA '+row.zip;
           });
           this.mailinVoting = data;
           this.setLoadingData(false);
