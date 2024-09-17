@@ -130,7 +130,7 @@ const buildingData = computed(() => {
     },
     {
       label: 'Building Footprint (approx)',
-      value: prettyNumber(integer(selectedLiBuilding.attributes.Shape__Area * 6.3225)) + ' sq ft' || 'N/A',
+      value: prettyNumber(Math.round(selectedLiBuilding.attributes.Shape__Area * 6.3225)) + ' sq ft' || 'N/A',
     },
   ];
 });
