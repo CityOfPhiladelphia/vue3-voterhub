@@ -229,7 +229,6 @@ const electionTypes = {
   padding-top: 0.25rem !important;
   line-height: 1.2rem;
   padding-bottom: 4px;
-  /* height: 2rem; */
   height: auto;
   color: white;
   border-width: 1px;
