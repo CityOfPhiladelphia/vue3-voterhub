@@ -116,7 +116,7 @@ document.title = appTitle.value + ' | phila.gov';
   >
     <!-- TOPIC PANEL ON LEFT -->
     <div
-      v-if="!isMobileDevice() && MainStore.windowDimensions.width > 760 && !fullScreenMapEnabled"
+      v-if="!isMobileDevice() && MainStore.windowDimensions.width > 768 && !fullScreenMapEnabled"
       class="topics-holder"
       :class="fullScreenTopicsEnabled ? 'topics-holder-full' : ''"
     >
@@ -133,7 +133,7 @@ document.title = appTitle.value + ' | phila.gov';
     </div>
 
     <div
-      v-if="isMobileDevice() || MainStore.windowDimensions.width <= 760"
+      v-if="isMobileDevice() || MainStore.windowDimensions.width <= 768"
       class="topics-holder"
     >
       <topic-panel />

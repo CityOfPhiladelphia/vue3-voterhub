@@ -705,7 +705,7 @@ const businessLicensesTableData = computed(() => {
 }
 
 @media 
-only screen and (max-width: 760px),
+only screen and (max-width: 768px),
 (min-device-width: 768px) and (max-device-width: 1024px)  {
 
   td[colspan="4"] {

@@ -72,7 +72,7 @@ const accessibility = computed(() => {
 
 const parking = computed(() => {
   if (VotingStore.pollingPlaces.rows && VotingStore.pollingPlaces.rows.length) {
-    const code = VotingStore.pollingPlaces.rows[0].parking_info;
+    const code = VotingStore.pollingPlaces.rows[0].parking_code;
     const parking = code == "N" ? 'No Parking' :
       code == "G" ? 'General Parking' :
       code == "L" ? 'Loading Zone' :
@@ -137,7 +137,7 @@ const electionTypes = {
 
 <template>
   <section>
-    <div class="columns is-multiline column is-8 is-offset-2 has-text-centered badge">
+    <div class="columns is-multiline column is-10 is-offset-1 has-text-centered badge">
       <div v-if="electionSplit" class="column is-12 badge-title">
         <b>Next Eligible Election: {{ electionTypes[electionSplit.election_type] }}</b>
       </div>
@@ -227,7 +227,10 @@ const electionTypes = {
 
 .badge-title {
   padding-top: 0.25rem !important;
-  height: 2rem;
+  line-height: 1.2rem;
+  padding-bottom: 4px;
+  /* height: 2rem; */
+  height: auto;
   color: white;
   border-width: 1px;
   border-style: solid;

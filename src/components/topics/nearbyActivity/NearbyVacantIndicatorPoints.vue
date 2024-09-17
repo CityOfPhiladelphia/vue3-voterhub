@@ -121,7 +121,7 @@ const nearbyVacantIndicatorsTableData = computed(() => {
 <style>
 
 @media 
-only screen and (max-width: 760px) {
+only screen and (max-width: 768px) {
 
   #nearbyVacantIndicators {
     td:nth-of-type(2) { min-height: 60px; }

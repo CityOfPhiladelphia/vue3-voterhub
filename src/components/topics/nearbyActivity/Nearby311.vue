@@ -144,7 +144,7 @@ const nearby311TableData = computed(() => {
 <style>
 
 @media
-only screen and (max-width: 760px) {
+only screen and (max-width: 768px) {
 
 	/*Label the data*/
 

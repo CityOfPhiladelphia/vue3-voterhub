@@ -213,7 +213,7 @@ const rcosTableData = computed(() => {
           v-if="selectedParcel"
           class="columns mt-6 mb-5"
         >
-          <div class="columns is-multiline column is-8 is-offset-2 has-text-centered badge">
+          <div class="columns is-multiline column is-10 is-offset-1 has-text-centered badge">
             <div class="column is-12 columns pt-0 pb-0">
               <div class="column is-12 badge-title">
                 <b v-if="longCodes && longCodes.length > 1">Base Districts</b>
@@ -476,7 +476,7 @@ const rcosTableData = computed(() => {
 }
 
 @media 
-only screen and (max-width: 760px),
+only screen and (max-width: 768px),
 (min-device-width: 768px) and (max-device-width: 1024px)  {
 
 	/* Label the data */

@@ -19,7 +19,7 @@ export default function useScrolling() {
     if (popup.length) {
       popup[0].remove();
     }
-    if (!MainStore.isMobileDevice && MainStore.windowDimensions.width > 760) {
+    if (!MainStore.isMobileDevice && MainStore.windowDimensions.width > 768) {
       MainStore.clickedRow = clickedRow;
     }
   }
