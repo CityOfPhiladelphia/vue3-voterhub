@@ -29,7 +29,7 @@ const dataTypes = {
   vacantIndicatorPoints: 'Vacant Properties',
   constructionPermits: 'Construction Permits',
   demolitionPermits: 'Demolition Permits',
-  imminentlyDangerous: 'Imminently Dangerous',
+  imminentlyDangerous: 'Unsafe Buildings',
 }
 
 const shortDataTypes = {
@@ -55,7 +55,7 @@ const selectedDataType = ref('nearby311');
 const timeIntervalSelected = ref('30');
 const timeIntervals = computed(() => {
   let values;
-  if (['311', 'constructionPermits', 'demolitionPermits', 'imminentlyDangerous'].includes(currentNearbyDataType.value)) {
+  if (['311', 'constructionPermits', 'demolitionPermits'].includes(currentNearbyDataType.value)) {
     values = {
       30: 'last 30 days',
       90: 'last 90 days',
@@ -144,7 +144,7 @@ onMounted( () => {
       </div>
 
       <div
-        v-if="selectedDataType != 'vacantIndicatorPoints'"
+        v-if="selectedDataType != 'vacantIndicatorPoints' && selectedDataType != 'imminentlyDangerous'"
         class="dropdown nearby-dropdown column is-3 is-12-mobile pt-0 pb-0"
       >
         <dropdown
@@ -158,7 +158,7 @@ onMounted( () => {
         <TextFilter
           v-model="textSearch"
           :search-label="`Search ${ shortDataTypes[currentNearbyDataType] }`"
-          :placeholder="'Search Requests'"
+          :placeholder="`Search ${ shortDataTypes[currentNearbyDataType] }`"
         />
       </div>
     </div>

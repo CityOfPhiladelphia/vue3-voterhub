@@ -31,13 +31,14 @@ const nearbyImminentlyDangerous = computed(() => {
   let data;
   if (NearbyActivityStore.nearbyImminentlyDangerous) {
     data = [ ...NearbyActivityStore.nearbyImminentlyDangerous.rows]
+    //   .filter(item => {
+    //   let itemDate = new Date(item.casecreateddate);
+    //   let now = new Date();
+    //   let timeDiff = now - itemDate;
+    //   let daysDiff = timeDiff / (1000 * 60 * 60 * 24);
+    //   return daysDiff <= props.timeIntervalSelected;
+    // }).filter(item => {
       .filter(item => {
-      let itemDate = new Date(item.casecreateddate);
-      let now = new Date();
-      let timeDiff = now - itemDate;
-      let daysDiff = timeDiff / (1000 * 60 * 60 * 24);
-      return daysDiff <= props.timeIntervalSelected;
-    }).filter(item => {
       // if (import.meta.env.VITE_DEBUG == 'true') console.log('item.address:', item.address, 'props.textSearch:', props.textSearch);
       return item.address.toLowerCase().includes(props.textSearch.toLowerCase()) || item.link.toLowerCase().includes(props.textSearch.toLowerCase());
     });
@@ -68,12 +69,16 @@ onBeforeUnmount(() => {
 const nearbyImminentlyDangerousTableData = computed(() => {
   return {
     columns: [
+      // {
+      //   label: 'Date',
+      //   field: 'casecreateddate',
+      //   type: 'date',
+      //   dateInputFormat: "yyyy-MM-dd'T'HH:mm:ssX",
+      //   dateOutputFormat: 'MM/dd/yyyy',
+      // },
       {
-        label: 'Date',
-        field: 'casecreateddate',
-        type: 'date',
-        dateInputFormat: "yyyy-MM-dd'T'HH:mm:ssX",
-        dateOutputFormat: 'MM/dd/yyyy',
+        label: 'Priority',
+        field: 'caseprioritydesc'
       },
       {
         label: 'Location',
@@ -103,7 +108,7 @@ const nearbyImminentlyDangerousTableData = computed(() => {
 <template>
   <div class="mt-5">
     <h2 class="subtitle mb-3 is-5">
-      Imminently Dangerous Buildings
+      Unsafe Buildings
       <font-awesome-icon
         v-if="loadingData"
         icon="fa-solid fa-spinner"

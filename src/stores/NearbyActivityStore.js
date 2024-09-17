@@ -44,15 +44,15 @@ const fetchNearby = (feature, dataSource) => {
   // if (import.meta.env.VITE_DEBUG == 'true') console.log('dateMinType:', dateMinType);
   const dateField = options.dateField || null;
   const distances = options.distances || 250;
-  // if (import.meta.env.VITE_DEBUG == 'true') console.log('fetchNearby distances:', distances);
+  if (import.meta.env.VITE_DEBUG == 'true') console.log('fetchNearby options:', options, 'distances:', distances);
   const extraWhere = options.where || null;
 
   const groupby = options.groupby || null;
 
-  const distQuery = "ST_Distance(the_geom::geography, ST_SetSRID(ST_Point("
+  const distQuery = "(ST_Distance(the_geom::geography, ST_SetSRID(ST_Point("
                   + feature.geometry.coordinates[0]
                   + "," + feature.geometry.coordinates[1]
-                  + "),4326)::geography)";
+                  + "),4326)::geography))";
 
   const latQuery = "ST_Y(the_geom)";
   const lngQuery = "ST_X(the_geom)";
@@ -432,9 +432,9 @@ export const useNearbyActivityStore = defineStore('NearbyActivityStore', {
           url: 'https://phl.carto.com/api/v2/sql?',
           options: {
             table: 'violations',
-            where: "caseprioritydesc like '%IMMINENTLY DANGEROUS%'",
-            dateMinNum: 1,
-            dateMinType: 'year',
+            where: "((caseprioritydesc like '%IMMINENTLY DANGEROUS%' and casestatus not in ('CLOSED', 'CANCELLED')) or (caseprioritydesc like 'UNSAFE' and casestatus not in ('CLOSED', 'CANCELLED')))",
+            // dateMinNum: 1,
+            // dateMinType: 'year',
             dateField: 'casecreateddate',
             groupby: 'casenumber, casecreateddate, caseprioritydesc, casestatus, address',
           },
