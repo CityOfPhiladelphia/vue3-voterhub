@@ -25,12 +25,9 @@ export default function useScrolling() {
   }
 
   const handleRowMouseover = (e, id) => {
-    if (import.meta.env.VITE_DEBUG == 'true') console.log('handleRowMouseover, e:', e, 'id:', id);
     const MainStore = useMainStore();
-    let hoveredStateId = parseInt(e.row[id]);
-    if (isNaN(hoveredStateId)) {
-      hoveredStateId = e.row[id];
-    }
+    const hoveredStateId = e.row[id];
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('handleRowMouseover, e:', e, 'id:', id, 'e.row[id]:', e.row[id], 'hoveredStateId:', hoveredStateId);
     MainStore.hoveredStateId = hoveredStateId;
   }
   const handleRowMouseleave = () => {

@@ -1033,7 +1033,7 @@ const nearbyDrawnMapStyle = mergeDeep(imageryInfo,{
           '#FF0000',
           'nearbyDemolitionPermits',
           '#0096FF',
-          'nearbyImminentlyDangerous',
+          'nearbyUnsafeBuildings',
           '#009900',
           /* other */ '#000000'
         ],

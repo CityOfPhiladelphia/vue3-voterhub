@@ -27,10 +27,10 @@ const props = defineProps({
   },
 })
 
-const nearbyImminentlyDangerous = computed(() => {
+const nearbyUnsafeBuildings = computed(() => {
   let data;
-  if (NearbyActivityStore.nearbyImminentlyDangerous) {
-    data = [ ...NearbyActivityStore.nearbyImminentlyDangerous.rows]
+  if (NearbyActivityStore.nearbyUnsafeBuildings) {
+    data = [ ...NearbyActivityStore.nearbyUnsafeBuildings.rows]
     //   .filter(item => {
     //   let itemDate = new Date(item.casecreateddate);
     //   let now = new Date();
@@ -42,15 +42,15 @@ const nearbyImminentlyDangerous = computed(() => {
       // if (import.meta.env.VITE_DEBUG == 'true') console.log('item.address:', item.address, 'props.textSearch:', props.textSearch);
       return item.address.toLowerCase().includes(props.textSearch.toLowerCase()) || item.link.toLowerCase().includes(props.textSearch.toLowerCase());
     });
-    data.sort((a, b) => timeReverseFn(a, b, 'casecreateddate'))
+    // data.sort((a, b) => timeReverseFn(a, b, 'casecreateddate'))
   }
   return data;
 });
-const nearbyImminentlyDangerousGeojson = computed(() => {
-  if (!nearbyImminentlyDangerous.value) return [point([0,0])];
-  return nearbyImminentlyDangerous.value.map(item => point([item.lng, item.lat], { id: item.casenumber, type: 'nearbyImminentlyDangerous' }));
+const nearbyUnsafeBuildingsGeojson = computed(() => {
+  if (!nearbyUnsafeBuildings.value) return [point([0,0])];
+  return nearbyUnsafeBuildings.value.map(item => point([item.lng, item.lat], { id: item.casenumber, type: 'nearbyUnsafeBuildings' }));
 })
-watch (() => nearbyImminentlyDangerousGeojson.value, (newGeojson) => {
+watch (() => nearbyUnsafeBuildingsGeojson.value, (newGeojson) => {
   const map = MapStore.map;
   if (map.getSource) map.getSource('nearby').setData(featureCollection(newGeojson));
 });
@@ -59,14 +59,14 @@ const hoveredStateId = computed(() => { return MainStore.hoveredStateId; });
 
 onMounted(() => {
   const map = MapStore.map;
-  if (!NearbyActivityStore.loadingData && nearbyImminentlyDangerousGeojson.value.length > 0) { map.getSource('nearby').setData(featureCollection(nearbyImminentlyDangerousGeojson.value)) }
+  if (!NearbyActivityStore.loadingData && nearbyUnsafeBuildingsGeojson.value.length > 0) { map.getSource('nearby').setData(featureCollection(nearbyUnsafeBuildingsGeojson.value)) }
 });
 onBeforeUnmount(() => {
   const map = MapStore.map;
   if (map.getSource('nearby')) { map.getSource('nearby').setData(featureCollection([point([0,0])])) }
 });
 
-const nearbyImminentlyDangerousTableData = computed(() => {
+const nearbyUnsafeBuildingsTableData = computed(() => {
   return {
     columns: [
       // {
@@ -99,7 +99,7 @@ const nearbyImminentlyDangerousTableData = computed(() => {
         },
       }
     ],
-    rows: nearbyImminentlyDangerous.value || [],
+    rows: nearbyUnsafeBuildings.value || [],
   }
 });
 
@@ -114,29 +114,29 @@ const nearbyImminentlyDangerousTableData = computed(() => {
         icon="fa-solid fa-spinner"
         spin
       />
-      <span v-else>({{ nearbyImminentlyDangerousTableData.rows.length }})</span>
+      <span v-else>({{ nearbyUnsafeBuildingsTableData.rows.length }})</span>
     </h2>
     <div class="horizontal-table">
       <vue-good-table
-        id="nearbyImminentlyDangerous"
-        :columns="nearbyImminentlyDangerousTableData.columns"
-        :rows="nearbyImminentlyDangerousTableData.rows"
+        id="nearbyUnsafeBuildings"
+        :columns="nearbyUnsafeBuildingsTableData.columns"
+        :rows="nearbyUnsafeBuildingsTableData.rows"
         :row-style-class="row => hoveredStateId === row.casenumber ? 'active-hover ' + row.casenumber : 'inactive ' + row.casenumber"
         style-class="table nearby-table"
         @row-mouseenter="handleRowMouseover($event, 'casenumber')"
         @row-mouseleave="handleRowMouseleave"
-        @row-click="handleRowClick($event, 'casenumber', 'nearbyImminentlyDangerous')"
+        @row-click="handleRowClick($event, 'casenumber', 'nearbyUnsafeBuildings')"
         :sort-options="{ initialSortBy: {field: 'distance_ft', type: 'asc'}}"
       >
         <template #emptystate>
           <div v-if="loadingData">
-            Loading nearby imminently dangerous properties... <font-awesome-icon
+            Loading nearby unsafe buildings properties... <font-awesome-icon
               icon="fa-solid fa-spinner"
               spin
             />
           </div>
           <div v-else>
-            No nearby imminently dangerous properties found for the selected time interval
+            No nearby unsafe buildings properties found for the selected time interval
           </div>
         </template>
       </vue-good-table>
@@ -151,8 +151,8 @@ only screen and (max-width: 768px),
 (min-device-width: 768px) and (max-device-width: 1024px)  {
 	/*Label the data*/
 
-  #nearbyImminentlyDangerous {
-    td:nth-of-type(1):before { content: "Date"; }
+  #nearbyUnsafeBuildings {
+    td:nth-of-type(1):before { content: "Priority"; }
     td:nth-of-type(2):before { content: "Location"; }
     td:nth-of-type(3):before { content: "Status"; }
     td:nth-of-type(4):before { content: "Distance"; }

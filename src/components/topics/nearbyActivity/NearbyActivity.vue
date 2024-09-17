@@ -17,7 +17,7 @@ import NearbyZoningAppeals from './NearbyZoningAppeals.vue';
 import NearbyVacantIndicatorPoints from './NearbyVacantIndicatorPoints.vue';
 import NearbyConstructionPermits from './NearbyConstructionPermits.vue';
 import NearbyDemolitionPermits from './NearbyDemolitionPermits.vue';
-import NearbyImminentlyDangerous from './NearbyImminentlyDangerous.vue';
+import NearbyUnsafeBuildings from './NearbyUnsafeBuildings.vue';
 
 import TextFilter from '@/components/TextFilter.vue';
 const textSearch = ref('');
@@ -29,7 +29,7 @@ const dataTypes = {
   vacantIndicatorPoints: 'Vacant Properties',
   constructionPermits: 'Construction Permits',
   demolitionPermits: 'Demolition Permits',
-  imminentlyDangerous: 'Unsafe Buildings',
+  unsafeBuildings: 'Unsafe Buildings',
 }
 
 const shortDataTypes = {
@@ -39,7 +39,7 @@ const shortDataTypes = {
   vacantIndicatorPoints: 'Properties',
   constructionPermits: 'Permits',
   demolitionPermits: 'Permits',
-  imminentlyDangerous: 'Buildings',
+  unsafeBuildings: 'Buildings',
 }
 
 const currentNearbyDataType = computed(() => {
@@ -144,7 +144,7 @@ onMounted( () => {
       </div>
 
       <div
-        v-if="selectedDataType != 'vacantIndicatorPoints' && selectedDataType != 'imminentlyDangerous'"
+        v-if="selectedDataType != 'vacantIndicatorPoints' && selectedDataType != 'unsafeBuildings'"
         class="dropdown nearby-dropdown column is-3 is-12-mobile pt-0 pb-0"
       >
         <dropdown
@@ -169,7 +169,7 @@ onMounted( () => {
     <NearbyVacantIndicatorPoints v-if="currentNearbyDataType == 'vacantIndicatorPoints'" :time-interval-selected="timeIntervalSelected" :text-search="textSearch" />
     <NearbyConstructionPermits v-if="currentNearbyDataType == 'constructionPermits'" :time-interval-selected="timeIntervalSelected" :text-search="textSearch" />
     <NearbyDemolitionPermits v-if="currentNearbyDataType == 'demolitionPermits'" :time-interval-selected="timeIntervalSelected" :text-search="textSearch" />
-    <NearbyImminentlyDangerous v-if="currentNearbyDataType == 'imminentlyDangerous'" :time-interval-selected="timeIntervalSelected" :text-search="textSearch" />
+    <NearbyUnsafeBuildings v-if="currentNearbyDataType == 'unsafeBuildings'" :time-interval-selected="timeIntervalSelected" :text-search="textSearch" />
   </section>
 </template>
 

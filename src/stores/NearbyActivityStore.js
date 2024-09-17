@@ -118,7 +118,7 @@ export const useNearbyActivityStore = defineStore('NearbyActivityStore', {
       nearbyVacantIndicatorPoints: { rows: null },
       nearbyConstructionPermits: null,
       nearbyDemolitionPermits: null,
-      nearbyImminentlyDangerous: null,
+      nearbyUnsafeBuildings: null,
       dataFields: {
         nearby311: {
           title: '311 Requests',
@@ -150,7 +150,7 @@ export const useNearbyActivityStore = defineStore('NearbyActivityStore', {
           id_field: 'objectid',
           info_field: 'address',
         },
-        nearbyImminentlyDangerous: {
+        nearbyUnsafeBuildings: {
           title: 'Imminently Dangerous',
           id_field: 'casenumber',
           info_field: 'address',
@@ -175,7 +175,7 @@ export const useNearbyActivityStore = defineStore('NearbyActivityStore', {
       this.nearbyVacantIndicatorPoints = { rows: null };
       this.nearbyConstructionPermits = null;
       this.nearbyDemolitionPermits = null;
-      this.nearbyImminentlyDangerous = null;
+      this.nearbyUnsafeBuildings = null;
     },
     async fetchData(dataType) {
       if (import.meta.env.VITE_DEBUG == 'true') console.log("fetchData is runnning, dataType:", dataType);
@@ -191,8 +191,8 @@ export const useNearbyActivityStore = defineStore('NearbyActivityStore', {
         await this.fillNearbyConstructionPermits();
       } else if (dataType === 'demolitionPermits') {
         await this.fillNearbyDemolitionPermits();
-      } else if (dataType === 'imminentlyDangerous') {
-        await this.fillNearbyImminentlyDangerous();
+      } else if (dataType === 'unsafeBuildings') {
+        await this.fillNearbyUnsafeBuildings();
       }
     },
     async fillNearby311() {
@@ -423,7 +423,7 @@ export const useNearbyActivityStore = defineStore('NearbyActivityStore', {
       }
     },
 
-    async fillNearbyImminentlyDangerous() {
+    async fillNearbyUnsafeBuildings() {
       try {
         const GeocodeStore = useGeocodeStore();
         this.setLoadingData(true);
@@ -447,13 +447,13 @@ export const useNearbyActivityStore = defineStore('NearbyActivityStore', {
             row.distance_ft = (row.distance * 3.28084).toFixed(0) + ' ft';
             row.link = `<a target='_blank' href='https://li.phila.gov/property-history/search/violation-detail?address=${row.address}&Id=${row.casenumber}'>${row.casestatus}</a>`;
           });
-          this.nearbyImminentlyDangerous = data;
+          this.nearbyUnsafeBuildings = data;
           this.setLoadingData(false);
         } else {
-          if (import.meta.env.VITE_DEBUG == 'true') console.warn('nearbyImminentlyDangerous - await resolved but HTTP status was not successful');
+          if (import.meta.env.VITE_DEBUG == 'true') console.warn('nearbyUnsafeBuildings - await resolved but HTTP status was not successful');
         }
       } catch {
-        if (import.meta.env.VITE_DEBUG == 'true') console.error('nearbyImminentlyDangerous - await never resolved, failed to fetch address data');
+        if (import.meta.env.VITE_DEBUG == 'true') console.error('nearbyUnsafeBuildings - await never resolved, failed to fetch address data');
       }
     },
   },
