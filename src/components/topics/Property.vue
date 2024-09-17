@@ -296,7 +296,7 @@ const valuationHistoryTableData = computed(() => {
             id="valuation-history"
             :columns="valuationHistoryTableData.columns"
             :rows="valuationHistoryTableData.rows"
-            :pagination-options="paginationOptions"
+            :pagination-options="paginationOptions(valuationHistoryTableData.rows.length)"
             style-class="table"
           >
             <template #emptystate>

@@ -16,7 +16,7 @@ const MapStore = useMapStore();
 import VerticalTable from '../VerticalTable.vue';
 
 import useTransforms from '@/composables/useTransforms';
-const { integer, prettyNumber } = useTransforms();
+const { prettyNumber } = useTransforms();
 
 onMounted(async () => {
   if (LiStore.liBuildingFootprints.features) {
@@ -378,7 +378,7 @@ const businessLicensesTableData = computed(() => {
               id="building-certs"
               :columns="buildingCertsTableData.columns"
               :rows="buildingCertsTableData.rows"
-              :pagination-options="paginationOptions"
+              :pagination-options="paginationOptions(buildingCertsTableData.rows.length)"
               style-class="table"
             >
               <template #emptystate>
@@ -436,7 +436,7 @@ const businessLicensesTableData = computed(() => {
           id="permits"
           :columns="permitsTableData.columns"
           :rows="permitsTableData.rows"
-          :pagination-options="paginationOptions"
+          :pagination-options="paginationOptions(permitsTableData.rows.length)"
           style-class="table"
         >
           <template #emptystate>
@@ -491,8 +491,8 @@ const businessLicensesTableData = computed(() => {
           id="zoning-permit-docs"
           :columns="zoningDocsTableData.columns"
           :rows="zoningDocsTableData.rows"
-          :pagination-options="paginationOptions"
           style-class="table"
+          :pagination-options="paginationOptions(zoningDocsTableData.rows.length)"
         >
           <template #emptystate>
             <div v-if="LiStore.loadingLiAisZoningDocs || LiStore.loadingLiEclipseZoningDocs">
@@ -538,7 +538,7 @@ const businessLicensesTableData = computed(() => {
           id="inspections"
           :columns="inspectionsTableData.columns"
           :rows="inspectionsTableData.rows"
-          :pagination-options="paginationOptions"
+          :pagination-options="paginationOptions(inspectionsTableData.rows.length)"
           style-class="table"
         >
           <template #emptystate>
@@ -590,7 +590,7 @@ const businessLicensesTableData = computed(() => {
           id="violations"
           :columns="violationsTableData.columns"
           :rows="violationsTableData.rows"
-          :pagination-options="paginationOptions"
+          :pagination-options="paginationOptions(violationsTableData.rows.length)"
           style-class="table"
         >
           <template #emptystate>
@@ -642,7 +642,7 @@ const businessLicensesTableData = computed(() => {
           id="business-licenses"
           :columns="businessLicensesTableData.columns"
           :rows="businessLicensesTableData.rows"
-          :pagination-options="paginationOptions"
+          :pagination-options="paginationOptions(businessLicensesTableData.rows.length)"
           style-class="table"
         >
           <template #emptystate>

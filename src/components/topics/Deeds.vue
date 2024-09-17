@@ -260,7 +260,7 @@ const dorDocsTableData = computed(() => {
         <vue-good-table
           :columns="condosTableData.columns"
           :rows="condosTableData.rows"
-          :pagination-options="paginationOptions"
+          :pagination-options="paginationOptions(condosTableData.rows.length)"
           style-class="table"
         >
           <template #pagination-top="props">
@@ -310,7 +310,7 @@ const dorDocsTableData = computed(() => {
             :columns="dorDocsTableData.columns"
             :rows="dorDocsTableData.rows"
             style-class="table"
-            :pagination-options="paginationOptions"
+            :pagination-options="paginationOptions(dorDocsTableData.rows.length)"
           >
             <template #emptystate>
               <div v-if="DorStore.loadingDorData">

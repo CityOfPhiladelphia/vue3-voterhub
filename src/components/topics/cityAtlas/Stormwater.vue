@@ -181,7 +181,7 @@ const accountsTableData = computed(() => {
       id="accounts"
       :columns="accountsTableData.columns"
       :rows="accountsTableData.rows"
-      :pagination-options="paginationOptions"
+      :pagination-options="paginationOptions(accountsTableData.rows.length)"
       style-class="table"
     >
       <template #emptystate>

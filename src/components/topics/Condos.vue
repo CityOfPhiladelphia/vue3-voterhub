@@ -91,7 +91,7 @@ const condosTableData = computed(() => {
         :rows="condosTableData.rows"
         :total-rows="totalSize"
         style-class="table"
-        :pagination-options="paginationOptions"
+        :pagination-options="paginationOptions(condosTableData.rows.length)"
         :sort-options="{ enabled: false }"
       >
         <template #table-row="props">

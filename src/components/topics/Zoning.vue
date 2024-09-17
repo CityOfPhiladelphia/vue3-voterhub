@@ -271,7 +271,7 @@ const rcosTableData = computed(() => {
             id="pending-bills"
             :columns="pendingBillsTableData.columns"
             :rows="pendingBillsTableData.rows"
-            :pagination-options="paginationOptions"
+            :pagination-options="paginationOptions(pendingBillsTableData.rows.length)"
             style-class="table"
           >
             <template #emptystate>
@@ -313,7 +313,7 @@ const rcosTableData = computed(() => {
           id="overlays"
           :columns="overlaysTableData.columns"
           :rows="overlaysTableData.rows"
-          :pagination-options="paginationOptions"
+          :pagination-options="paginationOptions(overlaysTableData.rows.length)"
           style-class="table"
         >
           <template #emptystate>
@@ -357,7 +357,7 @@ const rcosTableData = computed(() => {
         id="appeals"
         :columns="appealsTableData.columns"
         :rows="appealsTableData.rows"
-        :pagination-options="paginationOptions"
+        :pagination-options="paginationOptions(appealsTableData.rows.length)"
         style-class="table"
       >
         <template #emptystate>
@@ -407,7 +407,7 @@ const rcosTableData = computed(() => {
         id="rcos"
         :columns="rcosTableData.columns"
         :rows="rcosTableData.rows"
-        :pagination-options="paginationOptions"
+        :pagination-options="paginationOptions(rcosTableData.rows.length)"
         style-class="table"
       >
         <template #emptystate>
