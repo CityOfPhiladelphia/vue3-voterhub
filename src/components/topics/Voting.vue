@@ -237,6 +237,7 @@ const electionTypes = {
 
 .election {
   font-size: 2rem;
+  line-height: 2.3rem;
   background-color: #f0f0f0;
   border-width: 1px;
   border-style: solid;
