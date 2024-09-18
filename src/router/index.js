@@ -309,9 +309,40 @@ const router = createRouter({
       props: true,
     },
     {
+      path: '/:addressOrTopic',
+      name: 'address-or-topic',
+      component: App,
+      beforeEnter: async (to, from) => {
+        if (import.meta.env.VITE_DEBUG === 'true') console.log('address-or-topic route beforeEnter, to:', to, 'from:', from, to.params.addressOrTopic.toLowerCase());
+        const MainStore = useMainStore();
+        const topics = [ 'voting' ];
+        if (topics.includes(to.params.addressOrTopic.toLowerCase())) {
+          if (import.meta.env.VITE_DEBUG === 'true') console.log('inside if, routing to topic');
+          MainStore.currentTopic = to.params.addressOrTopic;
+          MainStore.currentAddress = null;
+          MainStore.currentLang = to.query.lang;
+          routeApp(router);
+        } else {
+          if (import.meta.env.VITE_DEBUG === 'true') console.log('inside else, routing to address');
+          MainStore.currentTopic = null;
+          MainStore.currentAddress = to.params.addressOrTopic;
+          MainStore.currentLang = to.query.lang;
+          routeApp(router);
+        }
+      }
+    },
+    {
       path: '/:address',
       name: 'address',
       component: App,
+    },
+    {
+      path: '/:topic',
+      name: 'topic',
+      component: App,
+      beforeEnter: async (to, from) => {
+        console.log('topic route beforeEnter, to:', to, 'from:', from);
+      }
     },
     {
       path: '/:address/:topic',
@@ -360,7 +391,12 @@ const router = createRouter({
 router.afterEach(async (to, from) => {
   if (import.meta.env.VITE_DEBUG == 'true') console.log('router afterEach to:', to, 'from:', from);
   const MainStore = useMainStore();
-  if (to.name !== 'not-found' && to.name !== 'search') {
+  if (to.query.lang !== from.query.lang) {
+    MainStore.currentLang = to.query.lang;
+  }
+  if (to.name === 'address-or-topic') {
+    return;
+  } else if (to.name !== 'not-found' && to.name !== 'search') {
     await dataFetch(to, from);
     let pageTitle = MainStore.appVersion + '.phila.gov';
     for (let param of Object.keys(to.params)) {

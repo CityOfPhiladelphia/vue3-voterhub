@@ -4,6 +4,9 @@ if (import.meta.env.VITE_DEBUG == 'true') console.log('App.vue setup is running 
 import isMobileDevice from './util/is-mobile-device';
 import isMac from './util/is-mac'; // this can probably be removed from App.vue, and only run in main.js
 
+import i18nFromFiles from './i18n/i18n.js';
+const languages = i18nFromFiles.i18n.languages;
+
 // STORES
 import { useMainStore } from '@/stores/MainStore.js'
 const MainStore = useMainStore();
@@ -20,11 +23,16 @@ import { useRouter, useRoute } from 'vue-router';
 const route = useRoute();
 const router = useRouter();
 
-import { onMounted, computed, watch } from 'vue';
+import { onMounted, computed, getCurrentInstance, watch } from 'vue';
 
 // COMPONENTS
 import TopicPanel from '@/components/TopicPanel.vue';
 import MapPanel from '@/components/MapPanel.vue';
+
+const instance = getCurrentInstance();
+// if (import.meta.env.VITE_DEBUG == 'true') console.log('instance:', instance);
+const locale = computed(() => instance.appContext.config.globalProperties.$i18n.locale);
+// if (import.meta.env.VITE_DEBUG == 'true') console.log('locale:', locale);
 
 onMounted(async () => {
   MainStore.appVersion = import.meta.env.VITE_VERSION;
@@ -81,6 +89,42 @@ const fullScreenMapEnabled = computed(() => {
 });
 
 watch(
+  () => MainStore.currentLang,
+  (newLang, oldLang) => {
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('watch MainStore.currentLang:', newLang, oldLang, 'locale.value:', locale.value);
+    if (newLang != locale.value) {
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('setting locale:', newLang);
+      // const instance = getCurrentInstance();
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('instance:', instance);
+      if (instance) {
+        if (import.meta.env.VITE_DEBUG == 'true') console.log('instance:', instance);
+        if (newLang) {
+          instance.appContext.config.globalProperties.$i18n.locale = newLang;
+        } else {
+          instance.appContext.config.globalProperties.$i18n.locale = 'en-US';
+        }
+      }
+    }
+  }
+)
+
+watch(
+  () => locale.value,
+  (newLocale, oldLocale) => {
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('watch locale:', newLocale, oldLocale);
+    if (newLocale === MainStore.currentLang) {
+      return;
+    } else if (newLocale && newLocale != 'en-US') {
+      MainStore.currentLang = newLocale;
+      router.push({ query: { 'lang': newLocale }});
+    } else {
+      MainStore.currentLang = null;
+      router.push({ fullPath: route.path });
+    }
+  }
+)
+
+watch(
   () => MainStore.pageTitle,
   (newPageTitle) => {
     document.title = newPageTitle// + ' | phila.gov';
@@ -112,6 +156,12 @@ const appTitle = computed(() => {
   >
     <template #mobile-nav>
       <mobile-nav :links="links" />
+    </template>
+    <template #lang-selector-nav>
+      <lang-selector
+        v-show="MainStore.currentTopic == 'voting'"
+        :languages="languages"
+      />
     </template>
   </app-header>
 

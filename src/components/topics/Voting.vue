@@ -6,10 +6,16 @@ import useTransforms from '@/composables/useTransforms';
 const { nth, phoneNumber, titleCase } = useTransforms();
 
 import { useVotingStore } from '@/stores/VotingStore';
-import { computed } from 'vue';
+import { computed, getCurrentInstance } from 'vue';
 const VotingStore = useVotingStore();
 
 import VerticalTable from '@/components/VerticalTable.vue';
+
+const instance = getCurrentInstance();
+import i18nFromFiles from '@/i18n/i18n.js';
+const messages = computed(() => {
+  return i18nFromFiles.i18n.data.messages[instance.appContext.config.globalProperties.$i18n.locale];
+})
 
 const electedOfficials = computed(() => {
   if (!VotingStore.electedOfficials.rows || !VotingStore.electedOfficials.rows.length) return null;
@@ -59,13 +65,13 @@ const term = computed(() => {
 const accessibility = computed(() => {
   if (VotingStore.pollingPlaces.rows && VotingStore.pollingPlaces.rows.length) {
     const code = VotingStore.pollingPlaces.rows[0].accessibility_code;
-    const answer = code== "F" ? 'Building Fully Accessible' :
-      code== "B" ? 'Building Substantially Accessible' :
-      code== "M" ? 'Building Accessibility Modified' :
-      code== "A" ? 'Alternate Entrance' :
-      code== "R" ? 'Building Accessible With Ramp' :
-      code== "N" ? 'Building Not Accessible' :
-      'Information Not Available';
+    const answer = code== "F" ? 'buildingFullyAccessible' :
+      code== "B" ? 'buildingSubstantiallyAccessible' :
+      code== "M" ? 'buildingAccessibilityModified' :
+      code== "A" ? 'alternateEntrance' :
+      code== "R" ? 'buildingAccessibleWithRamp' :
+      code== "N" ? 'buildingNotAccessible' :
+      'informationNotAvailable';
     return answer;
   }
 });
@@ -73,10 +79,10 @@ const accessibility = computed(() => {
 const parking = computed(() => {
   if (VotingStore.pollingPlaces.rows && VotingStore.pollingPlaces.rows.length) {
     const code = VotingStore.pollingPlaces.rows[0].parking_code;
-    const parking = code == "N" ? 'No Parking' :
-      code == "G" ? 'General Parking' :
-      code == "L" ? 'Loading Zone' :
-      'Information Not Available';
+    const parking = code == "N" ? 'noParking' :
+      code == "G" ? 'generalParking' :
+      code == "L" ? 'loadingZone' :
+      'informationNotAvailable';
     return parking;
   }
 });
@@ -85,22 +91,22 @@ const pollingPlaceData = computed(() => {
   if (VotingStore.pollingPlaces.rows && VotingStore.pollingPlaces.rows.length) {
     return [
       {
-        label: 'Location',
+        label: messages.value.voting.topic.location,
         value: '<b>Ward ' + VotingStore.pollingPlaces.rows[0].ward + ', Division ' + VotingStore.pollingPlaces.rows[0].division + '</b><br>' +
             titleCase(VotingStore.pollingPlaces.rows[0].placename) + '<br>' +
-            titleCase(VotingStore.pollingPlaces.rows[0].street_address)
+            `<a target="_blank" href="https://www.google.com/maps/place/${VotingStore.pollingPlaces.rows[0].street_address}, Philadelphia, PA">${titleCase(VotingStore.pollingPlaces.rows[0].street_address)}</a>`,
       },
       {
-        label: 'Hours',
-        value: 'All polling places will be open on election day from 7 a.m. to 8 p.m.'
+        label: messages.value.voting.topic.hours,
+        value: messages.value.voting.introPage.p4,
       },
       {
-        label: 'Accessibility',
-        value: `<a target="_blank" href="https://vote.phila.gov/voting/voting-at-the-polls/polling-place-accessibility/">${accessibility.value}</a>`,
+        label: messages.value.voting.topic.accessibility,
+        value: `<a target="_blank" href="https://vote.phila.gov/voting/voting-at-the-polls/polling-place-accessibility/">${messages.value.voting.topic.accessibilityCodes[accessibility.value]}</a>`,
       },
       {
-        label: 'Parking',
-        value: parking.value,
+        label: messages.value.voting.topic.parking,
+        value: messages.value.voting.topic.parkingCodes[parking.value],
       },
     ];
   }
@@ -108,15 +114,15 @@ const pollingPlaceData = computed(() => {
 
 const electedRepsData = computed(() => [
   {
-    label: 'District Council Member',
+    label: messages.value.voting.topic.districtCouncilMember,
     value: councilMember.value,
   },
   {
-    label: 'City Hall Office',
+    label: messages.value.voting.topic.cityHallOffice,
     value: office.value,
   },
   {
-    label: 'Current Term',
+    label: messages.value.voting.topic.currentTerm,
     value: term.value,
   }
 ]);
@@ -128,9 +134,9 @@ const electionSplit = computed(() => {
 });
 
 const electionTypes = {
-  0: 'Special Election',
-  1: 'Primary Election',
-  2: 'General Election',
+  0: 'voting.topic.badge1.specialElection',
+  1: 'voting.topic.badge1.primaryElection',
+  2: 'voting.topic.badge1.generalElection',
 }
 
 </script>
@@ -139,7 +145,8 @@ const electionTypes = {
   <section>
     <div class="columns is-multiline column is-10 is-offset-1 has-text-centered badge">
       <div v-if="electionSplit" class="column is-12 badge-title">
-        <b>Next Eligible Election: {{ electionTypes[electionSplit.election_type] }}</b>
+        <!-- <b>Next Eligible Election: {{ electionTypes[electionSplit.election_type] }}</b> -->
+        <b>{{ $t(electionTypes[electionSplit.election_type]) }}</b>
       </div>
       <div
         v-if="electionSplit && VotingStore.loadingVotingData === false"
@@ -161,21 +168,18 @@ const electionTypes = {
     <a
       target="_blank"
       :href="ballotFileId"
-    >Preview ballot <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
+    >{{ $t('voting.topic.previewBallot') }} <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
   </div>
 
   <div
     id="Voting-description"
     class="topic-info"
+    v-html="$t('voting.topic.callout1.text')"
   >
-    The deadline to register for the next election is 15 days prior to the election. You can confirm your registration and learn about registering to vote at <a
-      target="_blank"
-      href="https://vote.phila.gov"
-    >vote.phila.gov</a>.
   </div>
 
   <h2 class="subtitle is-5 vert-table-title">
-    Polling Place
+    {{ $t('voting.topic.pollingPlace') }}
   </h2>
   <vertical-table
     v-if="!VotingStore.loadingVotingData"
@@ -194,12 +198,12 @@ const electionTypes = {
     class="table-link"
     target="_blank"
     :href="`https://vote.phila.gov/voting/vote-by-mail/`"
-  >Learn about your voting options if you cannot vote in person on Election Day <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
+  >{{ $t('voting.topic.verticalTable1.link') }} <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
   <br>
   <br>
 
   <h2 class="subtitle is-5 vert-table-title">
-    Elected Representatives
+    {{ $t('voting.topic.electedRep') }}
   </h2>
   <vertical-table
     v-if="!VotingStore.loadingVotingData"
@@ -218,7 +222,7 @@ const electionTypes = {
     class="table-link"
     target="_blank"
     :href="`https://vote.phila.gov/voting/current-elected-officials/`"
-  >See all citywide, state, and federal representatives <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
+  >{{ $t('voting.topic.verticalTable2.link') }} <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
   <br>
   <br>
 </template>

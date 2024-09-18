@@ -18,6 +18,7 @@ export const useMainStore = defineStore("MainStore", {
       otherParcelAddress:'',
       currentAddress: '',
       currentTopic: 'property',
+      currentLang: null,
       currentNearbyDataType: null,
       currentNearbyTimeInterval: {},
       dataSourcesLoadedArray: [],

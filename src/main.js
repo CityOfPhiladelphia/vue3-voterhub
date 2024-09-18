@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
+import { createI18n } from 'vue-i18n'
 
 import App from './App.vue';
 import router from './router';
@@ -24,6 +25,7 @@ import Dropdown from "@phila/phila-ui-dropdown";
 import MobileNav from "@phila/phila-ui-mobile-nav";
 import NavLink from "@phila/phila-ui-nav-link";
 import Textbox from "@phila/phila-ui-textbox";
+import LangSelector from "@phila/phila-ui-lang-selector";
 
 // if (import.meta.env.VITE_DEBUG == 'true') console.log('MobileNav', MobileNav, 'Dropdown:', Dropdown);
 
@@ -35,6 +37,7 @@ app.component("Dropdown", Dropdown);
 app.component("MobileNav", MobileNav);
 app.component("NavLink", NavLink);
 app.component("Textbox", Textbox);
+app.component("LangSelector", LangSelector);
 app.use(PhilaUICore);
 
 // import $config from './config'
@@ -89,6 +92,18 @@ app.component('FontAwesomeIcon', FontAwesomeIcon)
 
 import VueGoodTablePlugin from 'vue-good-table-next';
 app.use(VueGoodTablePlugin);
+
+import i18nFromFiles from './i18n/i18n.js';
+const messages = i18nFromFiles.i18n.data.messages;
+if (import.meta.env.VITE_DEBUG == 'true') console.log('i18nFromFiles:', i18nFromFiles, 'messages:', messages);
+const i18n = createI18n({
+  legacy: false,
+  locale: 'en-US',
+  fallbackLocale: 'en-US',
+  messages: messages
+})
+
+app.use(i18n)
 
 app.use(createPinia())
 app.use(router)

@@ -12,6 +12,9 @@ import FullScreenTopicsToggleTab from '@/components/FullScreenTopicsToggleTab.vu
 import AddressSearchControl from '@/components/AddressSearchControl.vue';
 
 import Topic from '@/components/Topic.vue';
+import AtlasIntro from '@/components/intros/AtlasIntro.vue';
+import CityAtlasIntro from '@/components/intros/CityAtlasIntro.vue';
+import VotingIntro from '@/components/intros/VotingIntro.vue';
 import Property from '@/components/topics/Property.vue';
 import Condos from '@/components/topics/Condos.vue';
 import Deeds from '@/components/topics/Deeds.vue';
@@ -45,63 +48,11 @@ const zipCode = computed(() => {
   <full-screen-topics-toggle-tab
     v-show="!MainStore.fullScreenMapEnabled"
   />
-  <!-- v-once -->
       
   <!-- FRONT PAGE CONTENT -->
-  <div
-    v-if="route.name == 'home' && version == 'atlas'"
-    id="topic-panel-no-topics"
-    class="section"
-  >
-    <div v-if="MainStore.fullScreenTopicsEnabled">
-      <address-search-control :input-id="'address-bar-search-input'" />
-    </div>
-    <div :class="MainStore.fullScreenTopicsEnabled ? 'topic-panel-half': ''">
-      <h1 class="subtitle is-3">
-        Atlas is your front door to the City of Philadelphia.
-      </h1>
-      <p class="subtitle is-4">
-        Here are some things you can do with Atlas:
-      </p>
-      <ul class="bullet-list">
-        <li>Find your polling place</li>
-        <li>Get the history of permits, licenses, and inspections at any address</li>
-        <li>Research real estate information including property values, zoning, and document archives</li>
-        <li>Get easy access to a variety of hard-to-find City resources</li>
-        <li>View recent activity around your address, such as crimes, 311 service requests, and more</li>
-        <li>Explore historical imagery and maps</li>
-      </ul>
-      <br>
-      <p>To get started, click anywhere on the map, or type an address, intersection, property assessment account number, or Department of Records Map Registry number into the search box.</p>
-    </div>
-  </div>
-
-  <div
-    v-if="route.name == 'home' && version == 'cityatlas'"
-    id="topic-panel-no-topics"
-    class="section"
-  >
-    <div v-if="MainStore.fullScreenTopicsEnabled">
-      <address-search-control :input-id="'address-bar-search-input'" />
-    </div>
-    <div :class="MainStore.fullScreenTopicsEnabled ? 'topic-panel-half': ''">
-      <h1 class="subtitle is-3">
-        CityAtlas connects you with information about any address in the city.
-      </h1>
-      <p class="subtitle is-4">
-        Here are some things you can do with CityAtlas:
-      </p>
-      <ul class="bullet-list">
-        <li>Research real estate information including property values, zoning, and document archives</li>
-        <li>Get the history of permits, licenses, and inspections at any address</li>
-        <li>Easily access high-resolution street-level and aerial imagery</li>
-        <li>View activity around an address, including vacancy, crime, 311 service requests, and more</li>
-        <li>Explore historical imagery and maps</li>
-      </ul>
-      <br>
-      <p>To get started, click anywhere on the map, or type an address, intersection, property assessment account number, or Department of Records Map Registry number into the search box.</p>
-    </div>
-  </div>
+  <CityAtlasIntro v-if="route.name == 'home' && version == 'cityatlas'" />
+  <VotingIntro v-else-if="route.name == 'topic' && route.params.topic.toLowerCase() == 'voting'"/>
+  <AtlasIntro v-else-if="route.name == 'home'" />
 
   <!-- ADDRESS NOT FOUND CONTENT -->
   <div
@@ -146,7 +97,7 @@ const zipCode = computed(() => {
   </div>
 
   <div
-    v-if="route.name !== 'home' && route.name !== 'not-found'"
+    v-if="route.name !== 'home' && route.name !== 'not-found' && route.name !== 'topic'"
     id="topic-panel-content"
     class="topics"
   >

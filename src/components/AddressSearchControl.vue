@@ -62,7 +62,7 @@ const yPosition = computed(() => {
           class="input address-input"
           type="text"
           placeholder="Search for an address, OPA account, or DOR number"
-          @keydown.enter="router.replace({ name: 'search', query: { address: MainStore.addressSearchValue }})"
+          @keydown.enter="router.replace({ name: 'search', query: { address: MainStore.addressSearchValue, lang: MainStore.currentLang }})"
         >
       </div>
       <div class="control">
@@ -83,7 +83,7 @@ const yPosition = computed(() => {
           class="button is-info address-search-button"
           type="submit"
           title="Address Search Button"
-          @click="router.replace({ name: 'search', query: { address: MainStore.addressSearchValue }})"
+          @click="router.replace({ name: 'search', query: { address: MainStore.addressSearchValue, lang: MainStore.currentLang }})"
         >
           <font-awesome-icon
             :icon="['fas', 'search']"
