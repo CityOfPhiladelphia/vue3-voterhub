@@ -1,11 +1,11 @@
-import { defineStore } from 'pinia';
+import { defineStore, acceptHMRUpdate } from 'pinia';
 
 export const useMainStore = defineStore("MainStore", {
   state: () => {
     return {
       appVersion: 'atlas',
+      pageTitle: '',
       datafetchRunning: false,
-      // initialDatafetchComplete: false,
       publicPath: null,
       isMobileDevice: null,
       isMac: null,
@@ -52,3 +52,8 @@ export const useMainStore = defineStore("MainStore", {
     },
   },
 });
+
+// this is from https://pinia.vuejs.org/cookbook/hot-module-replacement.html
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useMainStore, import.meta.hot))
+};

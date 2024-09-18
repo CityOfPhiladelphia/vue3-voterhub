@@ -359,10 +359,15 @@ const router = createRouter({
 
 router.afterEach(async (to, from) => {
   if (import.meta.env.VITE_DEBUG == 'true') console.log('router afterEach to:', to, 'from:', from);
+  const MainStore = useMainStore();
   if (to.name !== 'not-found' && to.name !== 'search') {
     await dataFetch(to, from);
+    let pageTitle = MainStore.appVersion + '.phila.gov';
+    for (let param of Object.keys(to.params)) {
+      pageTitle += ' | ' + to.params[param];
+    }
+    MainStore.pageTitle = pageTitle;
   } else if (to.name == 'not-found') {
-    const MainStore = useMainStore();
     MainStore.currentTopic = "Property"
   }
 });

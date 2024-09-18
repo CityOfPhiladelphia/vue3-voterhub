@@ -20,7 +20,7 @@ import { useRouter, useRoute } from 'vue-router';
 const route = useRoute();
 const router = useRouter();
 
-import { onMounted, computed } from 'vue';
+import { onMounted, computed, watch } from 'vue';
 
 // COMPONENTS
 import TopicPanel from '@/components/TopicPanel.vue';
@@ -80,6 +80,12 @@ const fullScreenMapEnabled = computed(() => {
   return MainStore.fullScreenMapEnabled;
 });
 
+watch(
+  () => MainStore.pageTitle,
+  (newPageTitle) => {
+    document.title = newPageTitle// + ' | phila.gov';
+  }
+)
 const appTitle = computed(() => {
   let version = 'Atlas';
   if (import.meta.env.VITE_VERSION == 'cityatlas'){
@@ -88,7 +94,7 @@ const appTitle = computed(() => {
   return version;
 })
 
-document.title = appTitle.value + ' | phila.gov';
+// document.title = appTitle.value + ' | phila.gov';
 
 </script>
 
