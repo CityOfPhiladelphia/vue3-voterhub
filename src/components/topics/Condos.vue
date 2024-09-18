@@ -11,8 +11,8 @@ import CustomPaginationLabelsCondos from '@/components/pagination/CustomPaginati
 
 const totalSize = computed(() => CondosStore.condosData.total_size);
 
-const paginationOptions = ref({
-  enabled: true,
+const paginationOptions = (tableLength) => ({
+  enabled: tableLength > 5,
   mode: 'pages',
   perPage: 10,
   position: 'top',
