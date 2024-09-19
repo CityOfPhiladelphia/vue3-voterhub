@@ -145,7 +145,6 @@ const electionTypes = {
   <section>
     <div class="columns is-multiline column is-10 is-offset-1 has-text-centered badge">
       <div v-if="electionSplit" class="column is-12 badge-title">
-        <!-- <b>Next Eligible Election: {{ electionTypes[electionSplit.election_type] }}</b> -->
         <b>{{ $t(electionTypes[electionSplit.election_type]) }}</b>
       </div>
       <div

@@ -60,17 +60,21 @@ export const useCity311Store = defineStore('City311Store', {
     },
     async fillCity311() {
       try {
+        if (import.meta.env.VITE_DEBUG == 'true') console.log('fillCity311 is running');
         this.loadingCity311 = true;
         const GeocodeStore = useGeocodeStore();
         const coordinates = GeocodeStore.aisData.features[0].geometry.coordinates;
         const MapStore = useMapStore();
         await MapStore.fillBufferForAddress(coordinates[0], coordinates[1]);
         const buffer = MapStore.bufferForAddress;
-
+        // if (import.meta.env.VITE_DEBUG == 'true') console.log('nearby311 still going 1');
+        
         const url = 'https://services.arcgis.com/fLeGjb7u4uXqeF9q/ArcGIS/rest/services/SALESFORCE_CASES_1YEAR/FeatureServer/0/query?';
-        const xyCoords = buffer.geometries[0].rings[0];
+        const xyCoords = buffer[0];
         let xyCoordsReduced = [[ parseFloat(xyCoords[0][0].toFixed(6)), parseFloat(xyCoords[0][1].toFixed(6)) ]];
         var i;
+
+
         for (i = 0; i < xyCoords.length; i++) {
           if (i%3 == 0) {
             let newXyCoordReduced = [ parseFloat(xyCoords[i][0].toFixed(6)), parseFloat(xyCoords[i][1].toFixed(6)) ];
@@ -78,7 +82,7 @@ export const useCity311Store = defineStore('City311Store', {
           }
         }
         xyCoordsReduced.push([ parseFloat(xyCoords[0][0].toFixed(6)), parseFloat(xyCoords[0][1].toFixed(6)) ]);
-
+        
         const today = new Date();
         const dd = String(today.getDate()).padStart(2, '0');
         const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -98,8 +102,6 @@ export const useCity311Store = defineStore('City311Store', {
           'geometry': JSON.stringify({ "rings": [xyCoordsReduced], "spatialReference": { "wkid": 4326 }}),
           'token': this.agoToken,
         };
-
-        if (import.meta.env.VITE_DEBUG == 'true') console.log('nearby311 still going');
 
         const response = await axios.get(url, { params });
         if (response.status === 200) {
@@ -149,6 +151,7 @@ export const useCity311Store = defineStore('City311Store', {
         }
       } catch {
         if (import.meta.env.VITE_DEBUG == 'true') console.error('311 - await never resolved, failed to fetch address data');
+        this.loadingCity311 = false;
       }
     },
   },
