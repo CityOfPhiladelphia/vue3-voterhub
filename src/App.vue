@@ -127,7 +127,7 @@ watch(
 watch(
   () => MainStore.pageTitle,
   (newPageTitle) => {
-    document.title = newPageTitle// + ' | phila.gov';
+    document.title = newPageTitle;
   }
 )
 const appTitle = computed(() => {
@@ -137,8 +137,6 @@ const appTitle = computed(() => {
   }
   return version;
 })
-
-// document.title = appTitle.value + ' | phila.gov';
 
 </script>
 

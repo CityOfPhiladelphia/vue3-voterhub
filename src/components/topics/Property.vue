@@ -74,7 +74,8 @@ const cityatlasVertTable1Data = computed(() => {
     return [
       {
         label: 'Owners',
-        value: GeocodeStore.getOpaOwners,
+        value: GeocodeStore.aisData.features[0].properties.opa_owners,
+        // value: GeocodeStore.getOpaOwners,
       },
       {
         label: 'OPA Address',
@@ -99,7 +100,7 @@ const cityatlasVertTable2Data = computed(() => {
       },
       {
         label: 'Homestead Exemption',
-        value: OpaStore.getHomesteadExemption,
+        value: currency(OpaStore.getHomesteadExemption),
       },
       {
         label: 'Description',
