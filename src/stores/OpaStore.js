@@ -72,7 +72,7 @@ export const useOpaStore = defineStore('OpaStore', {
     },
     getDescription: (state) => {
       if (state.opaData.rows && state.opaData.rows[0]) {
-        return titleCase(state.opaData.rows[0].building_code_description);
+        return titleCase(state.opaData.rows[0].building_code_description_new);
       }
     },
     getCondition: (state) => {
