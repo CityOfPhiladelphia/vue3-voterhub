@@ -193,7 +193,7 @@ export const useLiStore = defineStore('LiStore', {
         if (response.ok) {
           const data = await response.json();
           data.rows.forEach((permit) => {
-            permit.link = `<a target='_blank' href='https://li.phila.gov/Property-History/search/Permit-Detail?address="${encodeURIComponent(permit.address)}"&Id="${permit.permitnumber}"'>${permit.permitnumber} <i class='fa fa-external-link-alt'></i></a>`;
+            permit.link = `<a target='_blank' href='https://li.phila.gov/Property-History/search/Permit-Detail?address="${encodeURIComponent(permit.address)}"&Id=${permit.permitnumber}'>${permit.permitnumber} <i class='fa fa-external-link-alt'></i></a>`;
           });
           this.liPermits = data;
           this.loadingLiPermits = false;
