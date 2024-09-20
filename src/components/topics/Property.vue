@@ -33,7 +33,7 @@ const atlasVertTableData = computed(() => {
       },
       {
         label: 'Owners',
-        value: GeocodeStore.getOpaOwners,
+        value: GeocodeStore.aisData.features[0].properties.opa_owners,
       },
       {
         label: 'Assessed Value',
@@ -75,7 +75,6 @@ const cityatlasVertTable1Data = computed(() => {
       {
         label: 'Owners',
         value: GeocodeStore.aisData.features[0].properties.opa_owners,
-        // value: GeocodeStore.getOpaOwners,
       },
       {
         label: 'OPA Address',
