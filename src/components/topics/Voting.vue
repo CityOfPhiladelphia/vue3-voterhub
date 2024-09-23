@@ -1,6 +1,6 @@
 <script setup>
 
-import { parseISO, format } from 'date-fns';
+import { parseISO, format, fromUnixTime } from 'date-fns';
 
 import useTransforms from '@/composables/useTransforms';
 const { nth, phoneNumber, titleCase } = useTransforms();
@@ -17,54 +17,110 @@ const messages = computed(() => {
   return i18nFromFiles.i18n.data.messages[instance.appContext.config.globalProperties.$i18n.locale];
 })
 
+let fieldNames = {
+  'ward': 'ward',
+  'division': 'division',
+  'placename': 'placename',
+  'precinct': 'precinct',
+  'street_address': 'street_address',
+  'accessibility_code': 'accessibility_code',
+  'parking_code': 'parking_code',
+  'election_type': 'election_type',
+  'election_date': 'election_date',
+  'office_label': 'office_label',
+  'ballot_file_id': 'ballot_file_id',
+  'website': 'website',
+  'first_name': 'first_name',
+  'last_name': 'last_name',
+  'district': 'district',
+  'main_contact_address_2': 'main_contact_address_2',
+  'main_contact_phone_1': 'main_contact_phone_1',
+  'main_contact_phone_2': 'main_contact_phone_2',
+  'main_contact_fax': 'main_contact_fax',
+  'email': 'email',
+  'next_election': 'next_election',
+};
+if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'arcgis') {
+  for (let field of Object.keys(fieldNames)) {
+    fieldNames[field] = fieldNames[field].toUpperCase();
+  }
+}
+
 const electedOfficials = computed(() => {
-  if (!VotingStore.electedOfficials.rows || !VotingStore.electedOfficials.rows.length) return null;
-  return VotingStore.electedOfficials.rows;
+  if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'carto') {
+    if (!VotingStore.electedOfficials.rows || !VotingStore.electedOfficials.rows.length) return null;
+    return VotingStore.electedOfficials.rows;
+  } else if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'arcgis') {
+    if (!VotingStore.electedOfficials.features || !VotingStore.electedOfficials.features.length) return null;
+    return VotingStore.electedOfficials.features.map((feature) => feature.properties);
+  }
 });
 
 const council = computed(() => {
   if (electedOfficials.value) {
     return electedOfficials.value.filter((item) => {
-      return item.office_label == "City Council";
+      return item[fieldNames.office_label] == "City Council";
     });
   } else {
     return null;
   }
 });
 
+const electionSplit = computed(() => {
+  if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'carto') {
+    if (VotingStore.electionSplit.rows && VotingStore.electionSplit.rows[0]) {
+      return VotingStore.electionSplit.rows[0];
+    }
+  } else if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'arcgis') {
+    if (VotingStore.electionSplit.features && VotingStore.electionSplit.features[0]) {
+      return VotingStore.electionSplit.features[0].properties;
+    }
+  }
+});
+
 const ballotFileId = computed(() => {
-  if (electedOfficials.value) {
-    return electedOfficials.value[0].ballot_file_id;
-  } else {
-    return null;
+  if (electionSplit.value) {
+    return electionSplit.value[fieldNames.ballot_file_id];
   }
 });
 
 const councilMember = computed(() => {
   if (council.value && council.value[0]) {
-    return '<a href="http://' + council.value[0].website + '" target="_blank">' +
-      council.value[0].first_name +" " +council.value[0].last_name + " - " + nth(council.value[0].district) + " Council District </a>";
+    return '<a href="http://' + council.value[0][fieldNames.website] + '" target="_blank">' +
+      council.value[0][fieldNames.first_name] +" " +council.value[0][fieldNames.last_name] + " - " + nth(council.value[0][fieldNames.district]) + " Council District </a>";
   }
 });
 
 const office = computed(() => {
   if (council.value && council.value[0]) {
-    return council.value[0].main_contact_address_2 + '<br>' +
-      phoneNumber(council.value[0].main_contact_phone_1) + ", " + phoneNumber(council.value[0].main_contact_phone_2) + '<br>\
-      F: '+ phoneNumber(council.value[0].main_contact_fax) + ' <br>\
-      <b><a href=mailto:"' + council.value[0].email + '">' + council.value[0].email + '</a></b>';
+    return council.value[0][fieldNames.main_contact_address_2] + '<br>' +
+      phoneNumber(council.value[0][fieldNames.main_contact_phone_1]) + ", " + phoneNumber(council.value[0][fieldNames.main_contact_phone_2]) + '<br>\
+      F: '+ phoneNumber(council.value[0][fieldNames.main_contact_fax]) + ' <br>\
+      <b><a href=mailto:"' + council.value[0][fieldNames.email] + '">' + council.value[0][fieldNames.email] + '</a></b>';
   }
 });
 
 const term = computed(() => {
   if (council.value && council.value[0]) {
-    return council.value[0].next_election - 4 + ' - ' + council.value[0].next_election;
+    return council.value[0][fieldNames.next_election] - 4 + ' - ' + council.value[0][fieldNames.next_election];
+  }
+});
+
+const pollingPlacesData = computed(() => {
+  if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'carto') {
+    if (VotingStore.pollingPlaces.rows) {
+      return VotingStore.pollingPlaces.rows[0];
+    }
+  } else if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'arcgis') {
+    if (VotingStore.pollingPlaces.features) {
+      return VotingStore.pollingPlaces.features[0].properties;
+    }
   }
 });
 
 const accessibility = computed(() => {
-  if (VotingStore.pollingPlaces.rows && VotingStore.pollingPlaces.rows.length) {
-    const code = VotingStore.pollingPlaces.rows[0].accessibility_code;
+  if (pollingPlacesData.value) {
+    const code = pollingPlacesData.value[fieldNames.accessibility_code];
     const answer = code== "F" ? 'buildingFullyAccessible' :
       code== "B" ? 'buildingSubstantiallyAccessible' :
       code== "M" ? 'buildingAccessibilityModified' :
@@ -77,8 +133,8 @@ const accessibility = computed(() => {
 });
 
 const parking = computed(() => {
-  if (VotingStore.pollingPlaces.rows && VotingStore.pollingPlaces.rows.length) {
-    const code = VotingStore.pollingPlaces.rows[0].parking_code;
+  if (pollingPlacesData.value) {
+    const code = pollingPlacesData.value[fieldNames.parking_code];
     const parking = code == "N" ? 'noParking' :
       code == "G" ? 'generalParking' :
       code == "L" ? 'loadingZone' :
@@ -87,14 +143,14 @@ const parking = computed(() => {
   }
 });
 
-const pollingPlaceData = computed(() => {
-  if (VotingStore.pollingPlaces.rows && VotingStore.pollingPlaces.rows.length) {
+const pollingPlaceTableData = computed(() => {
+  if (pollingPlacesData.value) {
     return [
       {
         label: messages.value.voting.topic.location,
-        value: '<b>Ward ' + VotingStore.pollingPlaces.rows[0].ward + ', Division ' + VotingStore.pollingPlaces.rows[0].division + '</b><br>' +
-            titleCase(VotingStore.pollingPlaces.rows[0].placename) + '<br>' +
-            `<a target="_blank" href="https://www.google.com/maps/place/${VotingStore.pollingPlaces.rows[0].street_address}, Philadelphia, PA">${titleCase(VotingStore.pollingPlaces.rows[0].street_address)}</a>`,
+        value: '<b>Ward ' + pollingPlacesData.value[fieldNames.ward] + ', Division ' + pollingPlacesData.value[fieldNames.division] + '</b><br>' +
+            titleCase(pollingPlacesData.value[fieldNames.placename]) + '<br>' +
+            `<a target="_blank" href="https://www.google.com/maps/place/${pollingPlacesData.value[fieldNames.street_address]}, Philadelphia, PA">${titleCase(pollingPlacesData.value[fieldNames.street_address])}</a>`,
       },
       {
         label: messages.value.voting.topic.hours,
@@ -127,17 +183,21 @@ const electedRepsData = computed(() => [
   }
 ]);
 
-const electionSplit = computed(() => {
-  if (VotingStore.electionSplit.rows && VotingStore.electionSplit.rows[0]) {
-    return VotingStore.electionSplit.rows[0];
-  }
-});
-
 const electionTypes = {
   0: 'voting.topic.badge1.specialElection',
   1: 'voting.topic.badge1.primaryElection',
   2: 'voting.topic.badge1.generalElection',
 }
+
+const electionDate = computed(() => {
+  if (electionSplit.value) {
+    if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'carto') {
+      return format(parseISO(electionSplit.value[fieldNames.election_date]), 'MMMM d, yyyy');
+    } else if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'arcgis') {
+      return format(fromUnixTime(electionSplit.value[fieldNames.election_date]/1000), 'MMMM d, yyyy');
+    }
+  }
+});
 
 </script>
 
@@ -145,13 +205,13 @@ const electionTypes = {
   <section>
     <div class="columns is-multiline column is-10 is-offset-1 has-text-centered badge">
       <div v-if="electionSplit" class="column is-12 badge-title">
-        <b>{{ $t(electionTypes[electionSplit.election_type]) }}</b>
+        <b>{{ $t(electionTypes[electionSplit[fieldNames.election_type]]) }}</b>
       </div>
       <div
-        v-if="electionSplit && VotingStore.loadingVotingData === false"
+        v-if="VotingStore.loadingVotingData === false"
         class="column is-12 election"
       >
-        {{ format(parseISO(electionSplit.election_date), 'MMMM d, yyyy') }}
+        {{ electionDate }}
       </div>
       <div v-else class="column election">
         <p>
@@ -183,7 +243,7 @@ const electionTypes = {
   <vertical-table
     v-if="!VotingStore.loadingVotingData"
     :table-id="'pollingPlaceTable'"
-    :data="pollingPlaceData"
+    :data="pollingPlaceTableData"
   />
   <div v-else>
     <p>

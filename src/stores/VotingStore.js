@@ -61,32 +61,94 @@ export const useVotingStore = defineStore("VotingStore", {
       } else if (feature.properties.political_division) {
         precinct = feature.properties.political_division;
       }
-      let baseUrl = 'https://phl.carto.com/api/v2/sql?q=';
-      const url = baseUrl += `select ST_X(the_geom) as lng, ST_Y(the_geom) as lat, * from polling_places where precinct ='${precinct}'`;
-      const response = await fetch(url);
-      this.pollingPlaces = await response.json();
+
+      try {
+        if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'carto') {
+          let baseUrl = 'https://phl.carto.com/api/v2/sql?q=';
+          const url = baseUrl += `select ST_X(the_geom) as lng, ST_Y(the_geom) as lat, * from polling_places where precinct ='${precinct}'`;
+          const response = await fetch(url);
+          if (response.ok) {
+            this.pollingPlaces = await response.json();
+          } else {
+            if (import.meta.env.VITE_DEBUG == 'true') console.warn('fillPollingPlaces - await resolved but HTTP status was not successful');
+          }
+        } else if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'arcgis') {
+
+          let baseUrl = '//services.arcgis.com/fLeGjb7u4uXqeF9q/ArcGIS/rest/services/POLLING_PLACES/FeatureServer/0/query';
+          let params = {
+            'returnGeometry': true,
+            'where': `PRECINCT = '${precinct}'`,
+            'outSR': 4326,
+            'outFields': '*',
+            'inSr': 4326,
+            'geometryType': 'esriGeometryPoint',
+            'f': 'geojson',
+          };
+
+          const response = await axios.get(baseUrl, { params });
+          if (response.status === 200) {
+            let data = await response.data;
+            this.pollingPlaces = data;
+          } else {
+            if (import.meta.env.VITE_DEBUG == 'true') console.warn('fillPollingPlaces - await resolved but HTTP status was not successful');
+          }
+        }
+      } catch {
+        if (import.meta.env.VITE_DEBUG == 'true') console.error('fillPollingPlaces - await never resolved, failed to fetch data');
+      }
     },
     async fillElectedOfficials() {
       if (import.meta.env.VITE_DEBUG == 'true') console.log('fillElectedOfficials is running');
       const GeocodeStore = useGeocodeStore();
       const feature = GeocodeStore.aisData.features[0];
-      let precinct;
-      if (feature.properties.election_precinct) {
-        precinct = feature.properties.election_precinct;
-      } else if (feature.properties.political_division) {
-        precinct = feature.properties.political_division;
+      // let precinct;
+      // if (feature.properties.election_precinct) {
+      //   precinct = feature.properties.election_precinct;
+      // } else if (feature.properties.political_division) {
+      //   precinct = feature.properties.political_division;
+      // }
+
+      try {
+        if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'carto') {
+          let baseUrl = 'https://phl.carto.com/api/v2/sql?q=';
+          const url = baseUrl += `SELECT * FROM elected_officials WHERE office = 'city_council' AND district = '${feature.properties.council_district_2024}'`;
+
+          // const url = baseUrl += `SELECT * FROM elected_officials WHERE precinct = '${precinct}' \
+          // SELECT eo.*, s.ballot_file_id\
+          // FROM elected_officials eo, split s \
+          // WHERE eo.office = 'city_council' AND eo.district = '${feature.properties.council_district_2024}' \
+          //           OR eo.office = 'state_house' AND eo.district = s.state_house \
+          //           OR eo.office = 'state_senate' AND eo.district = s.state_senate \
+          //           OR eo.office = 'us_house' AND eo.district = s.federal_house \
+          // `;
+          const response = await fetch(url);
+          if (response.ok) {
+            this.electedOfficials = await response.json();
+          } else {
+            if (import.meta.env.VITE_DEBUG == 'true') console.warn('fillElectedOfficials - await resolved but HTTP status was not successful');
+          }
+        } else if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'arcgis') {
+          let baseUrl = '//services.arcgis.com/fLeGjb7u4uXqeF9q/ArcGIS/rest/services/ELECTED_OFFICIALS/FeatureServer/0/query';
+          let params = {
+            'returnGeometry': false,
+            'where': `OFFICE = 'city_council' AND DISTRICT = '${feature.properties.council_district_2024}'`,
+            'outSR': 4326,
+            'outFields': '*',
+            'inSr': 4326,
+            'f': 'geojson',
+          };
+
+          const response = await axios.get(baseUrl, { params });
+          if (response.status === 200) {
+            let data = await response.data;
+            this.electedOfficials = data;
+          } else {
+            if (import.meta.env.VITE_DEBUG == 'true') console.warn('fillElectedOfficials - await resolved but HTTP status was not successful');
+          }
+        }
+      } catch {
+        if (import.meta.env.VITE_DEBUG == 'true') console.error('fillElectedOfficials - await never resolved, failed to fetch data');
       }
-      let baseUrl = 'https://phl.carto.com/api/v2/sql?q=';
-      const url = baseUrl += `WITH split AS (SELECT * FROM splits WHERE precinct = '${precinct}') \
-      SELECT eo.*, s.ballot_file_id\
-      FROM elected_officials eo, split s \
-      WHERE eo.office = 'city_council' AND eo.district = '${feature.properties.council_district_2024}' \
-                OR eo.office = 'state_house' AND eo.district = s.state_house \
-                OR eo.office = 'state_senate' AND eo.district = s.state_senate \
-                OR eo.office = 'us_house' AND eo.district = s.federal_house \
-      `;
-      const response = await fetch(url);
-      this.electedOfficials = await response.json();
     },
     async fillNextElection() {
       if (import.meta.env.VITE_DEBUG == 'true') console.log('fillNextElection is running');
@@ -104,11 +166,40 @@ export const useVotingStore = defineStore("VotingStore", {
       } else if (feature.properties.political_division) {
         precinct = feature.properties.political_division;
       }
-      let baseUrl = 'https://phl.carto.com/api/v2/sql?q=';
-      const url = baseUrl += `SELECT * FROM splits WHERE precinct = '${precinct}'`;
-      // const url = baseUrl += `select ST_X(the_geom) as lng, ST_Y(the_geom) as lat, * from polling_places where precinct ='${feature.properties.election_precinct}'`;
-      const response = await fetch(url);
-      this.electionSplit = await response.json();
+      
+      try {
+        if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'carto') {
+          let baseUrl = 'https://phl.carto.com/api/v2/sql?q=';
+          const url = baseUrl += `SELECT * FROM splits WHERE precinct = '${precinct}'`;
+          const response = await fetch(url);
+          if (response.ok) {
+            this.electionSplit = await response.json();
+          } else {
+            if (import.meta.env.VITE_DEBUG == 'true') console.warn('fillElectionSplit - await resolved but HTTP status was not successful');
+          }
+        } else if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'arcgis') {
+
+          let baseUrl = '//services.arcgis.com/fLeGjb7u4uXqeF9q/ArcGIS/rest/services/SPLITS/FeatureServer/0/query';
+          let params = {
+            'returnGeometry': false,
+            'where': `PRECINCT = '${precinct}'`,
+            'outSR': 4326,
+            'outFields': '*',
+            'inSr': 4326,
+            'f': 'geojson',
+          };
+
+          const response = await axios.get(baseUrl, { params });
+          if (response.status === 200) {
+            let data = await response.data;
+            this.electionSplit = data;
+          } else {
+            if (import.meta.env.VITE_DEBUG == 'true') console.warn('fillElectionSplit - await resolved but HTTP status was not successful');
+          }
+        }
+      } catch {
+        if (import.meta.env.VITE_DEBUG == 'true') console.error('fillElectionSplit - await never resolved, failed to fetch data');
+      }
     },
   },
 });

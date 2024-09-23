@@ -575,10 +575,18 @@ const votingDivision = computed(() => {
   }
 });
 const pollingPlaceCoordinates = computed(() => {
-  if (VotingStore.pollingPlaces.rows) {
-    return [ VotingStore.pollingPlaces.rows[0].lng, VotingStore.pollingPlaces.rows[0].lat] ;
-  } else {
-    return [];
+  if (import.meta.env.VITE_VOTING_DATA_SOURCE == 'carto') {
+    if (VotingStore.pollingPlaces.rows) {
+      return [ VotingStore.pollingPlaces.rows[0].lng, VotingStore.pollingPlaces.rows[0].lat] ;
+    } else {
+      return [];
+    }
+  } else if (import.meta.env.VITE_VOTING_DATA_SOURCE == 'arcgis') {
+    if (VotingStore.pollingPlaces.features) {
+      return VotingStore.pollingPlaces.features[0].geometry.coordinates;
+    } else {
+      return [];
+    }
   }
 });
 watchEffect(() => {
