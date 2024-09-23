@@ -604,9 +604,10 @@ watch(
       if (import.meta.env.VITE_DEBUG == 'true') console.log('map.getStyle().sources.nearby.data.features', map.getStyle().sources.nearby.data.features, 'newHoveredStateId:', newHoveredStateId);
       const feature = map.getStyle().sources.nearby.data.features.filter(feature => feature.properties.id === newHoveredStateId)[0];
       const index = map.getStyle().sources.nearby.data.features.indexOf(feature);
-      // if (import.meta.env.VITE_DEBUG == 'true') console.log('feature:', feature, 'index:', index, 'map.getStyle().sources.nearby.data.features:', map.getStyle().sources.nearby.data.features.filter(feature => feature.properties.id === newHoveredStateId)[0]);
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('feature:', feature, 'index:', index, 'map.getStyle().sources.nearby.data.features:', map.getStyle().sources.nearby.data.features.filter(feature => feature.properties.id === newHoveredStateId)[0]);
       map.getStyle().sources.nearby.data.features.splice(index, 1);
       map.getStyle().sources.nearby.data.features.push(feature);
+      console.log("map.getSource('nearby'):", map.getSource('nearby'), "map.getStyle().sources.nearby.data:", map.getStyle().sources.nearby.data);
       map.getSource('nearby').setData(map.getStyle().sources.nearby.data);
       // if (import.meta.env.VITE_DEBUG == 'true') console.log('map.getStyle().sources:', map.getStyle().sources.filter(source => source.id === 'nearby')[0]);
       map.setPaintProperty(
@@ -630,18 +631,20 @@ watch(
         ['get', 'type'],
         'mailinVoting',
         '#FF0000',
-        // 'nearbyCrimeIncidents',
-        // '#0096FF',
-        // 'nearbyZoningAppeals',
-        // '#009900',
-        // 'nearbyVacantIndicatorPoints',
-        // '#9400c6',
-        // 'nearbyConstructionPermits',
-        // '#FF0000',
-        // 'nearbyDemolitionPermits',
-        // '#0096FF',
-        // 'nearbyImminentlyDangerous',
-        // '#009900',
+        'city311',
+        '#FF0000',
+        'nearbyCrimeIncidents',
+        '#0096FF',
+        'nearbyZoningAppeals',
+        '#009900',
+        'nearbyVacantIndicatorPoints',
+        '#9400c6',
+        'nearbyConstructionPermits',
+        '#FF0000',
+        'nearbyDemolitionPermits',
+        '#0096FF',
+        'nearbyUnsafeBuildings',
+        '#009900',
         /* other */ '#000000'
         ]
       ]
@@ -659,18 +662,20 @@ watch(
         ['get', 'type'],
         'mailinVoting',
         '#FF0000',
-        // 'nearbyCrimeIncidents',
-        // '#0096FF',
-        // 'nearbyZoningAppeals',
-        // '#009900',
-        // 'nearbyVacantIndicatorPoints',
-        // '#9400c6',
-        // 'nearbyConstructionPermits',
-        // '#FF0000',
-        // 'nearbyDemolitionPermits',
-        // '#0096FF',
-        // 'nearbyImminentlyDangerous',
-        // '#009900',
+        'city311',
+        '#FF0000',
+        'nearbyCrimeIncidents',
+        '#0096FF',
+        'nearbyZoningAppeals',
+        '#009900',
+        'nearbyVacantIndicatorPoints',
+        '#9400c6',
+        'nearbyConstructionPermits',
+        '#FF0000',
+        'nearbyDemolitionPermits',
+        '#0096FF',
+        'nearbyUnsafeBuildings',
+        '#009900',
         /* other */ '#000000'
         ]
       );
