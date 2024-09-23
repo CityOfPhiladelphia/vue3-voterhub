@@ -141,6 +141,19 @@ watch(
   }
 )
 
+watch(
+  () => MainStore.pageTitle,
+  (newPageTitle) => {
+    document.title = newPageTitle;
+  }
+)
+// const appTitle = computed(() => {
+//   let version = 'Atlas';
+//   if (import.meta.env.VITE_VERSION == 'cityatlas'){
+//     version = 'CityAtlas';
+//   }
+// })
+
 const brandingImage = computed(() => {
   let value = null;
   if (MainStore.windowDimensions.width > 767) {
@@ -184,7 +197,7 @@ const brandingImage = computed(() => {
   >
     <!-- TOPIC PANEL ON LEFT -->
     <div
-      v-if="!isMobileDevice() && MainStore.windowDimensions.width > 767 && !fullScreenMapEnabled"
+      v-if="!isMobileDevice() && MainStore.windowDimensions.width > 768 && !fullScreenMapEnabled"
       class="topics-holder"
       :class="fullScreenTopicsEnabled ? 'topics-holder-full' : ''"
     >
@@ -201,7 +214,7 @@ const brandingImage = computed(() => {
     </div>
 
     <div
-      v-if="isMobileDevice() || MainStore.windowDimensions.width <= 767"
+      v-if="isMobileDevice() || MainStore.windowDimensions.width <= 768"
       class="topics-holder"
     >
       <topic-panel />

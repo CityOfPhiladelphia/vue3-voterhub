@@ -35,6 +35,7 @@ export default function useParcels() {
       1: 1,
       2: 3,
       3: 2,
+      9: 4,
     };
 
     // first sort by mapreg (descending)

@@ -58,6 +58,7 @@ td {
   padding-top: 6px;
   padding-bottom: 6px;
   width: 70%;
+  vertical-align: middle !important;
 }
 
 </style>
