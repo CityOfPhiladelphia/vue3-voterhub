@@ -1,9 +1,6 @@
 <script setup>
 if (import.meta.env.VITE_DEBUG == 'true') console.log('App.vue setup is running in debug mode');
 
-// import { useI18n } from 'vue-i18n'
-// const { t } = useI18n()
-
 import isMobileDevice from './util/is-mobile-device';
 import isMac from './util/is-mac'; // this can probably be removed from App.vue, and only run in main.js
 
@@ -13,9 +10,6 @@ const languages = i18nFromFiles.i18n.languages;
 // STORES
 import { useMainStore } from '@/stores/MainStore.js'
 const MainStore = useMainStore();
-
-// import { useMailinVotingStore } from '@/stores/MailinVotingStore'
-// const MailinVotingStore = useMailinVotingStore();
 
 if (!import.meta.env.VITE_PUBLICPATH) {
   MainStore.publicPath = '/';
@@ -41,7 +35,6 @@ const locale = computed(() => instance.appContext.config.globalProperties.$i18n.
 // if (import.meta.env.VITE_DEBUG == 'true') console.log('locale:', locale);
 
 onMounted(async () => {
-  MainStore.appVersion = import.meta.env.VITE_VERSION;
   MainStore.isMobileDevice = isMobileDevice();
   MainStore.isMac = isMac();
   await router.isReady()
@@ -51,15 +44,9 @@ onMounted(async () => {
   }
   if (route.params.topic) {
     MainStore.currentTopic = route.params.topic.toLowerCase();
-  } //else {
-  //   MainStore.currentTopic = null;
-  // }
-  // if (route.name == 'topic' && route.params.topic == 'mail-in-voting') {
-  //   MailinVotingStore.fillVotingSites()
-  // }
+  }
 
   if (route.query.lang) {
-    // const instance = getCurrentInstance();
     if (import.meta.env.VITE_DEBUG == 'true') console.log('instance:', instance);
     instance.appContext.config.globalProperties.$i18n.locale = route.query.lang;
   }
@@ -147,12 +134,6 @@ watch(
     document.title = newPageTitle;
   }
 )
-// const appTitle = computed(() => {
-//   let version = 'Atlas';
-//   if (import.meta.env.VITE_VERSION == 'cityatlas'){
-//     version = 'CityAtlas';
-//   }
-// })
 
 const brandingImage = computed(() => {
   let value = null;

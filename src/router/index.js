@@ -27,10 +27,6 @@ const clearStoreData = async() => {
   MailinVotingStore.clearAllMailinVotingData();
   const ElectedOfficialsStore = useElectedOfficialsStore();
   ElectedOfficialsStore.clearAllElectedOfficialsData();
-
-  // const CondosStore = useCondosStore();
-  // CondosStore.lastPageUsed = 1;
-  // CondosStore.condosData.pages = { page_1: { features: [] } };
 }
 
 const getGeocodeAndPutInStore = async(address) => {
@@ -355,8 +351,7 @@ router.afterEach(async (to, from) => {
     return;
   } else if (to.name !== 'not-found' && to.name !== 'search' && to.name !== 'topic') {
     await dataFetch(to, from);
-    // let pageTitle = MainStore.appVersion + '.phila.gov';
-    let pageTitle = MainStore.appVersion.charAt(0).toUpperCase() + MainStore.appVersion.slice(1);
+    let pageTitle = 'VoterHub';
     for (let param of Object.keys(to.params)) {
       pageTitle += ' | ' + to.params[param];
     }
