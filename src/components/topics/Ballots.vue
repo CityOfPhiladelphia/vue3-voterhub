@@ -78,15 +78,24 @@ const electionTypes = {
   <div
     id="dates-description"
     class="topic-info"
-    v-html="$t('ballot.topic.paragraph1.text')"
   >
+    {{ $t('ballot.topic.paragraph1.text') }}
+    <a target='_blank' href='https://vote.phila.gov/voting/important-dates-for-voters/'>
+      {{ $t('shared.link11') }}.
+    </a>
   </div>
 
-  <!-- class="table-link" -->
-  <a
-    target="_blank"
-    :href="'https://vote.phila.gov/voting/vote-by-mail/'"
-  >{{ $t('ballot.topic.links.link1') }} <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a>
+  <a target="_blank" :href="'https://vote.phila.gov/voting/vote-by-mail/'">
+    {{ $t('shared.link1') }} <font-awesome-icon icon="fa-solid fa-external-link-alt" />
+  </a>
+  <br>
+  <!-- <a target="_blank" :href="'https://vote.phila.gov/voting/important dates for voters/'">
+    {{ $t('shared.link6') }} <font-awesome-icon icon="fa-solid fa-external-link-alt" />
+  </a>
+  <br>
+  <a target='_blank' href='https://vote.phila.gov/voting/important-dates-for-voters/'>
+    {{ $t('shared.link11') }} <font-awesome-icon icon="fa-solid fa-external-link-alt" />
+  </a> -->
 
 
 </template>

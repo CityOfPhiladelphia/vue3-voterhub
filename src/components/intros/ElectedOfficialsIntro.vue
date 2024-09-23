@@ -1,8 +1,7 @@
 <script setup>
+
 import { useMainStore } from '@/stores/MainStore.js'
 const MainStore = useMainStore();
-
-import AddressSearchControl from '@/components/AddressSearchControl.vue';
 
 </script>
 
@@ -20,7 +19,7 @@ import AddressSearchControl from '@/components/AddressSearchControl.vue';
         {{ $t('electedOfficials.introPage.introTitle') }}
       </h1>
       <p class="subtitle is-4">
-        {{ $t('electedOfficials.introPage.p3') }}
+        {{ $t('electedOfficials.introPage.p1') }}
       </p>
       <ul class="bullet-list">
         <li>{{ $t('electedOfficials.introPage.ul1.li1') }}</li>
@@ -33,15 +32,15 @@ import AddressSearchControl from '@/components/AddressSearchControl.vue';
         class="section-header"
         :style="{ 'background-color': '#F0F0F0', 'color': 'black' }"
       >
-        <b>{{ $t('pollingPlace.introPage.relatedContent') }}</b>
+        <b>{{ $t('shared.relatedContent') }}</b>
       </div>
       <div class="custom-section">
         <ul class="bullet-list">
-          <li><a target="_blank" href="https://vote.phila.gov/voting/current-elected-officials/">{{ $t('default.introPage.link9') }}</a></li>
-          <li><a href="/polling-place">{{ $t('default.introPage.link2') }}</a></li>
-          <li><a target="_blank" href="https://www.pavoterservices.pa.gov/pages/voterregistrationstatus.aspx">{{ $t('default.introPage.link1') }}</a></li>
-          <li><a href="/elections-and-ballots">{{ $t('default.introPage.link7') }}</a></li>
-          <li><a target="_blank" href="https://vote.phila.gov/candidates-campaigns/campaign-finance/">{{ $t('default.introPage.link10') }}</a></li>
+          <li><a target="_blank" href="https://vote.phila.gov/voting/current-elected-officials/">{{ $t('shared.link9') }}</a></li>
+          <li><a href="/polling-place">{{ $t('shared.link2') }}</a></li>
+          <li><a target="_blank" href="https://www.pavoterservices.pa.gov/pages/voterregistrationstatus.aspx">{{ $t('shared.link1') }}</a></li>
+          <li><a href="/elections-and-ballots">{{ $t('shared.link7') }}</a></li>
+          <li><a target="_blank" href="https://vote.phila.gov/candidates-campaigns/campaign-finance/">{{ $t('shared.link10') }}</a></li>
         </ul>
       </div>
     </div>

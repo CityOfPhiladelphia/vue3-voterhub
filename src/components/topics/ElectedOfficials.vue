@@ -58,7 +58,7 @@ const formatMember = (person, termLength=4, districtLabel) => {
   const phone2 = phoneNumber(person.main_contact_phone_2) || '';
   const fax = 'F: '+ phoneNumber(person.main_contact_fax) || '';
   const email = '<b><a href=mailto:"' + person.email + '">' + person.email + '</a></b>';
-  const term = 'Current Term: ' + (person.next_election-termLength) + ' - ' + person.next_election;
+  const term = messages.value.electedOfficials.topic.currentTerm + ': ' + (person.next_election-termLength) + ' - ' + person.next_election;
 
   let returnString = website;
   if (party) {

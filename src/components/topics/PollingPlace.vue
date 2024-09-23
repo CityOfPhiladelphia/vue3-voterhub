@@ -46,26 +46,25 @@ const pollingPlaceData = computed(() => {
   if (PollingPlaceStore.pollingPlaces.rows && PollingPlaceStore.pollingPlaces.rows.length) {
     return [
       {
-        label: 'Location',
+        label: messages.value.shared.location,
         value: '<b>Ward ' + PollingPlaceStore.pollingPlaces.rows[0].ward + ', Division ' + PollingPlaceStore.pollingPlaces.rows[0].division + '</b><br>' +
             titleCase(PollingPlaceStore.pollingPlaces.rows[0].placename) + '<br>' +
             `<a target="_blank" href="https://www.google.com/maps/place/${PollingPlaceStore.pollingPlaces.rows[0].street_address}, Philadelphia, PA">${titleCase(PollingPlaceStore.pollingPlaces.rows[0].street_address)}</a>`,
       },
       {
-        label: 'Hours',
-        value: messages.value.default.introPage.p4,
-        // value: 'All polling places will be open on election day from 7 a.m. to 8 p.m.'
+        label: messages.value.shared.hours,
+        value: messages.value.shared.p4,
       },
       {
-        label: 'Accessibility',
+        label: messages.value.pollingPlace.topic.accessibility,
         value: `<a target="_blank" href="https://vote.phila.gov/voting/voting-at-the-polls/polling-place-accessibility/">${messages.value.pollingPlace.topic.accessibilityCodes[accessibility.value]}</a>`,
       },
       {
-        label: 'Parking',
+        label: messages.value.shared.parking,
         value: messages.value.pollingPlace.topic.parkingCodes[parking.value],
       },
       {
-        label: 'Last Updated',
+        label: messages.value.shared.lastUpdated,
         value: messages.value.pollingPlace.topic.lastUpdatedSentence,
       },
     ];
@@ -88,7 +87,6 @@ const pollingPlaceData = computed(() => {
     :table-id="'pollingPlaceTable'"
     :data="pollingPlaceData"
   />
-  <!-- class="table-link" -->
   <a
     target="_blank"
     :href="`https://vote.phila.gov/voting/vote-by-mail/`"

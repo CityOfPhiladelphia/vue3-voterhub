@@ -24,8 +24,6 @@ import ElectedOfficialsIntro from '@/components/intros/ElectedOfficialsIntro.vue
 
 import { useRoute } from 'vue-router';
 
-const version = import.meta.env.VITE_VERSION;
-
 const route = useRoute();
 
 const address = computed(() => MainStore.currentAddress);

@@ -22,7 +22,7 @@ import AddressSearchControl from '@/components/AddressSearchControl.vue';
         {{ $t('ballot.introPage.introTitle') }}
       </h1>
       <p class="subtitle is-4">
-        {{ $t('ballot.introPage.p3') }}
+        {{ $t('shared.p1') }}
       </p>
       <ul class="bullet-list">
         <li>{{ $t('ballot.introPage.ul1.li1') }}</li>
@@ -31,28 +31,28 @@ import AddressSearchControl from '@/components/AddressSearchControl.vue';
       </ul>
       <br>
 
-      <p><b>{{ $t('default.introPage.p4_b') }}</b>{{ $t('default.introPage.p4') }}</p>
+      <p><b>{{ $t('shared.hours') }}: </b>{{ $t('shared.p4') }}</p>
       <br>
 
       <div 
         class="topic-info"
-        v-html="$t('default.introPage.p5')"
+        v-html="$t('shared.p5')"
       />
 
       <div
         class="section-header"
         :style="{ 'background-color': '#F0F0F0', 'color': 'black' }"
       >
-        <b>{{ $t('default.introPage.relatedContent') }}</b>
+        <b>{{ $t('shared.relatedContent') }}</b>
       </div>
       <div class="custom-section">
         <ul class="bullet-list">
-          <li><a target="_blank" href="https://www.pavoterservices.pa.gov/pages/voterregistrationstatus.aspx">{{ $t('default.introPage.link1') }}</a></li>
-          <li><a href="/polling-place">{{ $t('default.introPage.link2') }}</a></li>
-          <li><a target="_blank" href="https://www.pavoterservices.pa.gov/pages/ballottracking.aspx">{{ $t('default.introPage.link3') }}</a></li>
-          <li><a href="/mail-in-voting">{{ $t('default.introPage.link4') }}</a></li>
-          <li><a href="/elected-officials">{{ $t('default.introPage.link5') }}</a></li>
-          <li><a target="_blank" href="https://vote.phila.gov/voting/important-dates-for-voters/">{{ $t('default.introPage.link6') }}</a></li>
+          <li><a target="_blank" href="https://www.pavoterservices.pa.gov/pages/voterregistrationstatus.aspx">{{ $t('shared.link1') }}</a></li>
+          <li><a href="/polling-place">{{ $t('shared.link2') }}</a></li>
+          <li><a target="_blank" href="https://www.pavoterservices.pa.gov/pages/ballottracking.aspx">{{ $t('shared.link3') }}</a></li>
+          <li><a href="/mail-in-voting">{{ $t('shared.link4') }}</a></li>
+          <li><a href="/elected-officials">{{ $t('shared.link5') }}</a></li>
+          <li><a target="_blank" href="https://vote.phila.gov/voting/important-dates-for-voters/">{{ $t('shared.link6') }}</a></li>
         </ul>
       </div>
     </div>    

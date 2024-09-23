@@ -62,18 +62,16 @@ const mailinVotingTableData = computed(() => {
   return {
     columns: [
       {
-        label: 'Location',
+        label: messages.value.shared.location,
         field: 'name_and_address',
         html: true,
-        // field: 'site_name',
       },
       {
-        label: 'Type and Hours',
+        label: messages.value.mailInVoting.topic.horizontalTable1.typeAndHours,
         field: typeFieldFn,
-        // field: 'site_type',
       },
       {
-        label: 'Distance',
+        label: messages.value.mailInVoting.topic.horizontalTable1.distance,
         field: 'distance_miles',
       }
     ],
@@ -144,7 +142,7 @@ watch(() => clickedMarkerId.value, (newClickedMarkerId) => {
     </div>
 
     <h2 class="subtitle is-5 mb-2">
-      {{ $t('mailInVoting.topic.h4_1') }}
+      {{ $t('mailInVoting.topic.horizontalTable1.title') }}
       <font-awesome-icon
         v-if="loadingData"
         icon="fa-solid fa-spinner"

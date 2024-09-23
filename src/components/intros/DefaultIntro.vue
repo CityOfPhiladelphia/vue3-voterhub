@@ -22,14 +22,14 @@ import AddressSearchControl from '@/components/AddressSearchControl.vue';
         {{ $t('default.introPage.introTitle') }}
       </h1>
       <p class="subtitle is-4">
-        {{ $t('default.introPage.p3') }}
+        {{ $t('shared.p1') }}
       </p>
       <ul class="bullet-list">
-        <li>{{ $t('default.introPage.ul1.li1') }}</li>
-        <li>{{ $t('default.introPage.ul1.li2') }}</li>
-        <li>{{ $t('default.introPage.ul1.li3') }}</li>
-        <li>{{ $t('default.introPage.ul1.li4') }}</li>
-        <li>{{ $t('default.introPage.ul1.li5') }}</li>
+        <li>{{ $t('shared.link1') }}</li>
+        <li>{{ $t('shared.link12') }}</li>
+        <li>{{ $t('shared.link7') }}</li>
+        <li>{{ $t('shared.link13') }}</li>
+        <li>{{ $t('shared.link14') }}</li>
       </ul>
       <br>
 
@@ -37,12 +37,12 @@ import AddressSearchControl from '@/components/AddressSearchControl.vue';
         class="section-header"
         :style="{ 'background-color': '#F0F0F0', 'color': 'black' }"
       >
-        <b>{{ $t('default.introPage.relatedContent') }}</b>
+        <b>{{ $t('shared.relatedContent') }}</b>
       </div>
       <div class="custom-section">
         <ul class="custom-ul">
-          <li><a target="_blank" href="https://www.pavoterservices.pa.gov/pages/voterregistrationstatus.aspx">{{ t('default.introPage.link1') }}</a></li>
-          <li><a target="_blank" href="https://www.pavoterservices.pa.gov/pages/ballottracking.aspx">{{ t('default.introPage.link3') }}</a></li>
+          <li><a target="_blank" href="https://www.pavoterservices.pa.gov/pages/voterregistrationstatus.aspx">{{ t('shared.link1') }}</a></li>
+          <li><a target="_blank" href="https://www.pavoterservices.pa.gov/pages/ballottracking.aspx">{{ t('shared.link3') }}</a></li>
         </ul>
       </div>
     </div>
