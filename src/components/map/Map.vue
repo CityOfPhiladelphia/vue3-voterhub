@@ -568,8 +568,18 @@ watch(
 
 // for Voting topic, watch voting division and polling place for changing map center and zoom
 const votingDivision = computed(() => { 
-  if (VotingStore.divisions.features) {
-    return VotingStore.divisions.features[0].geometry.coordinates[0];
+  if (import.meta.env.VITE_VOTING_DATA_SOURCE == 'carto') {
+    if (VotingStore.divisions.rows) {
+      return VotingStore.divisions.rows[0].the_geom;
+    } else {
+      return [[0,0], [0,1], [1,1], [1,0], [0,0]];
+    }
+  } else if (import.meta.env.VITE_VOTING_DATA_SOURCE == 'arcgis') {
+    if (VotingStore.divisions.features) {
+      return VotingStore.divisions.features[0].geometry.coordinates[0];
+    } else {
+      return [[0,0], [0,1], [1,1], [1,0], [0,0]];
+    }
   } else {
     return [[0,0], [0,1], [1,1], [1,0], [0,0]];
   }
