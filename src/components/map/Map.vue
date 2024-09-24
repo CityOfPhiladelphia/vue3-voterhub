@@ -567,7 +567,7 @@ watch(
 )
 
 // for Voting topic, watch voting division and polling place for changing map center and zoom
-const votingDivision = computed(() => { 
+const votingDivision = computed(() => {
   if (VotingStore.divisions.features) {
     return VotingStore.divisions.features[0].geometry.coordinates[0];
   } else {
@@ -591,6 +591,22 @@ const pollingPlaceCoordinates = computed(() => {
 });
 watchEffect(() => {
   if (VotingStore.divisions.features && VotingStore.pollingPlaces.rows) {
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('watchEffect 1, votingDivision.value:', votingDivision.value, 'pollingPlaceCoordinates.value:', pollingPlaceCoordinates.value);
+    const newDivision = polygon([votingDivision.value]);
+    map.getSource('votingDivision').setData(newDivision);
+    $config.votingDrawnMapStyle.sources.votingDivision.data = newDivision;
+    const newPollingPlace = point(pollingPlaceCoordinates.value);
+    map.getSource('buildingColumnsMarker').setData(newPollingPlace);
+    $config.votingDrawnMapStyle.sources.buildingColumnsMarker.data = newPollingPlace;
+    const theFeatureCollection = featureCollection([newDivision, newPollingPlace]);
+    const bounds = bbox(buffer(theFeatureCollection, 400, {units: 'feet'}));
+    map.fitBounds(bounds);
+  }
+});
+
+watchEffect(() => {
+  if (VotingStore.divisions.features && VotingStore.pollingPlaces.features) {
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('watchEffect 2, votingDivision.value:', votingDivision.value, 'pollingPlaceCoordinates.value:', pollingPlaceCoordinates.value);
     const newDivision = polygon([votingDivision.value]);
     map.getSource('votingDivision').setData(newDivision);
     $config.votingDrawnMapStyle.sources.votingDivision.data = newDivision;
