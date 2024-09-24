@@ -13,7 +13,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import '@/assets/mapbox-gl-draw.min.js'
 import '@/assets/maplibre-gl-draw.css';
 import destination from '@turf/destination';
-import { point, polygon, multiPolygon, featureCollection } from '@turf/helpers';
+import { point, polygon, multiPolygon, feature, featureCollection } from '@turf/helpers';
 import bbox from '@turf/bbox';
 import buffer from '@turf/buffer';
 
@@ -567,9 +567,19 @@ watch(
 )
 
 // for Voting topic, watch voting division and polling place for changing map center and zoom
-const votingDivision = computed(() => {
-  if (VotingStore.divisions.features) {
-    return VotingStore.divisions.features[0].geometry.coordinates[0];
+const votingDivision = computed(() => { 
+  if (import.meta.env.VITE_VOTING_DATA_SOURCE == 'carto') {
+    if (VotingStore.divisions.rows) {
+      return JSON.parse(VotingStore.divisions.rows[0].st_asgeojson);
+    } else {
+      return [[0,0], [0,1], [1,1], [1,0], [0,0]];
+    }
+  } else if (import.meta.env.VITE_VOTING_DATA_SOURCE == 'arcgis') {
+    if (VotingStore.divisions.features) {
+      return VotingStore.divisions.features[0].geometry.coordinates[0];
+    } else {
+      return [[0,0], [0,1], [1,1], [1,0], [0,0]];
+    }
   } else {
     return [[0,0], [0,1], [1,1], [1,0], [0,0]];
   }
@@ -590,9 +600,9 @@ const pollingPlaceCoordinates = computed(() => {
   }
 });
 watchEffect(() => {
-  if (VotingStore.divisions.features && VotingStore.pollingPlaces.rows) {
-    if (import.meta.env.VITE_DEBUG == 'true') console.log('watchEffect 1, votingDivision.value:', votingDivision.value, 'pollingPlaceCoordinates.value:', pollingPlaceCoordinates.value);
-    const newDivision = polygon([votingDivision.value]);
+  if (VotingStore.divisions.rows && VotingStore.pollingPlaces.rows) {
+    const newDivision = feature(votingDivision.value);
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('watchEffect 1, newDivision:', newDivision, 'votingDivision.value:', votingDivision.value, 'pollingPlaceCoordinates.value:', pollingPlaceCoordinates.value);
     map.getSource('votingDivision').setData(newDivision);
     $config.votingDrawnMapStyle.sources.votingDivision.data = newDivision;
     const newPollingPlace = point(pollingPlaceCoordinates.value);
@@ -606,8 +616,8 @@ watchEffect(() => {
 
 watchEffect(() => {
   if (VotingStore.divisions.features && VotingStore.pollingPlaces.features) {
-    if (import.meta.env.VITE_DEBUG == 'true') console.log('watchEffect 2, votingDivision.value:', votingDivision.value, 'pollingPlaceCoordinates.value:', pollingPlaceCoordinates.value);
     const newDivision = polygon([votingDivision.value]);
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('watchEffect 2, newDivision:', newDivision, 'votingDivision.value:', votingDivision.value, 'pollingPlaceCoordinates.value:', pollingPlaceCoordinates.value);
     map.getSource('votingDivision').setData(newDivision);
     $config.votingDrawnMapStyle.sources.votingDivision.data = newDivision;
     const newPollingPlace = point(pollingPlaceCoordinates.value);
