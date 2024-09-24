@@ -18,6 +18,7 @@ export default {
     "note": "Spanish Note",
     "searchPlaceholder": "Spanish Search for an address, OPA account, or DOR number",
     "p1": "Spanish Search your home address or click on the map to:",
+    "p2": "Spanish Search your home address or click on the map to find:",
     "p4": "Spanish All polling places will be open on election day from 7 a.m. to 8 p.m.",
     "p5": "Spanish Changes to the official voter registry may not be reflected here immediately. For up-to-date, official polling place locations in Philadelphia County, contact the Philadelphia Voter Registration Office at <a href='tel:215-686-1590'>(215) 686-1590</a>.",
     "relatedContent": "Contenido relacionado",
@@ -73,7 +74,6 @@ export default {
   "pollingPlace": {
     "introPage": {
       "introTitle": "Encuentre su lugar de votación en Atlas",
-      "p3": "Spanish Search your home address or click on the map to find:",
       "ul1": {
         "li1": "La dirección y la ubicación en el mapa de su lugar de votación.",
         "li2": "La Información sobre estacionamiento y accesibilidad al edificio.",
@@ -110,14 +110,14 @@ export default {
     "introPage": {
       "introTitle": "Spanish Find mail-in voting drop-off locations",
       "ul1": {
-        "li1": "Spanish Find mail in voting drop off box and election office locations near you",
+        "li1": "Spanish Mail-in voting drop-off box and election office locations near you",
       },
-      "p4": "Many drop off locations are available at limited times. All mail in and absentee ballots must be deposited before 8pm on election day.",
+      "p4": "Many drop-off locations are available at limited times. All mail-in and absentee ballots must be deposited before 8pm on election day.",
       "p5": "If a dropbox is full, not functioning, or is damaged in any way, call <a href='tel:215-686-3469'>(215) 686-3469</a> or email <a href='mailto:vote@phila.gov'>vote@phila.gov</a>.",
     },
     "topic": {
       "exclamationCallout1": {
-        "p1": "Spanish Mail-in ballot dropoff locations and availability may change for each election.\
+        "p1": "Spanish Mail-in ballot drop-off locations and availability may change for each election.\
         Check back closer to election day to get updated details about where you can drop off your mail-in ballot.",
       },
       "table1": {
@@ -148,7 +148,6 @@ export default {
   "electedOfficials": {
     "introPage": {
       "introTitle": "Spanish Find your elected officials",
-      "p1": "Spanish Search your home address or click on the map to find:",
       "ul1": {
         "li1": "Spanish Elected officials representing your address",
         "li2": "Spanish Contact information for your district council member",

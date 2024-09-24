@@ -18,6 +18,7 @@ export default {
     "note": "Note",
     "searchPlaceholder": "Search for an address, OPA account, or DOR number",
     "p1": "Search your home address or click on the map to:",
+    "p2": "Search your home address or click on the map to find:",
     "p4": "All polling places will be open on election day from 7 a.m. to 8 p.m.",
     "p5": "Changes to the official voter registry may not be reflected here immediately. For up-to-date, official polling place locations in Philadelphia County, contact the Philadelphia Voter Registration Office at <a href='tel:215-686-1590'>(215) 686-1590</a>.",
     "relatedContent": "Related content",
@@ -73,7 +74,6 @@ export default {
   "pollingPlace": {
     "introPage": {
       "introTitle": "Find your polling place",
-      "p3": "Search your home address or click on the map to find:",
       "ul1": {
         "li1": "Your designated polling place",
         "li2": "Accessibility and parking information for the building",
@@ -109,16 +109,15 @@ export default {
   "mailInVoting": {
     "introPage": {
       "introTitle": "Find mail-in voting drop-off locations",
-      "p3": "Search your home address or click on the map to find:",
       "ul1": {
-        "li1": "Find mail in voting drop off box and election office locations near you",
+        "li1": "Mail-in voting drop-off box and election office locations near you",
       },
-      "p4": "Many drop off locations are available at limited times. All mail in and absentee ballots must be deposited before 8pm on election day.",
+      "p4": "Many drop-off locations are available at limited times. All mail-in and absentee ballots must be deposited before 8pm on election day.",
       "p5": "If a dropbox is full, not functioning, or is damaged in any way, call <a href='tel:215-686-3469'>(215) 686-3469</a> or email <a href='mailto:vote@phila.gov'>vote@phila.gov</a>.",
     },
     "topic": {
       "exclamationCallout1": {
-        "p1": "Mail-in ballot dropoff locations and availability may change for each election.\
+        "p1": "Mail-in ballot drop-off locations and availability may change for each election.\
         Check back closer to election day to get updated details about where you can drop off your mail-in ballot.",
       },
       "table1": {
