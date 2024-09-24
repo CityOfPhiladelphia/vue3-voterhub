@@ -81,7 +81,6 @@ export default {
         "li1": "Your designated polling place",
         "li2": "Accessibility and parking information for the building",
       },
-      "relatedContent": "Related content",
       "link2": "Find where to get and return mail-in ballots in person",
       "link3": "Check the status of your mail-in ballot",
       "link4": "Confirm that you're registered to vote",
