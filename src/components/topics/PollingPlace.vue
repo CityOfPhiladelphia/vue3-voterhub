@@ -76,7 +76,7 @@ const pollingPlaceData = computed(() => {
 <template>
 
   <h2 class="subtitle is-5 vert-table-title">
-    Polling Place
+    {{ $t('topics["Polling Place"]') }}
   </h2>
   <font-awesome-icon
     v-if="PollingPlaceStore.loadingPollingPlaceData"

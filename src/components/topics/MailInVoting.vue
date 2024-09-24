@@ -118,7 +118,7 @@ watch(() => clickedMarkerId.value, (newClickedMarkerId) => {
     </div>
 
     <h2 class="subtitle is-5 mb-2">
-      {{ $t('mailInVoting.topic.h3_1') }}
+      {{ $t('mailInVoting.topic.mailinBallots') }}
     </h2>
 
     <div

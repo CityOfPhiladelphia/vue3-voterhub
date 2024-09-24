@@ -62,9 +62,6 @@ export default {
       "callout1": {
         "text": "The deadline to register for the next election is 15 days prior to the election. You can confirm your registration and learn about registering to vote at <a target='_blank' href='https://vote.phila.gov/'>vote.phila.gov</a>.",
       },
-      // "table1": {
-      //   "title": "Important dates for voters 2023",
-      // },
       "paragraph1": {
         "text": "All important dates for voters in 2023 have passed. ",
       },
@@ -81,20 +78,10 @@ export default {
         "li1": "Your designated polling place",
         "li2": "Accessibility and parking information for the building",
       },
-      "link2": "Find where to get and return mail-in ballots in person",
-      "link3": "Check the status of your mail-in ballot",
-      "link4": "Confirm that you're registered to vote",
     },
     "topic": {
-      "badge1": {
-        "header": "Next Eligible Election Is",
-        "content": "November 3, 2020",
-      },
       "externalLink1": " Report an issue at this polling place on election day through our portal ",
-      "location": "Location",
       "accessibility": "Accessibility",
-      "parking": "Parking",
-      "lastUpdated": "Last Updated",
       "lastUpdatedSentence": "This has been the polling place for this division since ",
       "accessibilityCodes": {
         "buildingFullyAccessible": "Building Fully Accessible",
@@ -114,12 +101,8 @@ export default {
       "callout1": {
         "text": "The deadline to register for the next election is 15 days prior to the election. You can confirm your registration and learn about registering to vote at <a target='_blank' href='https://vote.phila.gov/'>vote.phila.gov</a>.",
       },
-      "pollingPlace": "Polling Place",
       "verticalTable1": {
         "link": "Learn about your voting options if you cannot vote in person on Election Day ",
-      },
-      "verticalTable2": {
-        "link": "See all citywide, state, and federal representatives ",
       },
     },
   },
@@ -128,14 +111,12 @@ export default {
       "introTitle": "Find mail-in voting drop-off locations",
       "p3": "Search your home address or click on the map to find:",
       "ul1": {
-        "li1": "Mail in voting drop off box and election office locations near you",
+        "li1": "Find mail in voting drop off box and election office locations near you",
       },
-      "p4_b": "Note: ",
       "p4": "Many drop off locations are available at limited times. All mail in and absentee ballots must be deposited before 8pm on election day.",
       "p5": "If a dropbox is full, not functioning, or is damaged in any way, call <a href='tel:215-686-3469'>(215) 686-3469</a> or email <a href='mailto:vote@phila.gov'>vote@phila.gov</a>.",
     },
     "topic": {
-      "mailInVoting": 'Mail-in Voting',
       "exclamationCallout1": {
         "p1": "Mail-in ballot dropoff locations and availability may change for each election.\
         Check back closer to election day to get updated details about where you can drop off your mail-in ballot.",
@@ -146,7 +127,7 @@ export default {
       "paragraph1": {
         "text": "All mail-in voting dates in 2023 have passed.",
       },
-      "h3_1": "Mail-in ballots",
+      "mailinBallots": "Mail-in ballots",
       "paragraph2": {
         "text": "Mail-in and absentee ballots can be dropped off at our Election Office, at a fixed drop box, or at a temporary mobile ballot return location.",
       },
@@ -157,10 +138,6 @@ export default {
       },
       "paragraph3": {
         "text": "Learn more including how to request a mail in or absentee ballot at <a target='_blank' href='https://vote.phila.gov/'>vote.phila.gov</a>.",
-      },
-      "pollingPlace": "Polling Place",
-      "verticalTable1": {
-        "link": "Learn about your voting options if you cannot vote in person on Election Day ",
       },
       "horizontalTable1": {
         "title": "Mail-in ballot drop-off locations",
@@ -180,9 +157,7 @@ export default {
       },
     },
     "topic": {
-      "electedOfficials": 'Elected Officials',
       "currentTerm": "Current term",
-      "term": "Term",
       "verticalTable1": {
         "title": "City Officials",
         "districtCouncilMember": "District Council Member",

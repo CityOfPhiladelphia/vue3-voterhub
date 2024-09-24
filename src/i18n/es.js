@@ -6,12 +6,12 @@ export default {
   },
   "topics": {
     "Elections & Ballots": "Spanish Elections & Ballots",
-    "Polling Place": "Spanish Polling Place",
+    "Polling Place": "Lugar de votación",
     "Mail-in Voting": "Spanish Mail-in Voting",
     "Elected Officials": "Spanish Elected Officials",
   },
   "shared": {
-    "hours": "Spanish Hours",
+    "hours": "Horario",
     "location": "Spanish Location",
     "parking": "Spanish Parking",
     "lastUpdated": "Spanish Last Updated",
@@ -20,11 +20,11 @@ export default {
     "p1": "Spanish Search your home address or click on the map to:",
     "p4": "Spanish All polling places will be open on election day from 7 a.m. to 8 p.m.",
     "p5": "Spanish Changes to the official voter registry may not be reflected here immediately. For up-to-date, official polling place locations in Philadelphia County, contact the Philadelphia Voter Registration Office at <a href='tel:215-686-1590'>(215) 686-1590</a>.",
-    "relatedContent": "Spanish Related content",
-    "link1": "Spanish Check your voter registration status",
+    "relatedContent": "Contenido relacionado",
+    "link1": "Confirme que está registrado para votar",
     "link2": "Spanish Find your polling place",
-    "link3": "Spanish Check the status of your mail-in ballot",
-    "link4": "Spanish Find where to get and return mail-in ballots in person",
+    "link3": "Averigue dónde conseguir y entregar las boletas de voto por correo en persona.",
+    "link4": "Consulte el estado de su boleta de voto por correo",
     "link5": "Spanish Look up your elected representatives",
     "link6": "Spanish Important dates for voters",
     "link7": "Spanish View your sample ballot",
@@ -44,7 +44,6 @@ export default {
   "ballot": {
     "introPage": {
       "introTitle": "Spanish View your sample ballot",
-      "p3": "Spanish Search your home address or click on the map to find:",
       "ul1": {
         "li1": "Spanish Your complete sample ballot",
         "li2": "Spanish Upcoming election information",
@@ -63,9 +62,6 @@ export default {
       "callout1": {
         "text": "Spanish The deadline to register for the next election is 15 days prior to the election. You can confirm your registration and learn about registering to vote at <a target='_blank' href='https://vote.phila.gov/'>vote.phila.gov</a>.",
       },
-      // "table1": {
-      //   "title": "Spanish Important dates for voters 2023",
-      // },
       "paragraph1": {
         "text": "Spanish All important dates for voters in 2023 have passed. ",
       },
@@ -82,25 +78,10 @@ export default {
         "li1": "La dirección y la ubicación en el mapa de su lugar de votación.",
         "li2": "La Información sobre estacionamiento y accesibilidad al edificio.",
       },
-      "relatedContent": "Contenido relacionado",
-      "link2": "Averigue dónde conseguir y entregar las boletas de voto por correo en persona.",
-      "link3": "Consulte el estado de su boleta de voto por correo.",
-      "link4": "Confirme que está registrado para votar.",
     },
     "topic": {
       "externalLink1": " Spanish Report an issue at this polling place on election day through our portal ",
-      "hours": "Horario",
-      "previewBallot": "Vista previa de la boleta ",
-      "electedRep": "Representantes elegidos",
-      "cityCouncilRedistricting": "Cambio de Distrito en el Municipio",
-      "redistrictingSubtitle": "Algunas direcciones estarán representadas por un nuevo distrito municipal a partir de 2024. Los residentes votarán en el nuevo distrito en las elecciones primarias y generales de 2023.",
-      "oldCityCouncilDistrict": "Distrito Anterior del Municipio",
-      "newCityCouncilDistrict": "Distrito Nuevo del Municipio",
-      "redistrictingProcess": "Más información sobre el proceso de cambio de distritos ",
-      "location": "Ubicación",
       "accessibility": "Accesibilidad",
-      "parking": "Estacionamiento",
-      "lastUpdated": "Spanish Last Updated",
       "lastUpdatedSentence": "Spanish This has been the polling place for this division since ",
       "accessibilityCodes": {
         "buildingFullyAccessible": "Edificio totalmente accesible",
@@ -120,28 +101,21 @@ export default {
       "callout1": {
         "text": "La fecha límite para registrarse para la próxima elección es 15 días antes de la elección. Puede confirmar su registro y obtener información sobre cómo registrarse para votar en <a target='_blank' href='https://www.philadelphiavotes.com/'>www.philadelphiavotes.com</a>.",
       },
-      "pollingPlace": "Lugar de votación",
       "verticalTable1": {
         "link": "Obtenga información sobre sus opciones para votar si no puede ir a votar en persona el día de la elección ",
-      },
-      "verticalTable2": {
-        "link": "Vea todos los representantes federales, estatales y de la ciudad ",
       },
     },
   },
   "mailInVoting": {
     "introPage": {
       "introTitle": "Spanish Find mail-in voting drop-off locations",
-      "p3": "Spanish Search your home address or click on the map to find:",
       "ul1": {
-        "li1": "Spanish Mail in voting drop off box and election office locations near you",
+        "li1": "Spanish Find mail in voting drop off box and election office locations near you",
       },
-      "p4_b": "Note: ",
       "p4": "Many drop off locations are available at limited times. All mail in and absentee ballots must be deposited before 8pm on election day.",
       "p5": "If a dropbox is full, not functioning, or is damaged in any way, call <a href='tel:215-686-3469'>(215) 686-3469</a> or email <a href='mailto:vote@phila.gov'>vote@phila.gov</a>.",
     },
     "topic": {
-      "mailInVoting": 'Mail-in Voting',
       "exclamationCallout1": {
         "p1": "Spanish Mail-in ballot dropoff locations and availability may change for each election.\
         Check back closer to election day to get updated details about where you can drop off your mail-in ballot.",
@@ -150,9 +124,9 @@ export default {
         "title": "Spanish Important dates for mail-in voting",
       },
       "paragraph1": {
-        "text": "Spanish All mail-in voting dates in 2023 have passed. See the <a target='_blank' href='https://vote.phila.gov/voting/important-dates-for-voters/'>full election calendar for 2023</a>.",
+        "text": "Spanish All mail-in voting dates in 2023 have passed.",
       },
-      "h3_1": "Spanish Mail-in ballots",
+      "mailinBallots": "Spanish Mail-in ballots",
       "paragraph2": {
         "text": "Spanish Mail-in and absentee ballots can be dropped off at our Election Office, at a fixed drop box, or at a temporary mobile ballot return location.",
       },
@@ -163,21 +137,6 @@ export default {
       },
       "paragraph3": {
         "text": "Spanish Learn more including how to request a mail in or absentee ballot at <a target='_blank' href='https://vote.phila.gov/'>vote.phila.gov</a>.",
-      },
-      "parkingCodes": {
-        "noParking": "No Parking",
-        "generalParking": "General Parking",
-        "loadingZone": "Loading Zone",
-      },
-      "callout1": {
-        "text": "The deadline to register for the next election is 15 days prior to the election. You can confirm your registration and learn about registering to vote at <a target='_blank' href='https://vote.phila.gov/'>vote.phila.gov</a>.",
-      },
-      "pollingPlace": "Polling Place",
-      "verticalTable1": {
-        "link": "Learn about your voting options if you cannot vote in person on Election Day ",
-      },
-      "verticalTable2": {
-        "link": "See all citywide, state, and federal representatives ",
       },
       "horizontalTable1": {
         "title": "Spanish mail-in ballot drop-off locations",
@@ -198,7 +157,6 @@ export default {
     },
     "topic": {
       "currentTerm": "Spanish Current term",
-      "term": "Term",
       "verticalTable1": {
         "title": "Spanish City Officials",
         "districtCouncilMember": "Spanish District Council Member",

@@ -19,7 +19,7 @@ const MainStore = useMainStore();
         {{ $t('mailInVoting.introPage.introTitle') }}
       </h1>
       <p class="subtitle is-4">
-        {{ $t('mailInVoting.introPage.p3') }}
+        {{ $t('shared.p1') }}
       </p>
       <ul class="bullet-list">
         <li>{{ $t('mailInVoting.introPage.ul1.li1') }}</li>
