@@ -993,16 +993,15 @@ const toggleEagleview = () => {
     id="map"
     class="map map-class"
   >
+  <!-- v-if="MainStore.addressSearchRunning" -->
   <div
-      v-if="MainStore.addressSearchRunning"
       class="map-cover is-align-content-center has-text-centered"
     >
       <font-awesome-icon
         icon="fa-solid fa-spinner"
-        class="fa-6x"
-        :style="{color: 'black'}"
+        class="fa-6x center-spinner"
         spin
-      />
+        />
     </div>
 
     <AddressSearchControl :input-id="'map-search-input'" />
@@ -1062,5 +1061,8 @@ const toggleEagleview = () => {
 
 <style>
 
+.center-spinner {
+  color: #333333;
+}
 
 </style>
