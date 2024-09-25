@@ -1000,6 +1000,7 @@ const toggleEagleview = () => {
       <font-awesome-icon
         icon="fa-solid fa-spinner"
         class="fa-6x"
+        :style="{color: 'black'}"
         spin
       />
     </div>
