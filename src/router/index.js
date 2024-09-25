@@ -63,6 +63,7 @@ const getGeocodeAndPutInStore = async(address) => {
     currentAddress = GeocodeStore.aisData.features[0].street_address;
   }
   MainStore.setCurrentAddress(currentAddress);
+  // MainStore.addressSearchRunning = false;
 }
 
 // this ONLY runs on map click
@@ -101,6 +102,7 @@ const getParcelsAndPutInStore = async(lng, lat) => {
     MainStore.otherParcelGeocodeParameter = ParcelsStore[otherParcelLayer].features[0].properties[otherGeocodeParameterField]
     // if (import.meta.env.VITE_DEBUG == 'true') console.log('else MainStore.otherParcelAddress:', MainStore.otherParcelAddress);
   }
+  // MainStore.addressSearchRunning = false;
 }
 
 // it should only show an address at the top that has been found in AIS for the top line address, so, if map clicked, it
@@ -367,6 +369,7 @@ const router = createRouter({
         const { address, lat, lng } = to.query;
         if (import.meta.env.VITE_DEBUG == 'true') console.log('search route beforeEnter, to.query:', to.query, 'from:', from, 'address:', address);
         const MainStore = useMainStore();
+        MainStore.addressSearchRunning = true;
         if (MainStore.datafetchRunning) {
           return false;
         } else if (address && address !== '') {
@@ -397,6 +400,7 @@ router.afterEach(async (to, from) => {
   if (to.name === 'address-or-topic') {
     return;
   } else if (to.name !== 'not-found' && to.name !== 'search') {
+    MainStore.addressSearchRunning = false;
     await dataFetch(to, from);
     // let pageTitle = MainStore.appVersion + '.phila.gov';
     let pageTitle = MainStore.appVersion.charAt(0).toUpperCase() + MainStore.appVersion.slice(1);
