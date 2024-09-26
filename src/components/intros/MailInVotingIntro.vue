@@ -29,10 +29,10 @@ const MainStore = useMainStore();
       <p><b>{{ $t('shared.note') }}: </b>{{ $t('mailInVoting.introPage.p4') }}</p>
       <br>
 
-      <p
+      <!-- <p
         class="topic-info"
         v-html="$t('mailInVoting.introPage.p5')"
-      />
+      /> -->
 
       <div
         class="section-header"
