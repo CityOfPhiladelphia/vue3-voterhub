@@ -113,7 +113,7 @@ export default {
         "li1": "Mail-in voting drop-off box and election office locations near you",
       },
       "p4": "Many drop-off locations are available at limited times. All mail-in and absentee ballots must be deposited before 8pm on election day.",
-      "p5": "If a dropbox is full, not functioning, or is damaged in any way, call (215) 686-3469 or email vote@phila.gov.",
+      "p5": "If a dropbox is full, not functioning, or is damaged in any way, call <a href='tel:215-686-3469'>(215) 686-3469</a> or email <a href='mailto:vote&#64;phila.gov'>vote&#64;phila.gov.</a>",
     },
     "p5": "test test test vote@phila.gov",
     "topic": {
