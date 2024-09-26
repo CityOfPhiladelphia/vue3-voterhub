@@ -370,6 +370,7 @@ const router = createRouter({
         if (import.meta.env.VITE_DEBUG == 'true') console.log('search route beforeEnter, to.query:', to.query, 'from:', from, 'address:', address);
         const MainStore = useMainStore();
         const GeocodeStore = useGeocodeStore();
+        const ParcelsStore = useParcelsStore();
         MainStore.addressSearchRunning = true;
         if (MainStore.datafetchRunning) {
           return false;
@@ -385,6 +386,10 @@ const router = createRouter({
         } else if (lat && lng) {
           MainStore.setLastSearchMethod('mapClick');
           await getParcelsAndPutInStore(lng, lat);
+          if (!Object.keys(ParcelsStore.pwdChecked).length && !Object.keys(ParcelsStore.dorChecked).length) {
+            MainStore.addressSearchRunning = false;
+            return false;
+          }
           await checkParcelInAis();
           routeApp(router);
         } else {
@@ -413,7 +418,12 @@ router.afterEach(async (to, from) => {
     }
     MainStore.pageTitle = pageTitle;
   } else if (to.name == 'not-found') {
-    MainStore.currentTopic = "Property"
+    MainStore.currentTopic = "property"
+    MainStore.currentAddress = null;
+    MainStore.currentParcelGeocodeParameter = null;
+    MainStore.currentParcelAddress = null;
+    MainStore.otherParcelAddress = null;
+    MainStore.otherParcelGeocodeParameter = null;
   }
 });
 
