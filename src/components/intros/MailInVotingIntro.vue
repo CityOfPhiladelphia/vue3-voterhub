@@ -32,7 +32,7 @@ const MainStore = useMainStore();
       <p
         class="topic-info"
         v-html="$t('mailInVoting.introPage.p5')"
-      />
+      ></p>
 
       <div
         class="section-header"
