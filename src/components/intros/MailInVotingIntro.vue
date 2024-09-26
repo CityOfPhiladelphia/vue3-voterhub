@@ -33,6 +33,10 @@ const MainStore = useMainStore();
         class="topic-info"
         v-html="$t('mailInVoting.introPage.p5')"
       ></p> -->
+      <p
+        class="topic-info"
+        v-html="$t('shared.p5')"
+      />
 
       <div
         class="section-header"
