@@ -33,8 +33,8 @@ export const useVotingStore = defineStore("VotingStore", {
     async fillDivisions() {
       if (import.meta.env.VITE_DEBUG == 'true') console.log('fillDivisions is running');
       const GeocodeStore = useGeocodeStore();
-      const feature = GeocodeStore.aisData.features[0];
       try {
+        const feature = GeocodeStore.aisData.features[0];
         if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'carto') {
           let baseUrl = 'https://phl.carto.com/api/v2/sql?q=';
           const url = baseUrl += `SELECT *, ST_AsGeoJSON(the_geom) FROM political_divisions WHERE ST_Intersects(the_geom, ST_SetSRID(ST_Point(${feature.geometry.coordinates[0]}, ${feature.geometry.coordinates[1]}), 4326))`;          
@@ -71,15 +71,14 @@ export const useVotingStore = defineStore("VotingStore", {
     async fillPollingPlaces() {
       if (import.meta.env.VITE_DEBUG == 'true') console.log('fillPollingPlaces is running');
       const GeocodeStore = useGeocodeStore();
-      const feature = GeocodeStore.aisData.features[0];
-      let precinct;
-      if (feature.properties.election_precinct) {
-        precinct = feature.properties.election_precinct;
-      } else if (feature.properties.political_division) {
-        precinct = feature.properties.political_division;
-      }
-
       try {
+        const feature = GeocodeStore.aisData.features[0];
+        let precinct;
+        if (feature.properties.election_precinct) {
+          precinct = feature.properties.election_precinct;
+        } else if (feature.properties.political_division) {
+          precinct = feature.properties.political_division;
+        }
         if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'carto') {
           let baseUrl = 'https://phl.carto.com/api/v2/sql?q=';
           const url = baseUrl += `select ST_X(the_geom) as lng, ST_Y(the_geom) as lat, * from polling_places where precinct ='${precinct}'`;
@@ -117,9 +116,9 @@ export const useVotingStore = defineStore("VotingStore", {
     async fillElectedOfficials() {
       if (import.meta.env.VITE_DEBUG == 'true') console.log('fillElectedOfficials is running');
       const GeocodeStore = useGeocodeStore();
-      const feature = GeocodeStore.aisData.features[0];
-
+      
       try {
+        const feature = GeocodeStore.aisData.features[0];
         if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'carto') {
           let baseUrl = 'https://phl.carto.com/api/v2/sql?q=';
           const url = baseUrl += `SELECT * FROM elected_officials WHERE office = 'city_council' AND district = '${feature.properties.council_district_2024}'`;
@@ -161,15 +160,15 @@ export const useVotingStore = defineStore("VotingStore", {
     async fillElectionSplit() {
       if (import.meta.env.VITE_DEBUG == 'true') console.log('fillElectionSplit is running');
       const GeocodeStore = useGeocodeStore();
-      const feature = GeocodeStore.aisData.features[0];
-      let precinct;
-      if (feature.properties.election_precinct) {
-        precinct = feature.properties.election_precinct;
-      } else if (feature.properties.political_division) {
-        precinct = feature.properties.political_division;
-      }
       
       try {
+        const feature = GeocodeStore.aisData.features[0];
+        let precinct;
+        if (feature.properties.election_precinct) {
+          precinct = feature.properties.election_precinct;
+        } else if (feature.properties.political_division) {
+          precinct = feature.properties.political_division;
+        }
         if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'carto') {
           let baseUrl = 'https://phl.carto.com/api/v2/sql?q=';
           const url = baseUrl += `SELECT * FROM splits WHERE precinct = '${precinct}'`;

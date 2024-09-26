@@ -51,7 +51,7 @@ const getGeocodeAndPutInStore = async(address) => {
   if (MainStore.lastSearchMethod == 'address' && !GeocodeStore.aisData.features) {
     MainStore.currentAddress = null;
     if (import.meta.env.VITE_DEBUG == 'true') console.log('getGeocodeAndPutInStore, calling not-found');
-    router.push({ name: 'not-found' });
+    // router.push({ name: 'not-found' });
     return;
   } else if (!GeocodeStore.aisData.features) {
     return;
@@ -369,6 +369,7 @@ const router = createRouter({
         const { address, lat, lng } = to.query;
         if (import.meta.env.VITE_DEBUG == 'true') console.log('search route beforeEnter, to.query:', to.query, 'from:', from, 'address:', address);
         const MainStore = useMainStore();
+        const GeocodeStore = useGeocodeStore();
         MainStore.addressSearchRunning = true;
         if (MainStore.datafetchRunning) {
           return false;
@@ -377,6 +378,9 @@ const router = createRouter({
           MainStore.setLastSearchMethod('address');
           await clearStoreData();
           await getGeocodeAndPutInStore(address);
+          if (!GeocodeStore.aisData.features) {
+            MainStore.currentTopic = null;
+          }
           routeApp(router);
         } else if (lat && lng) {
           MainStore.setLastSearchMethod('mapClick');
