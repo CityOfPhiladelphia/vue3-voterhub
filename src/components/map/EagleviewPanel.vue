@@ -11,6 +11,7 @@ const MapStore = useMapStore();
 
 const clientId = import.meta.env.VITE_EAGLEVIEW_CLIENT_ID;
 const clientSecret = import.meta.env.VITE_EAGLEVIEW_CLIENT_SECRET;
+console.log('clientId:', clientId, 'clientSecret:', clientSecret);
 const options = {
   method: 'POST',
   headers: {
