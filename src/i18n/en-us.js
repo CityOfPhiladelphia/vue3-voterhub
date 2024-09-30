@@ -44,7 +44,7 @@ export default {
         "content": "November 3, 2020",
       },
       "hours": "Hours",
-      "previewBallot": "Preview ballot ",
+      "previewBallot": "Preview ballot [PDF] ",
       "electedRep": "Elected Representatives",
       "cityCouncilRedistricting": "City Council Redistricting",
       "redistrictingSubtitle": "Some addresses will be represented by a new city council district starting in 2024. Residents will vote in the new district in the 2023 primary and general elections.",

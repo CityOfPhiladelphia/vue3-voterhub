@@ -44,7 +44,7 @@ export default {
         "content": "3 de noviembre de 2020",
       },
       "hours": "Horario",
-      "previewBallot": "Vista previa de la boleta ",
+      "previewBallot": "Vista previa de la boleta [PDF] ",
       "electedRep": "Representantes elegidos",
       "cityCouncilRedistricting": "Cambio de Distrito en el Municipio",
       "redistrictingSubtitle": "Algunas direcciones estarán representadas por un nuevo distrito municipal a partir de 2024. Los residentes votarán en el nuevo distrito en las elecciones primarias y generales de 2023.",
