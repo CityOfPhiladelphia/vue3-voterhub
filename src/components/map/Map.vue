@@ -13,7 +13,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import '@/assets/mapbox-gl-draw.min.js'
 import '@/assets/maplibre-gl-draw.css';
 import destination from '@turf/destination';
-import { point, polygon, multiPolygon, featureCollection } from '@turf/helpers';
+import { point, polygon, multiPolygon, feature, featureCollection } from '@turf/helpers';
 import bbox from '@turf/bbox';
 import buffer from '@turf/buffer';
 
@@ -540,8 +540,18 @@ const handleStormwaterOpacityChange = (opacity) => {
 
 // for Voting topic, watch voting division and polling place for changing map center and zoom
 const votingDivision = computed(() => { 
-  if (PollingPlaceStore.divisions.features) {
-    return PollingPlaceStore.divisions.features[0].geometry.coordinates[0];
+  if (import.meta.env.VITE_VOTING_DATA_SOURCE == 'carto') {
+    if (PollingPlaceStore.divisions.rows) {
+      return JSON.parse(PollingPlaceStore.divisions.rows[0].st_asgeojson);
+    } else {
+      return [[0,0], [0,1], [1,1], [1,0], [0,0]];
+    }
+  } else if (import.meta.env.VITE_VOTING_DATA_SOURCE == 'arcgis') {
+    if (PollingPlaceStore.divisions.features) {
+      return PollingPlaceStore.divisions.features[0].geometry.coordinates[0];
+    } else {
+      return [[0,0], [0,1], [1,1], [1,0], [0,0]];
+    }
   } else {
     return [[0,0], [0,1], [1,1], [1,0], [0,0]];
   }
@@ -554,8 +564,24 @@ const pollingPlaceCoordinates = computed(() => {
   }
 });
 watchEffect(() => {
-  if (PollingPlaceStore.divisions.features && PollingPlaceStore.pollingPlaces.rows) {
+  if (PollingPlaceStore.divisions.rows && PollingPlaceStore.pollingPlaces.rows) {
+    const newDivision = feature(votingDivision.value);
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('watchEffect 1, newDivision:', newDivision, 'votingDivision.value:', votingDivision.value, 'pollingPlaceCoordinates.value:', pollingPlaceCoordinates.value);
+    map.getSource('votingDivision').setData(newDivision);
+    $config.votingDrawnMapStyle.sources.votingDivision.data = newDivision;
+    const newPollingPlace = point(pollingPlaceCoordinates.value);
+    map.getSource('buildingColumnsMarker').setData(newPollingPlace);
+    $config.votingDrawnMapStyle.sources.buildingColumnsMarker.data = newPollingPlace;
+    const theFeatureCollection = featureCollection([newDivision, newPollingPlace]);
+    const bounds = bbox(buffer(theFeatureCollection, 400, {units: 'feet'}));
+    map.fitBounds(bounds);
+  }
+});
+
+watchEffect(() => {
+  if (PollingPlaceStore.divisions.features && PollingPlaceStore.pollingPlaces.features) {
     const newDivision = polygon([votingDivision.value]);
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('watchEffect 2, newDivision:', newDivision, 'votingDivision.value:', votingDivision.value, 'pollingPlaceCoordinates.value:', pollingPlaceCoordinates.value);
     map.getSource('votingDivision').setData(newDivision);
     $config.votingDrawnMapStyle.sources.votingDivision.data = newDivision;
     const newPollingPlace = point(pollingPlaceCoordinates.value);
@@ -927,6 +953,17 @@ const toggleEagleview = () => {
     id="map"
     class="map map-class"
   >
+  <div
+      v-if="MainStore.addressSearchRunning"
+      class="map-cover is-align-content-center has-text-centered"
+    >
+      <font-awesome-icon
+        icon="fa-solid fa-spinner"
+        class="fa-6x center-spinner"
+        spin
+        />
+    </div>
+
     <AddressSearchControl :input-id="'map-search-input'" />
     <ImageryToggleControl @toggle-imagery="toggleImagery" />
     <ImageryDropdownControl
@@ -984,5 +1021,8 @@ const toggleEagleview = () => {
 
 <style>
 
+.center-spinner {
+  color: #333333;
+}
 
 </style>

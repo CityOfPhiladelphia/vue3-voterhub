@@ -6,9 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build-dev": "vite build --mode=development",
+    "build-prod": "vite build --mode=production",
     "build": "vite build",
-    "build-git": "vite build --base=/vue3-atlas --mode=build-git",
-    "github-pages": "vite build --base=/vue3-atlas --mode=github-pages",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --ignore-path .eslintignore",
     "lint:fix": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .eslintignore"
