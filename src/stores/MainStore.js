@@ -4,6 +4,7 @@ export const useMainStore = defineStore("MainStore", {
   state: () => {
     return {
       pageTitle: '',
+      addressSearchRunning: false,
       datafetchRunning: false,
       publicPath: null,
       isMobileDevice: null,

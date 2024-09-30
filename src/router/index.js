@@ -49,6 +49,7 @@ const getGeocodeAndPutInStore = async(address) => {
     currentAddress = GeocodeStore.aisData.features[0].street_address;
   }
   MainStore.setCurrentAddress(currentAddress);
+  // MainStore.addressSearchRunning = false;
 }
 
 // this ONLY runs on map click
@@ -87,6 +88,7 @@ const getParcelsAndPutInStore = async(lng, lat) => {
     MainStore.otherParcelGeocodeParameter = ParcelsStore[otherParcelLayer].features[0].properties[otherGeocodeParameterField]
     // if (import.meta.env.VITE_DEBUG == 'true') console.log('else MainStore.otherParcelAddress:', MainStore.otherParcelAddress);
   }
+  // MainStore.addressSearchRunning = false;
 }
 
 // it should only show an address at the top that has been found in AIS for the top line address, so, if map clicked, it
@@ -317,6 +319,9 @@ const router = createRouter({
         const { address, lat, lng, lang } = to.query;
         if (import.meta.env.VITE_DEBUG == 'true') console.log('search route beforeEnter, to.query:', to.query, 'to:', to, 'from:', from, 'address:', address);
         const MainStore = useMainStore();
+        const GeocodeStore = useGeocodeStore();
+        const ParcelsStore = useParcelsStore();
+        MainStore.addressSearchRunning = true;
         if (MainStore.datafetchRunning) {
           return false;
         } else if (address && address !== '') {
@@ -324,10 +329,17 @@ const router = createRouter({
           MainStore.setLastSearchMethod('address');
           await clearStoreData();
           await getGeocodeAndPutInStore(address);
+          if (!GeocodeStore.aisData.features) {
+            MainStore.currentTopic = null;
+          }
           routeApp(router);
         } else if (lat && lng) {
           MainStore.setLastSearchMethod('mapClick');
           await getParcelsAndPutInStore(lng, lat);
+          if (!Object.keys(ParcelsStore.pwdChecked).length && !Object.keys(ParcelsStore.dorChecked).length) {
+            MainStore.addressSearchRunning = false;
+            return false;
+          }
           await checkParcelInAis();
           routeApp(router);
         } else {
@@ -350,6 +362,7 @@ router.afterEach(async (to, from) => {
   if (to.name === 'address-or-topic') {
     return;
   } else if (to.name !== 'not-found' && to.name !== 'search' && to.name !== 'topic') {
+    MainStore.addressSearchRunning = false;
     await dataFetch(to, from);
     let pageTitle = 'VoterHub';
     for (let param of Object.keys(to.params)) {
@@ -359,6 +372,11 @@ router.afterEach(async (to, from) => {
   } else if (to.name == 'not-found') {
     const MainStore = useMainStore();
     MainStore.currentTopic = "elections-and-ballots"
+    // MainStore.currentAddress = null;
+    // MainStore.currentParcelGeocodeParameter = null;
+    // MainStore.currentParcelAddress = null;
+    // MainStore.otherParcelAddress = null;
+    // MainStore.otherParcelGeocodeParameter = null;
   }
   console.log('router afterEach, to.name:', to.name);
 });

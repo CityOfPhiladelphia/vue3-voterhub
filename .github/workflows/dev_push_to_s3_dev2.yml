@@ -23,7 +23,7 @@ jobs:
     - name: Voterhub - npm install and build
       run: |
         printf "@fortawesome:registry=https://npm.fontawesome.com/\n//npm.fontawesome.com/:_authToken=${FA_AUTH_TOKEN}" >> ~/.npmrc
-        npm install
+        npm ci
         npm run build-dev
       env:
         FA_AUTH_TOKEN: ${{ secrets.FA_AUTH_TOKEN }}
