@@ -1,7 +1,6 @@
 <script setup>
 
-import { parseISO, format, fromUnixTime } from 'date-fns';
-import { TZDate } from '@date-fns/tz';
+import { formatInTimeZone } from 'date-fns-tz';
 
 import useTransforms from '@/composables/useTransforms';
 const { nth, phoneNumber, titleCase } = useTransforms();
@@ -192,13 +191,13 @@ const electionTypes = {
 
 const electionDate = computed(() => {
   if (electionSplit.value) {
-    if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'carto') {
-      // return parseISO(electionSplit.value[fieldNames.election_date]);
-      return format(new TZDate(electionSplit.value[fieldNames.election_date], 'EST').toString(), 'MMMM d, yyyy');
-      // return format(parseISO(electionSplit.value[fieldNames.election_date]), 'MMMM d, yyyy');
-    } else if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'arcgis') {
-      return format(fromUnixTime(electionSplit.value[fieldNames.election_date]/1000), 'MMMM d, yyyy');
-    }
+    return formatInTimeZone(electionSplit.value[fieldNames.election_date], 'America/New_York', 'MMMM d, yyyy');
+    // if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'carto') {
+    //   if (import.meta.env.VITE_DEBUG == 'true') console.log('typeof electionSplit.value[fieldNames.election_date]:', typeof electionSplit.value[fieldNames.election_date]);
+    //   return formatInTimeZone(electionSplit.value[fieldNames.election_date], 'America/New_York', 'MMMM d, yyyy');
+    // } else if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'arcgis') {
+    //   return formatInTimeZone(electionSplit.value[fieldNames.election_date], 'America/New_York', 'MMMM d, yyyy');
+    // }
   }
 });
 

@@ -2,8 +2,8 @@
 // composable functions as needed
 
 import accounting from 'accounting';
-import { format, parseISO } from 'date-fns';
-import { UTCDate } from '@date-fns/utc';
+import { formatInTimeZone } from 'date-fns-tz';
+// import { format, parseISO } from 'date-fns';
 
 accounting.settings.currency.precision = 0;
 
@@ -16,12 +16,12 @@ export default function useTransforms() {
     if (!value) return;
     let valueTransformed;
     if (import.meta.env.VITE_DEBUG == 'true') console.log('date transform running, value:', value, 'typeof value:', typeof value);
-    if (typeof value === 'string') {
-      console.log('date transform parseISO(value):', parseISO(value));
-      valueTransformed = format(parseISO(value), 'MM/dd/yyyy');
-    } else {
-      valueTransformed = format(value, 'MM/dd/yyyy');
-    }
+    // if (typeof value === 'string') {
+      // console.log('date transform parseISO(value):', parseISO(value));
+    valueTransformed = formatInTimeZone(value, 'America/New_York', 'MM/dd/yyyy');
+    // } else {
+    //   valueTransformed = formatInTimeZone(value, 'America/New_York', 'MM/dd/yyyy');
+    // }
     return valueTransformed;
   }
 
