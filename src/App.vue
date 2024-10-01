@@ -11,6 +11,10 @@ const languages = i18nFromFiles.i18n.languages;
 import { useMainStore } from '@/stores/MainStore.js'
 const MainStore = useMainStore();
 
+import { TZDate } from '@date-fns/tz';
+const test = new TZDate(2024, 9, 1).toString();
+if (import.meta.env.VITE_DEBUG == 'true') console.log('test:', test);
+
 if (!import.meta.env.VITE_PUBLICPATH) {
   MainStore.publicPath = '/';
 } else {
