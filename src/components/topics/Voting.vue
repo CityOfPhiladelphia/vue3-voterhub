@@ -196,7 +196,7 @@ const electionDate = computed(() => {
     if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'carto') {
       // return parseISO(electionSplit.value[fieldNames.election_date]);
       if (import.meta.env.VITE_DEBUG == 'true') console.log('typeof electionSplit.value[fieldNames.election_date]:', typeof electionSplit.value[fieldNames.election_date]);
-      return new TZDate(electionSplit.value[fieldNames.election_date], 'America/New_York');
+      return format(new TZDate(electionSplit.value[fieldNames.election_date], 'America/New_York'), 'MMMM d, yyyy');
       // return electionSplit.value[fieldNames.election_date].split('T')[0];
       // return format(electionSplit.value[fieldNames.election_date].split('T')[0], 'MMMM d, yyyy');
     } else if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'arcgis') {
