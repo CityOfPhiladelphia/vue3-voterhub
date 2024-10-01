@@ -1,8 +1,6 @@
 <script setup>
 
 import { parseISO, format, fromUnixTime } from 'date-fns';
-// import { TZDate } from '@date-fns/tz';
-// import { UTCDate } from '@date-fns/utc';
 import { formatInTimeZone } from 'date-fns-tz';
 
 import useTransforms from '@/composables/useTransforms';
@@ -195,13 +193,25 @@ const electionTypes = {
 const electionDate = computed(() => {
   if (electionSplit.value) {
     if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'carto') {
-      // return parseISO(electionSplit.value[fieldNames.election_date]);
       if (import.meta.env.VITE_DEBUG == 'true') console.log('typeof electionSplit.value[fieldNames.election_date]:', typeof electionSplit.value[fieldNames.election_date]);
       return formatInTimeZone(electionSplit.value[fieldNames.election_date], 'America/New_York', 'MMMM d, yyyy');
-      // return electionSplit.value[fieldNames.election_date].split('T')[0];
-      // return format(electionSplit.value[fieldNames.election_date].split('T')[0], 'MMMM d, yyyy');
     } else if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'arcgis') {
-      return format(fromUnixTime(electionSplit.value[fieldNames.election_date]/1000), 'MMMM d, yyyy');
+      console.log('fromUnixTime(electionSplit.value[fieldNames.election_date]/1000):', fromUnixTime(electionSplit.value[fieldNames.election_date]/1000))
+      // return formatInTimeZone(new Date(fromUnixTime(electionSplit.value[fieldNames.election_date]/1000)), 'America/NewYork', 'MMMM d, yyyy');
+      console.log("format(fromUnixTime(electionSplit.value[fieldNames.election_date]/1000), 'MMddyyyyThh:mm:ss'):", format(fromUnixTime(electionSplit.value[fieldNames.election_date]/1000), "yyyy-MM-dd'T'hh:mm:ss'Z'"));
+      console.log('typeof new Date(electionSplit.value[fieldNames.election_date]/1000):', typeof new Date(electionSplit.value[fieldNames.election_date]));
+
+      return formatInTimeZone(electionSplit.value[fieldNames.election_date], 'America/New_York', 'MMMM d, yyyy');
+      // return new Date(electionSplit.value[fieldNames.election_date]);
+      // return format(new Date(electionSplit.value[fieldNames.election_date]), "yyyy-MM-dd'T'hh:mm:ss'Z'");
+      // return formatInTimeZone(format(new Date(fromUnixTime(electionSplit.value[fieldNames.election_date]/1000)), "yyyy-MM-dd'T'hh:mm:ss'Z'"), 'America/NewYork', 'MMMM d, yyyy');
+
+
+      // return formatInTimeZone(new Date(fromUnixTime(electionSplit.value[fieldNames.election_date]/1000)), 'America/NewYork', 'MMMM d, yyyy');
+      // return formatInTimeZone(new Date(format(fromUnixTime(electionSplit.value[fieldNames.election_date]/1000), "yyyy-MM-dd'T'hh:mm:ss'Z'")), 'America/NewYork', 'MMMM d, yyyy');
+      // return new Date(format(fromUnixTime(electionSplit.value[fieldNames.election_date]/1000)), "yyyy-MM-dd'T'hh:mm:ss'Z'");
+      // return new Date(format(fromUnixTime(electionSplit.value[fieldNames.election_date]/1000), "yyyy-MM-dd'T'hh:mm:ss'Z'"));
+      // return format(fromUnixTime(electionSplit.value[fieldNames.election_date]/1000), "yyyy-MM-dd'T'hh:mm:ss'Z'");
     }
   }
 });
