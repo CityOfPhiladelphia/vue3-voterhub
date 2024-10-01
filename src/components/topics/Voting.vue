@@ -195,7 +195,7 @@ const electionDate = computed(() => {
   if (electionSplit.value) {
     if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'carto') {
       // return parseISO(electionSplit.value[fieldNames.election_date]);
-      return format(new TZDate(electionSplit.value[fieldNames.election_date], 'EST'), 'MMMM d, yyyy');
+      return format(new UTCDate(electionSplit.value[fieldNames.election_date]), 'MMMM d, yyyy');
       // return format(parseISO(electionSplit.value[fieldNames.election_date]), 'MMMM d, yyyy');
     } else if (import.meta.env.VITE_VOTING_DATA_SOURCE === 'arcgis') {
       return format(fromUnixTime(electionSplit.value[fieldNames.election_date]/1000), 'MMMM d, yyyy');
