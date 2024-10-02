@@ -6,7 +6,7 @@ import { computed } from 'vue';
 const BallotsStore = useBallotsStore();
 
 let fieldNames = {
-  'next_election': 'next_election',
+  'election_date': 'election_date',
 };
 
 const electedOfficials = computed(() => {
