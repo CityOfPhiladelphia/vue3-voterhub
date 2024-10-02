@@ -1,10 +1,41 @@
 <script setup>
 
-import { parseISO, format } from 'date-fns';
+// import { parseISO, format } from 'date-fns';
+import { formatInTimeZone } from 'date-fns-tz';
 
 import { useBallotsStore } from '@/stores/BallotsStore';
 import { computed } from 'vue';
 const BallotsStore = useBallotsStore();
+
+// const instance = getCurrentInstance();
+// import i18nFromFiles from '@/i18n/i18n.js';
+// const messages = computed(() => {
+//   return i18nFromFiles.i18n.data.messages[instance.appContext.config.globalProperties.$i18n.locale];
+// })
+
+let fieldNames = {
+  'ward': 'ward',
+  'division': 'division',
+  'placename': 'placename',
+  'precinct': 'precinct',
+  'street_address': 'street_address',
+  'accessibility_code': 'accessibility_code',
+  'parking_code': 'parking_code',
+  'election_type': 'election_type',
+  'election_date': 'election_date',
+  'office_label': 'office_label',
+  'ballot_file_id': 'ballot_file_id',
+  'website': 'website',
+  'first_name': 'first_name',
+  'last_name': 'last_name',
+  'district': 'district',
+  'main_contact_address_2': 'main_contact_address_2',
+  'main_contact_phone_1': 'main_contact_phone_1',
+  'main_contact_phone_2': 'main_contact_phone_2',
+  'main_contact_fax': 'main_contact_fax',
+  'email': 'email',
+  'next_election': 'next_election',
+};
 
 const electedOfficials = computed(() => {
   if (!BallotsStore.electedOfficials.rows || !BallotsStore.electedOfficials.rows.length) return null;
@@ -31,6 +62,12 @@ const electionSplit = computed(() => {
   }
 });
 
+const electionDate = computed(() => {
+  if (electionSplit.value) {
+    return formatInTimeZone(electionSplit.value[fieldNames.election_date], 'America/New_York', 'MMMM d, yyyy');
+  }
+});
+
 const electionTypes = {
   0: 'ballot.topic.badge1.specialElection',
   1: 'ballot.topic.badge1.primaryElection',
@@ -49,7 +86,7 @@ const electionTypes = {
         v-if="electionSplit"
         class="column is-12 election"
       >
-        {{ format(parseISO(electionSplit.election_date), 'MMMM d, yyyy') }}
+        {{ electionDate }}
       </div>
       <div
         v-else
