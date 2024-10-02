@@ -1,5 +1,4 @@
 <script setup>
-
 import { formatInTimeZone } from 'date-fns-tz';
 
 import { useBallotsStore } from '@/stores/BallotsStore';
