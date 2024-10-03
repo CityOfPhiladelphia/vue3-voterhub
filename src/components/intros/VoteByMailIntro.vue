@@ -3,6 +3,8 @@
 import { useMainStore } from '@/stores/MainStore.js'
 const MainStore = useMainStore();
 
+import AddressSearchControl from '@/components/AddressSearchControl.vue';
+
 </script>
 
 <template>

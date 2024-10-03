@@ -63,9 +63,6 @@ export default {
       "callout1": {
         "text": "The deadline to register for the next election is 15 days prior to the election. You can confirm your registration and learn about registering to vote at <a target='_blank' href='https://vote.phila.gov/'>vote.phila.gov</a>.",
       },
-      "paragraph1": {
-        "text": "All important dates for voters in 2023 have passed. ",
-      },
       "table2": {
         "title": "Previous election sample ballots and results (2019 to present)",
       },
