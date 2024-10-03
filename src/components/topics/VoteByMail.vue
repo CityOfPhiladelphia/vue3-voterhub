@@ -2,8 +2,8 @@
 import { computed, watch, onMounted, onBeforeUnmount, getCurrentInstance } from 'vue';
 import { point, featureCollection } from '@turf/helpers';
 
-import { useMailinVotingStore } from '@/stores/MailinVotingStore';
-const MailinVotingStore = useMailinVotingStore();
+import { useVoteByMailStore } from '@/stores/VoteByMailStore';
+const VoteByMailStore = useVoteByMailStore();
 import { useMainStore } from '@/stores/MainStore';
 const MainStore = useMainStore();
 import { useMapStore } from '@/stores/MapStore';
@@ -18,7 +18,7 @@ const messages = computed(() => {
 import useScrolling from '@/composables/useScrolling';
 const { handleRowClick, handleRowMouseover, handleRowMouseleave, isElementInViewport } = useScrolling();
 
-const loadingData = computed(() => MailinVotingStore.loadingData );
+const loadingData = computed(() => VoteByMailStore.loadingData );
 
 const compareFn = (a, b, field) => {
   if (a[field] < b[field]) {
@@ -31,8 +31,8 @@ const compareFn = (a, b, field) => {
 
 const mailinVoting = computed(() => {
   let data;
-  if (MailinVotingStore.mailinVoting.rows) {
-    data = [ ...MailinVotingStore.mailinVoting.rows ]
+  if (VoteByMailStore.mailinVoting.rows) {
+    data = [ ...VoteByMailStore.mailinVoting.rows ]
     data.sort((a, b) => compareFn(a, b, 'distance'))
   }
   return data;
@@ -51,7 +51,7 @@ const hoveredStateId = computed(() => { return MainStore.hoveredStateId; });
 
 onMounted(() => {
   const map = MapStore.map;
-  if (!MailinVotingStore.loadingData && mailinVotingGeojson.value.length > 0) { map.getSource('nearby').setData(featureCollection(mailinVotingGeojson.value)) }
+  if (!VoteByMailStore.loadingData && mailinVotingGeojson.value.length > 0) { map.getSource('nearby').setData(featureCollection(mailinVotingGeojson.value)) }
 });
 onBeforeUnmount(() => {
   const map = MapStore.map;
@@ -67,11 +67,11 @@ const mailinVotingTableData = computed(() => {
         html: true,
       },
       {
-        label: messages.value.mailInVoting.topic.horizontalTable1.typeAndHours,
+        label: messages.value.voteByMail.topic.horizontalTable1.typeAndHours,
         field: typeFieldFn,
       },
       {
-        label: messages.value.mailInVoting.topic.horizontalTable1.distance,
+        label: messages.value.voteByMail.topic.horizontalTable1.distance,
         field: 'distance_miles',
       }
     ],
@@ -103,46 +103,46 @@ watch(() => clickedMarkerId.value, (newClickedMarkerId) => {
       id="Mail-in-callout"
       class="topic-info"
     >
-      {{ $t('mailInVoting.topic.exclamationCallout1.p1') }}
+      {{ $t('voteByMail.topic.exclamationCallout1.p1') }}
     </div>
 
     <h2 class="subtitle is-5 mb-2">
-      {{ $t('mailInVoting.topic.table1.title') }}
+      {{ $t('voteByMail.topic.table1.title') }}
     </h2>
 
     <div
       id="Mail-in-dates"
       class="topic-info"
-      v-html="$t('mailInVoting.topic.paragraph1.text')"
+      v-html="$t('voteByMail.topic.paragraph1.text')"
     >
     </div>
 
     <h2 class="subtitle is-5 mb-2">
-      {{ $t('mailInVoting.topic.mailinBallots') }}
+      {{ $t('voteByMail.topic.mailinBallots') }}
     </h2>
 
     <div
       id="Mail-in-locations"
       class="topic-info"
     >
-      {{ $t('mailInVoting.topic.paragraph2.text') }}
+      {{ $t('voteByMail.topic.paragraph2.text') }}
     </div>
 
     <ul class="bullet-list mb-4">
-      <li>{{ $t('mailInVoting.topic.ul1.li1') }}</li>
-      <li>{{ $t('mailInVoting.topic.ul1.li2') }}</li>
-      <li>{{ $t('mailInVoting.topic.ul1.li3') }}</li>
+      <li>{{ $t('voteByMail.topic.ul1.li1') }}</li>
+      <li>{{ $t('voteByMail.topic.ul1.li2') }}</li>
+      <li>{{ $t('voteByMail.topic.ul1.li3') }}</li>
     </ul>
 
     <div
       id="Mail-in-locations"
       class="topic-info"
-      v-html="$t('mailInVoting.topic.paragraph3.text')"
+      v-html="$t('voteByMail.topic.paragraph3.text')"
     >
     </div>
 
     <h2 class="subtitle is-5 mb-2">
-      {{ $t('mailInVoting.topic.horizontalTable1.title') }}
+      {{ $t('voteByMail.topic.horizontalTable1.title') }}
       <font-awesome-icon
         v-if="loadingData"
         icon="fa-solid fa-spinner"
@@ -152,7 +152,7 @@ watch(() => clickedMarkerId.value, (newClickedMarkerId) => {
     </h2>
     <div class="horizontal-table">
       <vue-good-table
-        id="mail-in-voting"
+        id="vote-by-mail"
         :columns="mailinVotingTableData.columns"
         :rows="mailinVotingTableData.rows"
         :row-style-class="row => hoveredStateId === row.cartodb_id ? 'active-hover ' + row.cartodb_id : 'inactive ' + row.cartodb_id"
@@ -163,16 +163,16 @@ watch(() => clickedMarkerId.value, (newClickedMarkerId) => {
       >
         <template #emptystate>
           <div v-if="loadingData">
-            Loading Mail-in Voting Sites... <font-awesome-icon
+            Loading Vote by Mail Sites... <font-awesome-icon
               icon="fa-solid fa-spinner"
               spin
             />
           </div>
-          <div v-else-if="MailinVotingStore.dataError">
+          <div v-else-if="VoteByMailStore.dataError">
             Data loading error - try refreshing the page
           </div>
           <div v-else>
-            No Mail-in Voting sites found
+            No Vote by Mail sites found
           </div>
         </template>
       </vue-good-table>
@@ -189,7 +189,7 @@ only screen and (max-width: 760px),
 
 	/* Label the data */
     
-	#mail-in-voting {
+	#vote-by-mail {
 
     td:nth-of-type(2) {
       min-height: 60px;

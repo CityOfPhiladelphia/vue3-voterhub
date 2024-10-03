@@ -99,7 +99,7 @@ const fetchNearby = (feature, dataSource) => {
   return params
 }
 
-export const useMailinVotingStore = defineStore("MailinVotingStore", {
+export const useVoteByMailStore = defineStore("VoteByMailStore", {
   state: () => {
     return {
       dataError: false,
@@ -107,7 +107,7 @@ export const useMailinVotingStore = defineStore("MailinVotingStore", {
       loadingData: true,
       dataFields: {
         mailinVoting: {
-          title: 'Mail-in Voting Sites',
+          title: 'Vote by Mail Sites',
           id_field: 'cartodb_id',
           info_field: 'site_name'
         },
@@ -121,7 +121,7 @@ export const useMailinVotingStore = defineStore("MailinVotingStore", {
     setDataError(error) {
       this.dataError = error;
     },
-    async clearAllMailinVotingData() {
+    async clearAllVoteByMailData() {
       this.dataError = false;
       this.loadingData = true;
       this.mailinVoting = {};

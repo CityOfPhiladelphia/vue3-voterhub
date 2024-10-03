@@ -7,7 +7,7 @@ export default {
   "topics": {
     "Elections & Ballots": "Elections & Ballots",
     "Polling Place": "Polling Place",
-    "Mail-in Voting": "Mail-in Voting",
+    "Vote by Mail": "Vote by Mail",
     "Elected Officials": "Elected Officials",
   },
   "shared": {
@@ -106,7 +106,7 @@ export default {
       },
     },
   },
-  "mailInVoting": {
+  "voteByMail": {
     "introPage": {
       "introTitle": "Find mail-in voting drop-off locations",
       "ul1": {

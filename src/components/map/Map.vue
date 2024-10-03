@@ -28,8 +28,8 @@ import { useParcelsStore } from '@/stores/ParcelsStore.js'
 const ParcelsStore = useParcelsStore();
 import { usePollingPlaceStore } from '@/stores/PollingPlaceStore.js'
 const PollingPlaceStore = usePollingPlaceStore();
-import { useMailinVotingStore } from '@/stores/MailinVotingStore';
-const MailinVotingStore = useMailinVotingStore();
+import { useVoteByMailStore } from '@/stores/VoteByMailStore';
+const VoteByMailStore = useVoteByMailStore();
 
 // ROUTER
 import { useRouter, useRoute } from 'vue-router';
@@ -162,10 +162,10 @@ onMounted(async () => {
   map.on('click', 'nearby', (e) => {
     const properties = e.features[0].properties;
     let idField, infoField, row;
-    if (MainStore.currentTopic == 'mail-in-voting') {
-      idField = MailinVotingStore.dataFields[properties.type].id_field;
-      infoField = MailinVotingStore.dataFields[properties.type].info_field;
-      row = MailinVotingStore[properties.type].rows.filter(row => row[idField] === properties.id)[0];
+    if (MainStore.currentTopic == 'vote-by-mail') {
+      idField = VoteByMailStore.dataFields[properties.type].id_field;
+      infoField = VoteByMailStore.dataFields[properties.type].info_field;
+      row = VoteByMailStore[properties.type].rows.filter(row => row[idField] === properties.id)[0];
     }
     if (import.meta.env.VITE_DEBUG == 'true') console.log('nearby click, e:', e, 'properties:', properties, 'idField:', idField, 'infoField:', infoField, 'e.features[0]:', e.features[0], 'row:', row);
     // if (import.meta.env.VITE_DEBUG == 'true') console.log('nearby click, e:', e, 'properties:', properties, 'idField:', idField, 'e.features[0]:', e.features[0], 'type:', type, 'row:', row);
@@ -601,10 +601,10 @@ watch(
     if (import.meta.env.VITE_DEBUG == 'true') console.log('Map.vue clickedRow watch, newClickedRow:', newClickedRow, 'newClickedRow.type:', newClickedRow.type);
     if (newClickedRow) map.flyTo({ center: newClickedRow.lngLat });
     let idField, infoField, row;
-    if (MainStore.currentTopic == 'mail-in-voting') {
-      idField = MailinVotingStore.dataFields[newClickedRow.type].id_field;
-      infoField = MailinVotingStore.dataFields[newClickedRow.type].info_field;
-      row = MailinVotingStore[newClickedRow.type].rows.filter(row => row[idField] === newClickedRow.id)[0];
+    if (MainStore.currentTopic == 'vote-by-mail') {
+      idField = VoteByMailStore.dataFields[newClickedRow.type].id_field;
+      infoField = VoteByMailStore.dataFields[newClickedRow.type].info_field;
+      row = VoteByMailStore[newClickedRow.type].rows.filter(row => row[idField] === newClickedRow.id)[0];
     }
     if (import.meta.env.VITE_DEBUG == 'true') console.log('nearby click, newClickedRow:', newClickedRow, 'idField:', idField, 'row:', row);
     if (row.properties) row[infoField] = row.properties[infoField];

@@ -50,7 +50,7 @@ import AddressSearchControl from '@/components/AddressSearchControl.vue';
           <li><a target="_blank" href="https://www.pavoterservices.pa.gov/pages/voterregistrationstatus.aspx">{{ $t('shared.link1') }}</a></li>
           <li><a href="/polling-place">{{ $t('shared.link2') }}</a></li>
           <li><a target="_blank" href="https://www.pavoterservices.pa.gov/pages/ballottracking.aspx">{{ $t('shared.link3') }}</a></li>
-          <li><a href="/mail-in-voting">{{ $t('shared.link4') }}</a></li>
+          <li><a href="/vote-by-mail">{{ $t('shared.link4') }}</a></li>
           <li><a href="/elected-officials">{{ $t('shared.link5') }}</a></li>
           <li><a target="_blank" href="https://vote.phila.gov/voting/important-dates-for-voters/">{{ $t('shared.link6') }}</a></li>
         </ul>

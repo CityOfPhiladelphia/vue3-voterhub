@@ -16,25 +16,25 @@ const MainStore = useMainStore();
     </div>
     <div :class="MainStore.fullScreenTopicsEnabled ? 'topic-panel-half': ''">
       <h1 class="subtitle is-3">
-        {{ $t('mailInVoting.introPage.introTitle') }}
+        {{ $t('voteByMail.introPage.introTitle') }}
       </h1>
       <p class="subtitle is-4">
         {{ $t('shared.p2') }}
       </p>
       <ul class="bullet-list">
-        <li>{{ $t('mailInVoting.introPage.ul1.li1') }}</li>
+        <li>{{ $t('voteByMail.introPage.ul1.li1') }}</li>
       </ul>
       <br>
 
-      <p><b>{{ $t('shared.note') }}: </b>{{ $t('mailInVoting.introPage.p4') }}</p>
+      <p><b>{{ $t('shared.note') }}: </b>{{ $t('voteByMail.introPage.p4') }}</p>
       <br>
 
       <p
         class="topic-info"
-        v-html="$t('mailInVoting.introPage.p5')"
+        v-html="$t('voteByMail.introPage.p5')"
       >
       </p>
-    <!-- {{ $t('mailInVoting.introPage.p5') }} -->
+    <!-- {{ $t('voteByMail.introPage.p5') }} -->
 
       <div
         class="section-header"

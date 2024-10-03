@@ -6,7 +6,7 @@ import { useGeocodeStore } from '@/stores/GeocodeStore.js'
 import { useParcelsStore } from '@/stores/ParcelsStore.js'
 import { useBallotsStore } from '@/stores/BallotsStore.js'
 import { usePollingPlaceStore } from '@/stores/PollingPlaceStore.js'
-import { useMailinVotingStore } from '@/stores/MailinVotingStore.js'
+import { useVoteByMailStore } from '@/stores/VoteByMailStore.js'
 import { useElectedOfficialsStore } from '@/stores/ElectedOfficialsStore'
 import { useMainStore } from '@/stores/MainStore.js'
 
@@ -23,8 +23,8 @@ const clearStoreData = async() => {
   BallotsStore.clearAllBallotsData();
   const PollingPlaceStore = usePollingPlaceStore();
   PollingPlaceStore.clearAllPollingPlaceData();
-  const MailinVotingStore = useMailinVotingStore();
-  MailinVotingStore.clearAllMailinVotingData();
+  const VoteByMailStore = useVoteByMailStore();
+  VoteByMailStore.clearAllVoteByMailData();
   const ElectedOfficialsStore = useElectedOfficialsStore();
   ElectedOfficialsStore.clearAllElectedOfficialsData();
 }
@@ -234,10 +234,10 @@ const topicDataFetch = async (topic, data) => {
     PollingPlaceStore.loadingPollingPlaceData = false;
   }
 
-  if (topic && topic.toLowerCase() === 'mail-in-voting') {
-    const MailinVotingStore = useMailinVotingStore();
-    await MailinVotingStore.fillVotingSites();
-    MailinVotingStore.loadingData = false;
+  if (topic && topic.toLowerCase() === 'vote-by-mail') {
+    const VoteByMailStore = useVoteByMailStore();
+    await VoteByMailStore.fillVotingSites();
+    VoteByMailStore.loadingData = false;
   }
 
   if (topic && topic.toLowerCase() === 'elected-officials') {
@@ -270,7 +270,7 @@ const router = createRouter({
       beforeEnter: async (to, from) => {
         if (import.meta.env.VITE_DEBUG === 'true') console.log('address-or-topic route beforeEnter, to:', to, 'from:', from, to.params.addressOrTopic.toLowerCase());
         const MainStore = useMainStore();
-        const topics = [ 'elections-and-ballots', 'polling-place', 'mail-in-voting', 'elected-officials' ];
+        const topics = [ 'elections-and-ballots', 'polling-place', 'vote-by-mail', 'elected-officials' ];
         if (topics.includes(to.params.addressOrTopic.toLowerCase())) {
           if (import.meta.env.VITE_DEBUG === 'true') console.log('inside if, routing to topic');
           MainStore.currentTopic = to.params.addressOrTopic;

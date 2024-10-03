@@ -17,8 +17,8 @@ import Ballots from '@/components/topics/Ballots.vue';
 import BallotsIntro from '@/components/intros/BallotsIntro.vue';
 import PollingPlace from '@/components/topics/PollingPlace.vue';
 import PollingPlaceIntro from '@/components/intros/PollingPlaceIntro.vue';
-import MailInVoting from '@/components/topics/MailInVoting.vue';
-import MailInVotingIntro from '@/components/intros/MailInVotingIntro.vue';
+import VoteByMail from '@/components/topics/VoteByMail.vue';
+import VoteByMailIntro from '@/components/intros/VoteByMailIntro.vue';
 import ElectedOfficials from '@/components/topics/ElectedOfficials.vue';
 import ElectedOfficialsIntro from '@/components/intros/ElectedOfficialsIntro.vue';
 
@@ -47,7 +47,7 @@ const zipCode = computed(() => {
   <DefaultIntro v-if="route.name == 'home'" />
   <BallotsIntro v-if="route.name == 'topic' && route.params.topic.toLowerCase() == 'elections-and-ballots'" />
   <PollingPlaceIntro v-if="route.name == 'topic' && route.params.topic.toLowerCase() == 'polling-place'" />
-  <MailInVotingIntro v-if="route.name == 'topic' && route.params.topic.toLowerCase() == 'mail-in-voting'" />
+  <VoteByMailIntro v-if="route.name == 'topic' && route.params.topic.toLowerCase() == 'vote-by-mail'" />
   <ElectedOfficialsIntro v-if="route.name == 'topic' && route.params.topic.toLowerCase() == 'elected-officials'" />
 
   <!-- ADDRESS NOT FOUND CONTENT -->
@@ -118,13 +118,13 @@ const zipCode = computed(() => {
     </topic>
 
     <topic
-      :topic-name="'Mail-in Voting'"
-      :topic-slug="'mail-in-voting'"
+      :topic-name="'Vote by Mail'"
+      :topic-slug="'vote-by-mail'"
       :topic-icon="'fa-solid fa-envelope'"
-      :loading="!dataSourcesLoadedArray.includes('mail-in-voting')"
+      :loading="!dataSourcesLoadedArray.includes('vote-by-mail')"
       :topic-index="3"
     >
-      <MailInVoting />
+      <VoteByMail />
     </topic>
 
     <topic

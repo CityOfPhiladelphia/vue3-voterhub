@@ -132,7 +132,7 @@ const importantDatesTableData = computed(() => {
             spin
           />
         </div>
-        <div v-else-if="MailinVotingStore.dataError">
+        <div v-else-if="VoteByMailStore.dataError">
           Data loading error - try refreshing the page
         </div>
         <div v-else>

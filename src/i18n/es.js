@@ -7,7 +7,7 @@ export default {
   "topics": {
     "Elections & Ballots": "Spanish Elections & Ballots",
     "Polling Place": "Lugar de votación",
-    "Mail-in Voting": "Spanish Mail-in Voting",
+    "Vote by Mail": "Spanish Vote by Mail",
     "Elected Officials": "Spanish Elected Officials",
   },
   "shared": {
@@ -106,7 +106,7 @@ export default {
       },
     },
   },
-  "mailInVoting": {
+  "voteByMail": {
     "introPage": {
       "introTitle": "Spanish Find mail-in voting drop-off locations",
       "ul1": {
