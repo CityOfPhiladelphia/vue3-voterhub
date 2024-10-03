@@ -53,8 +53,8 @@ const compareFn = (a, b, field) => {
 
 const importantDates = computed(() => {
   let data;
-  if (BallotsStore.importantDates.rows) {
-    data = [ ...BallotsStore.importantDates.rows ]
+  if (BallotsStore.importantDates.length) {
+    data = [ ...BallotsStore.importantDates ]
     data.sort((a, b) => compareFn(a, b, 'date'))
   }
   return data;
