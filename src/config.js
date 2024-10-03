@@ -1019,7 +1019,7 @@ const nearbyDrawnMapStyle = mergeDeep(imageryInfo,{
         'circle-color': [
           'match',
           ['get', 'type'],
-          'mailinVoting',
+          'voteByMail',
           '#FF0000',
           'city311',
           '#FF0000',

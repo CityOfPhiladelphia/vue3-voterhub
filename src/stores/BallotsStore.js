@@ -4,6 +4,7 @@ import { useGeocodeStore } from './GeocodeStore';
 export const useBallotsStore = defineStore("BallotsStore", {
   state: () => {
     return {
+      dataError: false,
       electedOfficials: {},
       nextElection: {},
       electionSplit: {},
@@ -19,6 +20,7 @@ export const useBallotsStore = defineStore("BallotsStore", {
       this.fillImportantDates();
     },
     async clearAllBallotsData() {
+      this.dataError = false;
       this.electedOfficials = {};
       this.nextElection = {};
       this.electionSplit = {};
@@ -71,20 +73,30 @@ export const useBallotsStore = defineStore("BallotsStore", {
     },
     async fillImportantDates() {
       if (import.meta.env.VITE_DEBUG == 'true') console.log('fillImportantDates is running');
-      let baseUrl = 'https://phl.carto.com/api/v2/sql?q=';
-      const url = baseUrl += `SELECT * FROM voting_important_dates_2024 WHERE impacted_body = 'Voters'`;
-      const response = await fetch(url);
-      let data = await response.json();
-      console.log('response:', response, 'data:', data);
-      for (let row of data.rows) {
-        row.date = new Date(row.event_date);
+      try {
+        let baseUrl = 'https://phl.carto.com/api/v2/sql?q=';
+        const url = baseUrl += `SELECT * FROM voting_important_dates_2024 WHERE impacted_body = 'Voters'`;
+        const response = await fetch(url);
+
+        if (response.ok) {
+          let data = await response.json();
+          console.log('response:', response, 'data:', data);
+          for (let row of data.rows) {
+            row.date = new Date(row.event_date);
+          }
+          this.importantDates = data.rows.filter(row => {
+            let now = new Date();
+            let today = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+            console.log('row.date:', row.date, 'today:', today);
+            return row.date >= today;
+          });
+        } else {
+          if (import.meta.env.VITE_DEBUG == 'true') console.warn('important dates - await resolved but HTTP status was not successful');
+        }
+      } catch {
+        this.dataError = true;
+        if (import.meta.env.VITE_DEBUG == 'true') console.error('important dates - await never resolved, failed to fetch address data');
       }
-      this.importantDates = data.rows.filter(row => {
-        let now = new Date();
-        let today = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
-        console.log('row.date:', row.date, 'today:', today);
-        return row.date >= today;
-      });
     },
   },
 });

@@ -69,6 +69,9 @@ export default {
       "table2": {
         "title": "Previous election sample ballots and results (2019 to present)",
       },
+      "horizontalTable1": {
+        "title": "Important dates",
+      },
     },
   },
   "pollingPlace": {

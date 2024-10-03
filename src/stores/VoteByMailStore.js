@@ -103,10 +103,10 @@ export const useVoteByMailStore = defineStore("VoteByMailStore", {
   state: () => {
     return {
       dataError: false,
-      mailinVoting: {},
+      voteByMail: {},
       loadingData: true,
       dataFields: {
-        mailinVoting: {
+        voteByMail: {
           title: 'Vote by Mail Sites',
           id_field: 'cartodb_id',
           info_field: 'site_name'
@@ -124,7 +124,7 @@ export const useVoteByMailStore = defineStore("VoteByMailStore", {
     async clearAllVoteByMailData() {
       this.dataError = false;
       this.loadingData = true;
-      this.mailinVoting = {};
+      this.voteByMail = {};
     },
     async fillVotingSites() {
       if (import.meta.env.VITE_DEBUG == 'true') console.log('fillVotingSites is running');
@@ -156,13 +156,15 @@ export const useVoteByMailStore = defineStore("VoteByMailStore", {
             row.distance_miles = (row.distance * 0.000621371).toFixed(2) + ' miles';
             row.name_and_address = row.site_name+'<br/>'+row.street_address+'<br/>Philadelphia, PA '+row.zip;
           });
-          this.mailinVoting = data;
+          this.voteByMail = data;
           this.setLoadingData(false);
         } else {
-          if (import.meta.env.VITE_DEBUG == 'true') console.warn('mailinVoting - await resolved but HTTP status was not successful');
+          this.setDataError(true);
+          if (import.meta.env.VITE_DEBUG == 'true') console.warn('voteByMail - await resolved but HTTP status was not successful');
         }
       } catch {
-        if (import.meta.env.VITE_DEBUG == 'true') console.error('mailinVoting - await never resolved, failed to fetch address data');
+        this.setDataError(true);
+        if (import.meta.env.VITE_DEBUG == 'true') console.error('voteByMail - await never resolved, failed to fetch address data');
       }
     },
   },

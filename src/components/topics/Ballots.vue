@@ -64,7 +64,7 @@ const importantDatesTableData = computed(() => {
   return {
     columns: [
       {
-        label: 'Event title',
+        label: 'Event',
         field: 'event_title',
       },
       {
@@ -115,6 +115,15 @@ const importantDatesTableData = computed(() => {
   >
   </div>
 
+  <h2 class="subtitle is-5 mb-2">
+    {{ $t('ballot.topic.horizontalTable1.title') }}
+    <font-awesome-icon
+      v-if="loadingData"
+      icon="fa-solid fa-spinner"
+      spin
+    />
+    <span v-else>({{ importantDatesTableData.rows.length }})</span>
+  </h2>
   <div
     v-if="loadingData === false"
     class="horizontal-table"
@@ -125,20 +134,20 @@ const importantDatesTableData = computed(() => {
       :rows="importantDatesTableData.rows"
       style-class="table nearby-table"
     >
-      <!-- <template #emptystate>
+      <template #emptystate>
         <div v-if="loadingData">
           Loading important dates... <font-awesome-icon
             icon="fa-solid fa-spinner"
             spin
           />
         </div>
-        <div v-else-if="VoteByMailStore.dataError">
-          Data loading error - try refreshing the page
+        <div v-else-if="BallotsStore.dataError">
+          Data loading error
         </div>
         <div v-else>
           No important dates found
         </div>
-      </template> -->
+      </template>
     </vue-good-table>
   </div>
   

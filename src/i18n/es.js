@@ -67,7 +67,10 @@ export default {
         "text": "Spanish All important dates for voters in 2023 have passed. ",
       },
       "table2": {
-        "title": "Previous election sample ballots and results (2019 to present)",
+        "title": "Spanish Previous election sample ballots and results (2019 to present)",
+      },
+      "horizontalTable1": {
+        "title": "Spanish Important dates",
       },
     },
   },

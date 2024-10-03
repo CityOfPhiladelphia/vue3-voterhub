@@ -29,20 +29,20 @@ const compareFn = (a, b, field) => {
   return 0;
 }
 
-const mailinVoting = computed(() => {
+const voteByMail = computed(() => {
   let data;
-  if (VoteByMailStore.mailinVoting.rows) {
-    data = [ ...VoteByMailStore.mailinVoting.rows ]
+  if (VoteByMailStore.voteByMail.rows) {
+    data = [ ...VoteByMailStore.voteByMail.rows ]
     data.sort((a, b) => compareFn(a, b, 'distance'))
   }
   return data;
 })
 
-const mailinVotingGeojson = computed(() => {
-  if (!mailinVoting.value) return [point([0,0])];
-  return mailinVoting.value.map(item => point([item.lon, item.lat], { id: item.cartodb_id, type: 'mailinVoting' }));
+const voteByMailGeojson = computed(() => {
+  if (!voteByMail.value) return [point([0,0])];
+  return voteByMail.value.map(item => point([item.lon, item.lat], { id: item.cartodb_id, type: 'voteByMail' }));
 })
-watch (() => mailinVotingGeojson.value, async(newGeojson) => {
+watch (() => voteByMailGeojson.value, async(newGeojson) => {
   const map = MapStore.map;
   if (map.getSource) map.getSource('nearby').setData(featureCollection(newGeojson));
 });
@@ -51,14 +51,14 @@ const hoveredStateId = computed(() => { return MainStore.hoveredStateId; });
 
 onMounted(() => {
   const map = MapStore.map;
-  if (!VoteByMailStore.loadingData && mailinVotingGeojson.value.length > 0) { map.getSource('nearby').setData(featureCollection(mailinVotingGeojson.value)) }
+  if (!VoteByMailStore.loadingData && voteByMailGeojson.value.length > 0) { map.getSource('nearby').setData(featureCollection(voteByMailGeojson.value)) }
 });
 onBeforeUnmount(() => {
   const map = MapStore.map;
   if (map.getSource('nearby')) { map.getSource('nearby').setData(featureCollection([point([0,0])])) }
 });
 
-const mailinVotingTableData = computed(() => {
+const voteByMailTableData = computed(() => {
   return {
     columns: [
       {
@@ -75,7 +75,7 @@ const mailinVotingTableData = computed(() => {
         field: 'distance_miles',
       }
     ],
-    rows: mailinVoting.value || [],
+    rows: voteByMail.value || [],
   }
 });
 
@@ -148,18 +148,18 @@ watch(() => clickedMarkerId.value, (newClickedMarkerId) => {
         icon="fa-solid fa-spinner"
         spin
       />
-      <span v-else>({{ mailinVotingTableData.rows.length }})</span>
+      <span v-else>({{ voteByMailTableData.rows.length }})</span>
     </h2>
     <div class="horizontal-table">
       <vue-good-table
         id="vote-by-mail"
-        :columns="mailinVotingTableData.columns"
-        :rows="mailinVotingTableData.rows"
+        :columns="voteByMailTableData.columns"
+        :rows="voteByMailTableData.rows"
         :row-style-class="row => hoveredStateId === row.cartodb_id ? 'active-hover ' + row.cartodb_id : 'inactive ' + row.cartodb_id"
         style-class="table nearby-table"
         @row-mouseenter="handleRowMouseover($event, 'cartodb_id')"
         @row-mouseleave="handleRowMouseleave"
-        @row-click="handleRowClick($event, 'cartodb_id', 'mailinVoting')"
+        @row-click="handleRowClick($event, 'cartodb_id', 'voteByMail')"
       >
         <template #emptystate>
           <div v-if="loadingData">
@@ -169,7 +169,7 @@ watch(() => clickedMarkerId.value, (newClickedMarkerId) => {
             />
           </div>
           <div v-else-if="VoteByMailStore.dataError">
-            Data loading error - try refreshing the page
+            Data loading error
           </div>
           <div v-else>
             No Vote by Mail sites found
