@@ -102,7 +102,7 @@ const zipCode = computed(() => {
       :topic-slug="'elections-and-ballots'"
       :topic-icon="'fa-solid fa-star'"
       :loading="!dataSourcesLoadedArray.includes('elections-and-ballots')"
-      :topic-index="5"
+      :topic-index="1"
     >
       <Ballots />
     </topic>
@@ -112,7 +112,7 @@ const zipCode = computed(() => {
       :topic-slug="'polling-place'"
       :topic-icon="'fa-solid fa-building'"
       :loading="!dataSourcesLoadedArray.includes('polling-place')"
-      :topic-index="5"
+      :topic-index="2"
     >
       <PollingPlace />
     </topic>
@@ -122,7 +122,7 @@ const zipCode = computed(() => {
       :topic-slug="'mail-in-voting'"
       :topic-icon="'fa-solid fa-envelope'"
       :loading="!dataSourcesLoadedArray.includes('mail-in-voting')"
-      :topic-index="5"
+      :topic-index="3"
     >
       <MailInVoting />
     </topic>
@@ -132,7 +132,7 @@ const zipCode = computed(() => {
       :topic-slug="'elected-officials'"
       :topic-icon="'fa-solid fa-flag-usa'"
       :loading="!dataSourcesLoadedArray.includes('elected-officials')"
-      :topic-index="5"
+      :topic-index="4"
     >
       <ElectedOfficials />
     </topic>

@@ -179,8 +179,9 @@ const dataFetch = async(to, from) => {
 
     // if this was NOT started by a map click, get the parcels
     if (MainStore.lastSearchMethod !== 'mapClick') {
-      if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch, inside if routeAddressChanged:', routeAddressChanged);
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch, inside if dataSourcesLoadedArray[0]:', dataSourcesLoadedArray[0], 'routeAddressChanged:', routeAddressChanged);
       await ParcelsStore.fillPwdParcelData();
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch, inside if2 dataSourcesLoadedArray[0]:', dataSourcesLoadedArray[0], 'routeAddressChanged:', routeAddressChanged);
       await ParcelsStore.fillDorParcelData();
     }
 
@@ -193,6 +194,8 @@ const dataFetch = async(to, from) => {
     MainStore.datafetchRunning = false;
     return;
   }
+
+  if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch, after geocode, GeocodeStore.aisData:', GeocodeStore.aisData);
   
   // if the topic is condos and the address changes and there are no condos, reroute to property
   if (to.params.topic == "condos" && !CondosStore.condosData.pages.page_1.features.length) {
@@ -205,9 +208,12 @@ const dataFetch = async(to, from) => {
   MainStore.lastSearchMethod = null;
   MainStore.datafetchRunning = false;
 
+  if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch, to.name:', to.name, 'to.params.topic:', to.params.topic, 'to.params.data:', to.params.data);
+
   if (to.name !== 'topic') {
     await topicDataFetch(to.params.topic, to.params.data);
     if (to.params.topic) {
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch, adding to dataSourcesLoadedArray:', to.params.topic.toLowerCase());
       MainStore.addToDataSourcesLoadedArray(to.params.topic.toLowerCase());
     }
   }

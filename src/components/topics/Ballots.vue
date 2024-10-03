@@ -40,6 +40,42 @@ const electionTypes = {
   2: 'ballot.topic.badge1.generalElection',
 }
 
+const loadingData = computed(() => BallotsStore.loadingBallotsData );
+
+const compareFn = (a, b, field) => {
+  if (a[field] < b[field]) {
+    return -1;
+  } else if (a[field] > b[field]) {
+    return 1;
+  }
+  return 0;
+}
+
+const importantDates = computed(() => {
+  let data;
+  if (BallotsStore.importantDates.rows) {
+    data = [ ...BallotsStore.importantDates.rows ]
+    data.sort((a, b) => compareFn(a, b, 'date'))
+  }
+  return data;
+})
+
+const importantDatesTableData = computed(() => {
+  return {
+    columns: [
+      {
+        label: 'Event title',
+        field: 'event_title',
+      },
+      {
+        label: 'Date',
+        field: 'event_date',
+      },
+    ],
+    rows: importantDates.value || [],
+  }
+}) 
+
 </script>
 
 <template>
@@ -78,7 +114,35 @@ const electionTypes = {
     v-html="$t('ballot.topic.callout1.text')"
   >
   </div>
+
   <div
+    v-if="loadingData === false"
+    class="horizontal-table"
+  >
+    <vue-good-table
+      id="important-dates"
+      :columns="importantDatesTableData.columns"
+      :rows="importantDatesTableData.rows"
+      style-class="table nearby-table"
+    >
+      <!-- <template #emptystate>
+        <div v-if="loadingData">
+          Loading important dates... <font-awesome-icon
+            icon="fa-solid fa-spinner"
+            spin
+          />
+        </div>
+        <div v-else-if="MailinVotingStore.dataError">
+          Data loading error - try refreshing the page
+        </div>
+        <div v-else>
+          No important dates found
+        </div>
+      </template> -->
+    </vue-good-table>
+  </div>
+  
+  <!-- <div
     id="dates-description"
     class="topic-info"
   >
@@ -86,7 +150,7 @@ const electionTypes = {
     <a target='_blank' href='https://vote.phila.gov/voting/important-dates-for-voters/'>
       {{ $t('shared.link11') }}.
     </a>
-  </div>
+  </div> -->
 
   <a target="_blank" :href="'https://vote.phila.gov/voting/vote-by-mail/'">
     {{ $t('shared.link1') }} <font-awesome-icon icon="fa-solid fa-external-link-alt" />

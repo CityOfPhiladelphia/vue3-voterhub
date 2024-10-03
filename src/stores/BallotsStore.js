@@ -7,6 +7,7 @@ export const useBallotsStore = defineStore("BallotsStore", {
       electedOfficials: {},
       nextElection: {},
       electionSplit: {},
+      importantDates: {},
       loadingBallotsData: true,
     };
   },
@@ -15,11 +16,13 @@ export const useBallotsStore = defineStore("BallotsStore", {
       this.fillElectedOfficials();
       this.fillElectionSplit();
       this.fillNextElection();
+      this.fillImportantDates();
     },
     async clearAllBallotsData() {
       this.electedOfficials = {};
       this.nextElection = {};
       this.electionSplit = {};
+      this.importantDates = {};
       this.loadingBallotsData = true;
     },
     async fillElectionSplit() {
@@ -65,6 +68,18 @@ export const useBallotsStore = defineStore("BallotsStore", {
       const url = 'https://admin-vote.phila.gov/wp-json/votes/v1/election';
       const response = await fetch(url);
       this.nextElection = await response.json();
+    },
+    async fillImportantDates() {
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('fillImportantDates is running');
+      let baseUrl = 'https://phl.carto.com/api/v2/sql?q=';
+      const url = baseUrl += `SELECT * FROM voting_important_dates_2024`;
+      const response = await fetch(url);
+      let data = await response.json();
+      console.log('response:', response, 'data:', data);
+      for (let row of data.rows) {
+        row.date = new Date(row.event_date);
+      }
+      this.importantDates = data;
     },
   },
 });
