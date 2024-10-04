@@ -36,6 +36,7 @@ export default {
     "link12": "Spanish Check upcoming election dates",
     "link13": "Spanish See mail-in voting drop-off locations near you",
     "link14": "Spanish Look up your elected representatives and committeepeople",
+    "dataLoadingError": "Spanish Data loading error",
   },
   "default": {
     "introPage": {
@@ -68,6 +69,10 @@ export default {
       },
       "horizontalTable1": {
         "title": "Spanish Important dates",
+        "column1": "Spanish Event",
+        "column2": "Spanish Date",
+        "loadingImportantDates": "Spanish Loading important dates...",
+        "noImportantDates": "Spanish No important dates found",
       },
     },
   },

@@ -36,6 +36,7 @@ export default {
     "link12": "Check upcoming election dates",
     "link13": "See mail-in voting drop-off locations near you",
     "link14": "Look up your elected representatives and committeepeople",
+    "dataLoadingError": "Data loading error",
   },
   "default": {
     "introPage": {
@@ -68,6 +69,10 @@ export default {
       },
       "horizontalTable1": {
         "title": "Important dates",
+        "column1": "Event",
+        "column2": "Date",
+        "loadingImportantDates": "Loading important dates...",
+        "noImportantDates": "No important dates found",
       },
     },
   },

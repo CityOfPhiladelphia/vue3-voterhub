@@ -2,8 +2,15 @@
 import { formatInTimeZone } from 'date-fns-tz';
 
 import { useBallotsStore } from '@/stores/BallotsStore';
-import { computed } from 'vue';
+import { computed, getCurrentInstance } from 'vue';
 const BallotsStore = useBallotsStore();
+
+const instance = getCurrentInstance();
+import i18nFromFiles from '@/i18n/i18n.js';
+const messages = computed(() => {
+  return i18nFromFiles.i18n.data.messages[instance.appContext.config.globalProperties.$i18n.locale];
+})
+if (import.meta.env.VITE_DEBUG == 'true') console.log('messages:', messages);
 
 let fieldNames = {
   'election_date': 'election_date',
@@ -64,11 +71,11 @@ const importantDatesTableData = computed(() => {
   return {
     columns: [
       {
-        label: 'Event',
+        label: messages.value.ballot.topic.horizontalTable1.column1,
         field: 'event_title',
       },
       {
-        label: 'Date',
+        label: messages.value.ballot.topic.horizontalTable1.column2,
         field: 'event_date',
       },
     ],
@@ -136,42 +143,25 @@ const importantDatesTableData = computed(() => {
     >
       <template #emptystate>
         <div v-if="loadingData">
-          Loading important dates... <font-awesome-icon
+          {{ $t('ballot.topic.horizontalTable1.loadingImportantDates')}} <font-awesome-icon
             icon="fa-solid fa-spinner"
             spin
           />
         </div>
         <div v-else-if="BallotsStore.dataError">
-          Data loading error
+          {{ $t('shared.dataLoadingError') }}
         </div>
         <div v-else>
-          No important dates found
+          {{ $t('ballot.topic.horizontalTable1.noImportantDates') }}
         </div>
       </template>
     </vue-good-table>
   </div>
   
-  <!-- <div
-    id="dates-description"
-    class="topic-info"
-  >
-    {{ $t('ballot.topic.paragraph1.text') }}
-    <a target='_blank' href='https://vote.phila.gov/voting/important-dates-for-voters/'>
-      {{ $t('shared.link11') }}.
-    </a>
-  </div> -->
-
   <a target="_blank" :href="'https://vote.phila.gov/voting/vote-by-mail/'">
     {{ $t('shared.link1') }} <font-awesome-icon icon="fa-solid fa-external-link-alt" />
   </a>
   <br>
-  <!-- <a target="_blank" :href="'https://vote.phila.gov/voting/important dates for voters/'">
-    {{ $t('shared.link6') }} <font-awesome-icon icon="fa-solid fa-external-link-alt" />
-  </a>
-  <br>
-  <a target='_blank' href='https://vote.phila.gov/voting/important-dates-for-voters/'>
-    {{ $t('shared.link11') }} <font-awesome-icon icon="fa-solid fa-external-link-alt" />
-  </a> -->
 
 
 </template>
