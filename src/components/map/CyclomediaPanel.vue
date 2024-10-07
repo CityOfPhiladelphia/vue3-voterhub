@@ -46,7 +46,7 @@ const setNewLocation = async (coords) => {
     lastYear = format(subYears(today, 1), 'yyyy-MM-dd');
     thisYear = format(today, 'yyyy-MM-dd');
   }
-  // if (import.meta.env.VITE_DEBUG == 'true') console.log('CyclomediaPanel.vue setNewLocation, coords:', coords);
+  if (import.meta.env.VITE_DEBUG == 'true') console.log('CyclomediaPanel.vue setNewLocation, coords:', coords);
   const coords2272 = proj4(projection4326, projection2272, coords);
   const response = await StreetSmartApi.open(
     {
@@ -63,6 +63,7 @@ const setNewLocation = async (coords) => {
     }
   )
   let viewer = response[0];
+  if (import.meta.env.VITE_DEBUG == 'true') console.log('CyclomediaPanel.vue setNewLocation, viewer:', viewer);
   viewer.toggleNavbarExpanded(navBarExpanded.value);
   viewer.toggleButtonEnabled('panorama.elevation', false);
   viewer.toggleButtonEnabled('panorama.reportBlurring', false);

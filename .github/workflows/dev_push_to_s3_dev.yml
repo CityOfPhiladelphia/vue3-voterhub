@@ -6,7 +6,7 @@ name: dev Push to S3 dev bucket
 on:
   push:
     branches:
-      - bug/tz-issues
+      - bug/cyclomedia-issues
 jobs:
   build:
 
