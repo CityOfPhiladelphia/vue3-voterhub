@@ -9,6 +9,10 @@ export default {
     "Polling Place": "Lugar de votación",
     "Vote by Mail": "Spanish Vote by Mail",
     "Elected Officials": "Spanish Elected Officials",
+    "elections-and-ballots": "Spanish Elections & Ballots",
+    "polling-place": "Lugar de votación",
+    "vote-by-mail": "Spanish Vote by Mail",
+    "elected-officials": "Spanish Elected Officials",
   },
   "shared": {
     "hours": "Horario",
@@ -60,7 +64,7 @@ export default {
         "generalElection": "Próxima Elección Elegible: Elección General",
         "header": "Next Eligible Election Is",
       },
-      "previewBallot": "Spanish Preview ballot ",
+      "previewBallot": "Spanish Preview ballot [PDF]",
       "callout1": {
         "text": "Spanish The deadline to register for the next election is 15 days prior to the election. You can confirm your registration and learn about registering to vote at <a target='_blank' href='https://vote.phila.gov/'>vote.phila.gov</a>.",
       },

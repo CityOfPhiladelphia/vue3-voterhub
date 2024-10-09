@@ -9,6 +9,10 @@ export default {
     "Polling Place": "Polling Place",
     "Vote by Mail": "Vote by Mail",
     "Elected Officials": "Elected Officials",
+    "elections-and-ballots": "Elections & Ballots",
+    "polling-place": "Polling Place",
+    "vote-by-mail": "Vote by Mail",
+    "elected-officials": "Elected Officials",
   },
   "shared": {
     "hours": "Hours",
@@ -60,7 +64,7 @@ export default {
         "generalElection": "Next Eligible Election: General Election",
         "header": "Next Eligible Election Is",
       },
-      "previewBallot": "Preview ballot ",
+      "previewBallot": "Preview ballot [PDF] ",
       "callout1": {
         "text": "The deadline to register for the next election is 15 days prior to the election. You can confirm your registration and learn about registering to vote at <a target='_blank' href='https://vote.phila.gov/'>vote.phila.gov</a>.",
       },

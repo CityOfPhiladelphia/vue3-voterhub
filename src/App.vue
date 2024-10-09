@@ -32,7 +32,10 @@ import MapPanel from '@/components/MapPanel.vue';
 const instance = getCurrentInstance();
 // if (import.meta.env.VITE_DEBUG == 'true') console.log('instance:', instance);
 const locale = computed(() => instance.appContext.config.globalProperties.$i18n.locale);
-// if (import.meta.env.VITE_DEBUG == 'true') console.log('locale:', locale);
+const messages = computed(() => {
+  return i18nFromFiles.i18n.data.messages[locale.value];
+})
+if (import.meta.env.VITE_DEBUG == 'true') console.log('locale:', locale, 'messages:', messages);
 
 onMounted(async () => {
   MainStore.isMobileDevice = isMobileDevice();
@@ -105,7 +108,7 @@ watch(
         if (newLang) {
           instance.appContext.config.globalProperties.$i18n.locale = newLang;
         } else {
-          instance.appContext.config.globalProperties.$i18n.locale = 'en-US';
+          instance.appContext.config.globalProperties.$i18n.locale = 'en-us';
         }
       }
     }
@@ -118,12 +121,14 @@ watch(
     if (import.meta.env.VITE_DEBUG == 'true') console.log('watch locale:', newLocale, oldLocale);
     if (newLocale === MainStore.currentLang) {
       return;
-    } else if (newLocale && newLocale != 'en-US') {
-      MainStore.currentLang = newLocale;
+    }
+    if (newLocale && newLocale != 'en-us') {
       router.push({ query: { 'lang': newLocale }});
     } else {
-      MainStore.currentLang = null;
       router.push({ fullPath: route.path });
+    }
+    if (newLocale) {
+      MainStore.currentLang = newLocale;
     }
   }
 )
@@ -145,7 +150,6 @@ const brandingImage = computed(() => {
     }
   }
   return value;
-
 })
 
 </script>

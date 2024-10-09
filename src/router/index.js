@@ -13,6 +13,9 @@ import { useMainStore } from '@/stores/MainStore.js'
 import useRouting from '@/composables/useRouting';
 const { routeApp } = useRouting();
 
+import i18nFromFiles from '../i18n/i18n.js';
+console.log('i18nFromFiles:', i18nFromFiles.i18n.data.messages['en-us']);
+
 // this runs on address search and as part of datafetch()
 const clearStoreData = async() => {
   if (import.meta.env.VITE_DEBUG == 'true') console.log('clearStoreData is running');
@@ -275,13 +278,13 @@ const router = createRouter({
           if (import.meta.env.VITE_DEBUG === 'true') console.log('inside if, routing to topic');
           MainStore.currentTopic = to.params.addressOrTopic;
           MainStore.currentAddress = null;
-          MainStore.currentLang = to.query.lang;
+          to.query.lang ? MainStore.currentLang = to.query.lang : MainStore.currentLang = 'en-us';
           routeApp(router);
         } else {
           if (import.meta.env.VITE_DEBUG === 'true') console.log('inside else, routing to address');
           MainStore.currentTopic = null;
           MainStore.currentAddress = to.params.addressOrTopic;
-          MainStore.currentLang = to.query.lang;
+          to.query.lang ? MainStore.currentLang = to.query.lang : MainStore.currentLang = 'en-us';
           routeApp(router);
         }
       }
@@ -359,30 +362,29 @@ const router = createRouter({
 router.afterEach(async (to, from) => {
   const MainStore = useMainStore();
   if (import.meta.env.VITE_DEBUG == 'true') console.log('router afterEach to:', to, 'from:', from);
-  // if (to.query.lang !== from.query.lang && to.path === from.path) {
-  if (to.query.lang !== from.query.lang) {
+  if (!to.query.lang) {
+    MainStore.currentLang = 'en-us';
+  } else if (to.query.lang !== from.query.lang) {
     MainStore.currentLang = to.query.lang;
-  // } else if (to.path === from.path) {
-  //   return;
   }
-  if (to.name === 'address-or-topic') {
+  if (to.name === 'address-or-topic' || to.name === 'address') {
     return;
   } else if (to.name !== 'not-found' && to.name !== 'search' && to.name !== 'topic') {
     MainStore.addressSearchRunning = false;
     await dataFetch(to, from);
-    let pageTitle = 'VoterHub';
+    // let pageTitle = 'VoterHub';
+    let pageTitle = i18nFromFiles.i18n.data.messages[MainStore.currentLang].app.title;
     for (let param of Object.keys(to.params)) {
-      pageTitle += ' | ' + to.params[param];
+      if (param === 'topic') {
+        pageTitle += ' | ' + i18nFromFiles.i18n.data.messages[MainStore.currentLang].topics[to.params[param]];
+      } else {
+        pageTitle += ' | ' + to.params[param];
+      }
     }
     MainStore.pageTitle = pageTitle;
   } else if (to.name == 'not-found') {
     const MainStore = useMainStore();
     MainStore.currentTopic = "elections-and-ballots"
-    // MainStore.currentAddress = null;
-    // MainStore.currentParcelGeocodeParameter = null;
-    // MainStore.currentParcelAddress = null;
-    // MainStore.otherParcelAddress = null;
-    // MainStore.otherParcelGeocodeParameter = null;
   }
   console.log('router afterEach, to.name:', to.name);
 });

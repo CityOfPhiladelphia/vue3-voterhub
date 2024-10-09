@@ -7,10 +7,13 @@ const BallotsStore = useBallotsStore();
 
 const instance = getCurrentInstance();
 import i18nFromFiles from '@/i18n/i18n.js';
-const messages = computed(() => {
-  return i18nFromFiles.i18n.data.messages[instance.appContext.config.globalProperties.$i18n.locale];
+const locale = computed(() => {
+  return instance.appContext.config.globalProperties.$i18n.locale;
 })
-if (import.meta.env.VITE_DEBUG == 'true') console.log('messages:', messages);
+const messages = computed(() => {
+  return i18nFromFiles.i18n.data.messages[locale.value];
+})
+if (import.meta.env.VITE_DEBUG == 'true') console.log('i18nFromFiles:', i18nFromFiles, 'locale.value:', locale.value, 'messages.value:', messages.value);
 
 let fieldNames = {
   'election_date': 'election_date',

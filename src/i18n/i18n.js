@@ -10,10 +10,10 @@ let i18n = {
     selector: true,
     topics: [ 'voting' ],
     // topics: [],
-    // languages: [ 'en-US', 'es' ],
+    // languages: [ 'en-us', 'es' ],
     languages: [
       {
-        language: 'en-US',
+        language: 'en-us',
         title: 'English',
       },
       {
@@ -23,9 +23,9 @@ let i18n = {
     ],
     footer: true,
     data: {
-      locale: 'en-US',
+      locale: 'en-us',
       messages: {
-        'en-US': en,
+        'en-us': en,
         es: es,
       },
     },
