@@ -1,14 +1,14 @@
 
-export default {
+{
   "language": "English",
   "app": {
-    "title": "Voter Hub",
+    "title": "Voter Hub"
   },
   "topics": {
     "Elections & Ballots": "Elections & Ballots",
     "Polling Place": "Polling Place",
     "Vote by Mail": "Vote by Mail",
-    "Elected Officials": "Elected Officials",
+    "Elected Officials": "Elected Officials"
   },
   "shared": {
     "hours": "Hours",
@@ -35,13 +35,12 @@ export default {
     "link11": "See the full election calendar for 2023",
     "link12": "Check upcoming election dates",
     "link13": "See mail-in voting drop-off locations near you",
-    "link14": "Look up your elected representatives and committeepeople",
-    "dataLoadingError": "Data loading error",
+    "link14": "Look up your elected representatives and committeepeople"
   },
   "default": {
     "introPage": {
-      "introTitle": "Philadelphia's Voter Hub for personalized election information",
-    },
+      "introTitle": "Philadelphia's Voter Hub for personalized election information"
+    }
   },
   "ballot": {
     "introPage": {
@@ -49,8 +48,8 @@ export default {
       "ul1": {
         "li1": "Your complete sample ballot",
         "li2": "Upcoming election information",
-        "li3": "Past elections’ sample ballots and results",
-      },
+        "li3": "Past elections’ sample ballots and results"
+      }
     },
     "topic": {
       "ballots": "Elections & Ballots",
@@ -58,30 +57,26 @@ export default {
         "specialElection": "Next Eligible Election: Special Election",
         "primaryElection": "Next Eligible Election: Primary Election",
         "generalElection": "Next Eligible Election: General Election",
-        "header": "Next Eligible Election Is",
+        "header": "Next Eligible Election Is"
       },
-      "previewBallot": "Preview ballot ",
+      "previewBallot": "Preview ballot",
       "callout1": {
-        "text": "The deadline to register for the next election is 15 days prior to the election. You can confirm your registration and learn about registering to vote at <a target='_blank' href='https://vote.phila.gov/'>vote.phila.gov</a>.",
+        "text": "The deadline to register for the next election is 15 days prior to the election. You can confirm your registration and learn about registering to vote at <a target='_blank' href='https://vote.phila.gov/'>vote.phila.gov</a>."
+      },
+      "paragraph1": {
+        "text": "All important dates for voters in 2023 have passed."
       },
       "table2": {
-        "title": "Previous election sample ballots and results (2019 to present)",
-      },
-      "horizontalTable1": {
-        "title": "Important dates",
-        "column1": "Event",
-        "column2": "Date",
-        "loadingImportantDates": "Loading important dates...",
-        "noImportantDates": "No important dates found",
-      },
-    },
+        "title": "Previous election sample ballots and results (2019 to present)"
+      }
+    }
   },
   "pollingPlace": {
     "introPage": {
       "introTitle": "Find your polling place",
       "ul1": {
         "li1": "Your designated polling place",
-        "li2": "Accessibility and parking information for the building",
+        "li2": "Accessibility and parking information for the building"
       },
     },
     "topic": {
@@ -95,51 +90,50 @@ export default {
         "alternateEntrance": "Alternate Entrance",
         "buildingAccessibleWithRamp": "Building Accessible With Ramp",
         "buildingNotAccessible": "Building Not Accessible",
-        "informationNotAvailable": "Information not available",
+        "informationNotAvailable": "Information not available"
       },
       "parkingCodes": {
         "noParking": "No Parking",
         "generalParking": "General Parking",
         "loadingZone": "Loading Zone",
-        "informationNotAvailable": "Information not available",
+        "informationNotAvailable": "Information not available"
       },
       "callout1": {
-        "text": "The deadline to register for the next election is 15 days prior to the election. You can confirm your registration and learn about registering to vote at <a target='_blank' href='https://vote.phila.gov/'>vote.phila.gov</a>.",
+        "text": "The deadline to register for the next election is 15 days prior to the election. You can confirm your registration and learn about registering to vote at <a target='_blank' href='https://vote.phila.gov/'>vote.phila.gov</a>."
       },
       "verticalTable1": {
-        "link": "Learn about your voting options if you cannot vote in person on Election Day ",
-      },
-    },
+        "link": "Learn about your voting options if you cannot vote in person on Election Day "
+      }
+    }
   },
   "voteByMail": {
     "introPage": {
       "introTitle": "Find mail-in voting drop-off locations",
       "ul1": {
-        "li1": "Mail-in voting drop-off box and election office locations near you",
+        "li1": "Mail-in voting drop-off box and election office locations near you"
       },
       "p4": "Many drop-off locations are available at limited times. All mail-in and absentee ballots must be deposited before 8pm on election day.",
-      "p5": "If a dropbox is full, not functioning, or is damaged in any way, call <a href='tel:215-686-3469'>(215) 686-3469</a> or email <a href='mailto:vote&#64;phila.gov'>vote&#64;phila.gov.</a>",
+      "p5": "If a dropbox is full, not functioning, or is damaged in any way, call <a href='tel:215-686-3469'>(215) 686-3469</a> or email <a href='mailto:vote&#64;phila.gov'>vote&#64;phila.gov.</a>"
     },
     "p5": "test test test vote@phila.gov",
     "topic": {
       "exclamationCallout1": {
-        "p1": "Mail-in ballot drop-off locations and availability may change for each election.\
-        Check back closer to election day to get updated details about where you can drop off your mail-in ballot.",
+        "p1": "Mail-in ballot drop-off locations and availability may change for each election. Check back closer to election day to get updated details about where you can drop off your mail-in ballot."
       },
       "table1": {
-        "title": "Important dates for mail-in voting",
+        "title": "Important dates for mail-in voting"
       },
       "paragraph1": {
-        "text": "All mail-in voting dates in 2023 have passed.",
+        "text": "All mail-in voting dates in 2023 have passed."
       },
       "mailinBallots": "Mail-in ballots",
       "paragraph2": {
-        "text": "Mail-in and absentee ballots can be dropped off at our Election Office, at a fixed drop box, or at a temporary mobile ballot return location.",
+        "text": "Mail-in and absentee ballots can be dropped off at our Election Office, at a fixed drop box, or at a temporary mobile ballot return location."
       },
       "ul1": {
         "li1": "The Election Office is open Monday to Friday from 9am to 5pm and from 9am to 8pm on election day.",
         "li2": "Fixed drop boxes may be used at all times up til 8pm on election day.",
-        "li3": "Mobile ballot returns are available on specific dates at each location.",
+        "li3": "Mobile ballot returns are available on specific dates at each location."
       },
       "paragraph3": {
         "text": "Learn more including how to request a mail in or absentee ballot at <a target='_blank' href='https://vote.phila.gov/'>vote.phila.gov</a>.",
@@ -147,9 +141,9 @@ export default {
       "horizontalTable1": {
         "title": "Mail-in ballot drop-off locations",
         "typeAndHours": "Type and Hours",
-        "distance": "Distance",
-      },
-    },
+        "distance": "Distance"
+      }
+    }
   },
   "electedOfficials": {
     "introPage": {
@@ -158,8 +152,8 @@ export default {
       "ul1": {
         "li1": "Elected officials representing your address",
         "li2": "Contact information for your district council member",
-        "li3": "Committeepeople elected for your voting precinct",
-      },
+        "li3": "Committeepeople elected for your voting precinct"
+      }
     },
     "topic": {
       "currentTerm": "Current term",
@@ -172,7 +166,7 @@ export default {
         "controller": "Controller",
         "cityCommissioners": "City Commissioners",
         "sheriff": "Sheriff",
-        "registerOfWills": "Register of Wills",
+        "registerOfWills": "Register of Wills"
       },
       "verticalTable2": {
         "title": "State Officials",
@@ -182,13 +176,13 @@ export default {
         "lieutenantGovernor": "Lieutenant Governor",
         "attorneyGeneral": "Attorney General",
         "stateTreasurer": "State Treasurer",
-        "auditorGeneral": "Auditor General",
+        "auditorGeneral": "Auditor General"
       },
       "verticalTable3": {
         "title": "Federal Officials",
         "congressionalRepresentative": "Congressional Representative",
         "senators": "Senators",
-        "president": "President and Vice President",
+        "president": "President and Vice President"
       },
       "callout1": {
         "text": "The city of Philadelphia is divided into 66 wards, each further broken down into \
@@ -199,21 +193,21 @@ export default {
         <a target='_blank' href='https://www.phillygop.com/'>Republican City Committee</a> are the local political \
         party organizations and work with the state and national level organizations (the DNC \
         and RNC). Committeepeople and ward leaders encourage neighbors to vote, endorse \
-        candidates, and serve as resources for their neighborhood.",
+        candidates, and serve as resources for their neighborhood."
       },
       "verticalTable4": {
         "title": "Ward Leadership",
         "wardAndDivision": "Ward and Division",
         "totalDivisions": "Total Divisions",
-        "democraticWardLeader": "Democratic Ward Leader",
+        "democraticWardLeader": "Democratic Ward Leader"
       },
       "horizontalTable1": {
         "title": "City Ward Division Committeepeople",
         "party": "Party",
         "name": "Name",
         "zipCode": "Zip Code",
-        "yearElected": "Year Elected",
-      },
-    },
-  },
-};
+        "yearElected": "Year Elected"
+      }
+    }
+  }
+}

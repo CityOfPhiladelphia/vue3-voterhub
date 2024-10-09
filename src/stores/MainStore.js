@@ -3,7 +3,6 @@ import { defineStore, acceptHMRUpdate } from 'pinia';
 export const useMainStore = defineStore("MainStore", {
   state: () => {
     return {
-      appVersion: 'atlas',
       pageTitle: '',
       addressSearchRunning: false,
       datafetchRunning: false,
@@ -18,7 +17,7 @@ export const useMainStore = defineStore("MainStore", {
       currentParcelAddress:'',
       otherParcelAddress:'',
       currentAddress: '',
-      currentTopic: 'property',
+      currentTopic: 'elections-and-ballots',
       currentLang: null,
       currentNearbyDataType: null,
       currentNearbyTimeInterval: {},

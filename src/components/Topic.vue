@@ -40,7 +40,7 @@ const open = computed(() => {
 });
 
 const handleTopicClick = () => {
-  if (props.topicSlug == route.params.topic) {
+  if (route.params.topic && props.topicSlug == route.params.topic.toLowerCase()) {
     MainStore.currentTopic = '';
   } else {
     MainStore.currentTopic = props.topicSlug;
@@ -76,9 +76,11 @@ const handleTopicClick = () => {
         <div class="icon-holder">
           <font-awesome-icon :icon="props.topicIcon" />
         </div>
+
         <h1 class="name-holder">
-          {{ topicName }}
+          {{ $t(`topics['${topicName}']`) }}
         </h1>
+
         <div
           v-if="open && loading"
           class="mr-2 is-pulled-right"

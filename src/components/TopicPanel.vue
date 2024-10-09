@@ -1,34 +1,28 @@
 <script setup>
+// import { useI18n } from 'vue-i18n'
+// const { t } = useI18n() 
 
 import { computed } from 'vue';
 import { useMainStore } from '@/stores/MainStore.js'
 const GeocodeStore = useGeocodeStore();
 import { useGeocodeStore } from '@/stores/GeocodeStore.js'
 const MainStore = useMainStore();
-import { useCondosStore } from '@/stores/CondosStore.js'
-const CondosStore = useCondosStore();
 
 import FullScreenTopicsToggleTab from '@/components/FullScreenTopicsToggleTab.vue';
 import AddressSearchControl from '@/components/AddressSearchControl.vue';
 
 import Topic from '@/components/Topic.vue';
-import AtlasIntro from '@/components/intros/AtlasIntro.vue';
-import CityAtlasIntro from '@/components/intros/CityAtlasIntro.vue';
-import VotingIntro from '@/components/intros/VotingIntro.vue';
-import Property from '@/components/topics/Property.vue';
-import Condos from '@/components/topics/Condos.vue';
-import Deeds from '@/components/topics/Deeds.vue';
-import LI from '@/components/topics/LI.vue';
-import Zoning from '@/components/topics/Zoning.vue';
-import Voting from '@/components/topics/Voting.vue';
-import NearbyActivity from '@/components/topics/nearbyActivity/NearbyActivity.vue';
-import City311 from '@/components/topics/cityAtlas/City311.vue';
-import Stormwater from '@/components/topics/cityAtlas/Stormwater.vue';
-import Districts from '@/components/topics/cityAtlas/Districts.vue';
+import DefaultIntro from '@/components/intros/DefaultIntro.vue';
+import Ballots from '@/components/topics/Ballots.vue';
+import BallotsIntro from '@/components/intros/BallotsIntro.vue';
+import PollingPlace from '@/components/topics/PollingPlace.vue';
+import PollingPlaceIntro from '@/components/intros/PollingPlaceIntro.vue';
+import VoteByMail from '@/components/topics/VoteByMail.vue';
+import VoteByMailIntro from '@/components/intros/VoteByMailIntro.vue';
+import ElectedOfficials from '@/components/topics/ElectedOfficials.vue';
+import ElectedOfficialsIntro from '@/components/intros/ElectedOfficialsIntro.vue';
 
 import { useRoute } from 'vue-router';
-
-const version = import.meta.env.VITE_VERSION;
 
 const route = useRoute();
 
@@ -50,9 +44,11 @@ const zipCode = computed(() => {
   />
       
   <!-- FRONT PAGE CONTENT -->
-  <CityAtlasIntro v-if="route.name == 'home' && version == 'cityatlas'" />
-  <VotingIntro v-else-if="route.name == 'topic' && route.params.topic.toLowerCase() == 'voting'"/>
-  <AtlasIntro v-else-if="route.name == 'home'" />
+  <DefaultIntro v-if="route.name == 'home'" />
+  <BallotsIntro v-if="route.name == 'topic' && route.params.topic.toLowerCase() == 'elections-and-ballots'" />
+  <PollingPlaceIntro v-if="route.name == 'topic' && route.params.topic.toLowerCase() == 'polling-place'" />
+  <VoteByMailIntro v-if="route.name == 'topic' && route.params.topic.toLowerCase() == 'vote-by-mail'" />
+  <ElectedOfficialsIntro v-if="route.name == 'topic' && route.params.topic.toLowerCase() == 'elected-officials'" />
 
   <!-- ADDRESS NOT FOUND CONTENT -->
   <div
@@ -102,111 +98,45 @@ const zipCode = computed(() => {
     class="topics"
   >
     <topic
-      :topic-name="'Property Assessments'"
-      :topic-slug="'property'"
-      :topic-icon="'fa-solid fa-home'"
-      :loading="!dataSourcesLoadedArray.includes('property')"
+      :topic-name="'Elections & Ballots'"
+      :topic-slug="'elections-and-ballots'"
+      :topic-icon="'fa-solid fa-star'"
+      :loading="!dataSourcesLoadedArray.includes('elections-and-ballots')"
       :topic-index="1"
     >
-      <Property />
+      <Ballots />
     </topic>
 
     <topic
-      v-show="CondosStore.condosData.pages.page_1.features && CondosStore.condosData.pages.page_1.features.length"
-      :topic-name="'Condominiums'"
-      :topic-slug="'condos'"
+      :topic-name="'Polling Place'"
+      :topic-slug="'polling-place'"
       :topic-icon="'fa-solid fa-building'"
-      :loading="!dataSourcesLoadedArray.includes('condos')"
+      :loading="!dataSourcesLoadedArray.includes('polling-place')"
       :topic-index="2"
     >
-      <Condos v-if="dataSourcesLoadedArray.includes('condos')" />
+      <PollingPlace />
     </topic>
 
     <topic
-      :topic-name="'Deeds'"
-      :topic-slug="'deeds'"
-      :topic-icon="'fa-solid fa-book'"
-      :loading="!dataSourcesLoadedArray.includes('deeds')"
-      :topic-index="2"
-    >
-      <Deeds />
-    </topic>
-
-    <topic
-      :topic-name="'Licenses & Inspections'"
-      :topic-slug="'li'"
-      :topic-icon="'fa-solid fa-wrench'"
-      :loading="!dataSourcesLoadedArray.includes('li')"
+      :topic-name="'Vote by Mail'"
+      :topic-slug="'vote-by-mail'"
+      :topic-icon="'fa-solid fa-envelope'"
+      :loading="!dataSourcesLoadedArray.includes('vote-by-mail')"
       :topic-index="3"
     >
-      <LI />
+      <VoteByMail />
     </topic>
 
     <topic
-      :topic-name="'Zoning'"
-      :topic-slug="'zoning'"
-      :topic-icon="'fa-solid fa-university'"
-      :loading="!dataSourcesLoadedArray.includes('zoning')"
+      :topic-name="'Elected Officials'"
+      :topic-slug="'elected-officials'"
+      :topic-icon="'fa-solid fa-flag-usa'"
+      :loading="!dataSourcesLoadedArray.includes('elected-officials')"
       :topic-index="4"
     >
-      <Zoning />
+      <ElectedOfficials />
     </topic>
 
-    <topic
-      v-if="MainStore.appVersion == 'atlas'"
-      :topic-name="'Voting'"
-      :topic-slug="'voting'"
-      :topic-icon="'fa-solid fa-gavel'"
-      :loading="!dataSourcesLoadedArray.includes('voting')"
-      :topic-index="5"
-    >
-      <Voting />
-    </topic>
-
-    <topic
-      v-if="MainStore.appVersion == 'cityatlas'"
-      :topic-name="'311'"
-      :topic-slug="'city311'"
-      :topic-icon="'fa-solid fa-phone'"
-      :loading="!dataSourcesLoadedArray.includes('city311')"
-      :topic-index="5"
-    >
-      <City311 />
-    </topic>
-
-    <topic
-      v-if="MainStore.appVersion == 'cityatlas'"
-      :topic-name="'Stormwater'"
-      :topic-slug="'stormwater'"
-      :topic-icon="'fa-solid fa-tint'"
-      :loading="!dataSourcesLoadedArray.includes('stormwater')"
-      :topic-index="6"
-    >
-      <Stormwater />
-    </topic>
-
-    <topic
-      :topic-name="'Nearby Activity'"
-      :topic-slug="'nearby'"
-      :topic-icon="'fa-solid fa-map-marker-alt'"
-      :loading="!dataSourcesLoadedArray.includes('nearby')"
-      :topic-index="7"
-    >
-      <KeepAlive>
-        <NearbyActivity />
-      </KeepAlive>
-    </topic>
-
-    <topic
-      v-if="MainStore.appVersion == 'cityatlas'"
-      :topic-name="'Districts'"
-      :topic-slug="'districts'"
-      :topic-icon="'fa-solid fa-clone'"
-      :loading="!dataSourcesLoadedArray.includes('districts')"
-      :topic-index="8"
-    >
-      <Districts />
-    </topic>
   </div>
 </template>
 

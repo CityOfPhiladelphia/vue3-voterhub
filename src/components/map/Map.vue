@@ -26,14 +26,10 @@ import { useGeocodeStore } from '@/stores/GeocodeStore.js'
 const GeocodeStore = useGeocodeStore();
 import { useParcelsStore } from '@/stores/ParcelsStore.js'
 const ParcelsStore = useParcelsStore();
-import { useLiStore } from '@/stores/LiStore.js'
-const LiStore = useLiStore();
-import { useVotingStore } from '@/stores/VotingStore.js'
-const VotingStore = useVotingStore();
-import { useNearbyActivityStore } from '@/stores/NearbyActivityStore';
-const NearbyActivityStore = useNearbyActivityStore();
-import { useCity311Store } from '@/stores/City311Store';
-const City311Store = useCity311Store();
+import { usePollingPlaceStore } from '@/stores/PollingPlaceStore.js'
+const PollingPlaceStore = usePollingPlaceStore();
+import { useVoteByMailStore } from '@/stores/VoteByMailStore';
+const VoteByMailStore = useVoteByMailStore();
 
 // ROUTER
 import { useRouter, useRoute } from 'vue-router';
@@ -47,8 +43,8 @@ import ImageryToggleControl from '@/components/map/ImageryToggleControl.vue';
 import ImageryDropdownControl from '@/components/map/ImageryDropdownControl.vue';
 import CyclomediaControl from '@/components/map/CyclomediaControl.vue';
 import EagleviewControl from '@/components/map/EagleviewControl.vue';
-import OpacitySlider from '@/components/map/OpacitySlider.vue';
-import OverlayLegend from '@/components/map/OverlayLegend.vue';
+// import OpacitySlider from '@/components/map/OpacitySlider.vue';
+// import OverlayLegend from '@/components/map/OverlayLegend.vue';
 import EagleviewPanel from '@/components/map/EagleviewPanel.vue';
 import CyclomediaPanel from '@/components/map/CyclomediaPanel.vue';
 import CyclomediaRecordingsClient from '@/util/recordings-client.js';
@@ -69,8 +65,13 @@ const cameraSrc = computed(() => {
 onMounted(async () => {
   // if (import.meta.env.VITE_DEBUG == 'true') console.log('Map.vue onMounted route.params.topic:', route.params.topic, 'route.params.address:', route.params.address);
   
+  let currentTopicMapStyle;
   // create the maplibre map
-  let currentTopicMapStyle = route.params.topic ? $config.topicStyles[route.params.topic] : 'pwdDrawnMapStyle';
+  if (route.params.topic) {
+    currentTopicMapStyle = route.params.topic.toLowerCase() ? $config.topicStyles[route.params.topic.toLowerCase()] : 'pwdDrawnMapStyle';
+  } else {
+    currentTopicMapStyle = 'pwdDrawnMapStyle';
+  }
   let zoom = route.params.address ? 17 : 12;
 
   map = new maplibregl.Map({
@@ -161,14 +162,10 @@ onMounted(async () => {
   map.on('click', 'nearby', (e) => {
     const properties = e.features[0].properties;
     let idField, infoField, row;
-    if (MainStore.currentTopic == 'nearby') {
-      idField = NearbyActivityStore.dataFields[properties.type].id_field;
-      infoField = NearbyActivityStore.dataFields[properties.type].info_field;
-      row = NearbyActivityStore[properties.type].rows.filter(row => row[idField] === properties.id)[0];
-    } else if (MainStore.currentTopic == '311') {
-      idField = City311Store.dataFields[properties.type].id_field;
-      infoField = City311Store.dataFields[properties.type].info_field;
-      row = City311Store[properties.type].rows.filter(row => row[idField] === properties.id)[0];
+    if (MainStore.currentTopic == 'vote-by-mail') {
+      idField = VoteByMailStore.dataFields[properties.type].id_field;
+      infoField = VoteByMailStore.dataFields[properties.type].info_field;
+      row = VoteByMailStore[properties.type].rows.filter(row => row[idField] === properties.id)[0];
     }
     if (import.meta.env.VITE_DEBUG == 'true') console.log('nearby click, e:', e, 'properties:', properties, 'idField:', idField, 'infoField:', infoField, 'e.features[0]:', e.features[0], 'row:', row);
     // if (import.meta.env.VITE_DEBUG == 'true') console.log('nearby click, e:', e, 'properties:', properties, 'idField:', idField, 'e.features[0]:', e.features[0], 'type:', type, 'row:', row);
@@ -340,12 +337,14 @@ watch(
       popup[0].remove();
     }
     if (newTopic) {
+      newTopic = newTopic.toLowerCase();
       map.setStyle($config[$config.topicStyles[newTopic]]);
       if (MapStore.imageryOn) {
         map.addLayer($config.mapLayers[imagerySelected.value], 'cyclomediaRecordings')
         map.addLayer($config.mapLayers.imageryLabels, 'cyclomediaRecordings')
         map.addLayer($config.mapLayers.imageryParcelOutlines, 'cyclomediaRecordings')
       }
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('map:', map);
       const addressMarker = map.getSource('addressMarker');
       const dorParcel = map.getSource('dorParcel');
       if (addressMarker && pwdCoordinates.value.length) {
@@ -539,44 +538,17 @@ const handleStormwaterOpacityChange = (opacity) => {
   );
 }
 
-// for L&I topic, watch selected building for changing building footprint color
-const selectedLiBuildingNumber = computed(() => { return LiStore.selectedLiBuildingNumber; });
-watch(
-  () => selectedLiBuildingNumber.value,
-  newSelectedLiBuildingNumber => {
-    if (import.meta.env.VITE_DEBUG == 'true') console.log('Map.vue watch newSelectedLiBuildingNumber:', newSelectedLiBuildingNumber, 'selectedLiBuildingNumber.value:', selectedLiBuildingNumber.value);
-    if (newSelectedLiBuildingNumber == null) {
-      map.setPaintProperty(
-        'liBuildingFootprints',
-        'fill-color',
-        '#C2B7FF',
-      )
-      return;
-    }
-    map.setPaintProperty(
-      'liBuildingFootprints',
-      'fill-color',
-      ['match',
-      ['get', 'id'],
-      newSelectedLiBuildingNumber,
-      '#FFFA80',
-      /* other */ '#C2B7FF'
-      ],
-    )
-  }
-)
-
 // for Voting topic, watch voting division and polling place for changing map center and zoom
 const votingDivision = computed(() => { 
   if (import.meta.env.VITE_VOTING_DATA_SOURCE == 'carto') {
-    if (VotingStore.divisions.rows) {
-      return JSON.parse(VotingStore.divisions.rows[0].st_asgeojson);
+    if (PollingPlaceStore.divisions.rows) {
+      return JSON.parse(PollingPlaceStore.divisions.rows[0].st_asgeojson);
     } else {
       return [[0,0], [0,1], [1,1], [1,0], [0,0]];
     }
   } else if (import.meta.env.VITE_VOTING_DATA_SOURCE == 'arcgis') {
-    if (VotingStore.divisions.features) {
-      return VotingStore.divisions.features[0].geometry.coordinates[0];
+    if (PollingPlaceStore.divisions.features) {
+      return PollingPlaceStore.divisions.features[0].geometry.coordinates[0];
     } else {
       return [[0,0], [0,1], [1,1], [1,0], [0,0]];
     }
@@ -585,22 +557,14 @@ const votingDivision = computed(() => {
   }
 });
 const pollingPlaceCoordinates = computed(() => {
-  if (import.meta.env.VITE_VOTING_DATA_SOURCE == 'carto') {
-    if (VotingStore.pollingPlaces.rows) {
-      return [ VotingStore.pollingPlaces.rows[0].lng, VotingStore.pollingPlaces.rows[0].lat] ;
-    } else {
-      return [];
-    }
-  } else if (import.meta.env.VITE_VOTING_DATA_SOURCE == 'arcgis') {
-    if (VotingStore.pollingPlaces.features) {
-      return VotingStore.pollingPlaces.features[0].geometry.coordinates;
-    } else {
-      return [];
-    }
+  if (PollingPlaceStore.pollingPlaces.rows) {
+    return [ PollingPlaceStore.pollingPlaces.rows[0].lng, PollingPlaceStore.pollingPlaces.rows[0].lat] ;
+  } else {
+    return [];
   }
 });
 watchEffect(() => {
-  if (VotingStore.divisions.rows && VotingStore.pollingPlaces.rows) {
+  if (PollingPlaceStore.divisions.rows && PollingPlaceStore.pollingPlaces.rows) {
     const newDivision = feature(votingDivision.value);
     if (import.meta.env.VITE_DEBUG == 'true') console.log('watchEffect 1, newDivision:', newDivision, 'votingDivision.value:', votingDivision.value, 'pollingPlaceCoordinates.value:', pollingPlaceCoordinates.value);
     map.getSource('votingDivision').setData(newDivision);
@@ -615,7 +579,7 @@ watchEffect(() => {
 });
 
 watchEffect(() => {
-  if (VotingStore.divisions.features && VotingStore.pollingPlaces.features) {
+  if (PollingPlaceStore.divisions.features && PollingPlaceStore.pollingPlaces.features) {
     const newDivision = polygon([votingDivision.value]);
     if (import.meta.env.VITE_DEBUG == 'true') console.log('watchEffect 2, newDivision:', newDivision, 'votingDivision.value:', votingDivision.value, 'pollingPlaceCoordinates.value:', pollingPlaceCoordinates.value);
     map.getSource('votingDivision').setData(newDivision);
@@ -637,14 +601,10 @@ watch(
     if (import.meta.env.VITE_DEBUG == 'true') console.log('Map.vue clickedRow watch, newClickedRow:', newClickedRow, 'newClickedRow.type:', newClickedRow.type);
     if (newClickedRow) map.flyTo({ center: newClickedRow.lngLat });
     let idField, infoField, row;
-    if (MainStore.currentTopic == 'nearby') {
-      idField = NearbyActivityStore.dataFields[newClickedRow.type].id_field;
-      infoField = NearbyActivityStore.dataFields[newClickedRow.type].info_field;
-      row = NearbyActivityStore[newClickedRow.type].rows.filter(row => row[idField] === newClickedRow.id)[0];
-    } else if (MainStore.currentTopic == 'city311') {
-      idField = City311Store.dataFields.city311.id_field;
-      infoField = City311Store.dataFields.city311.info_field;
-      row = City311Store[newClickedRow.type].rows.filter(row => row[idField] === newClickedRow.id)[0];
+    if (MainStore.currentTopic == 'vote-by-mail') {
+      idField = VoteByMailStore.dataFields[newClickedRow.type].id_field;
+      infoField = VoteByMailStore.dataFields[newClickedRow.type].info_field;
+      row = VoteByMailStore[newClickedRow.type].rows.filter(row => row[idField] === newClickedRow.id)[0];
     }
     if (import.meta.env.VITE_DEBUG == 'true') console.log('nearby click, newClickedRow:', newClickedRow, 'idField:', idField, 'row:', row);
     if (row.properties) row[infoField] = row.properties[infoField];
@@ -695,7 +655,7 @@ watch(
         "#F3D661",
         ['match',
         ['get', 'type'],
-        'nearby311',
+        'voteByMail',
         '#FF0000',
         'city311',
         '#FF0000',
@@ -726,7 +686,7 @@ watch(
         'circle-color', 
         ['match',
         ['get', 'type'],
-        'nearby311',
+        'voteByMail',
         '#FF0000',
         'city311',
         '#FF0000',
@@ -1012,7 +972,7 @@ const toggleEagleview = () => {
     />
     <EagleviewControl @toggle-eagleview="toggleEagleview" />
     <CyclomediaControl @toggle-cyclomedia="toggleCyclomedia" />
-    <OpacitySlider
+    <!-- <OpacitySlider
       v-if="MainStore.currentTopic == 'deeds' && selectedRegmap"
       :initial-opacity="MapStore.regmapOpacity"
       @opacity-change="handleRegmapOpacityChange"
@@ -1026,14 +986,14 @@ const toggleEagleview = () => {
       v-if="MainStore.currentTopic == 'stormwater'"
       :initial-opacity="MapStore.stormwaterOpacity"
       @opacity-change="handleStormwaterOpacityChange"
-    />
+    /> -->
     <!-- the distance measure control uses a ref, so that functions within the component can be called from this file -->
     <DistanceMeasureControl
       ref="distanceMeasureControlRef"
       @drawDelete="drawDelete"
       @drawCancel="drawCancel"
     />
-    <OverlayLegend
+    <!-- <OverlayLegend
       v-show="!MapStore.imageryOn && ['stormwater'].includes(MainStore.currentTopic)"
       :items="$config.stormwaterLegendData"
       :options="{ shape: 'square' }"
@@ -1042,7 +1002,7 @@ const toggleEagleview = () => {
       v-show="!MapStore.imageryOn && ['deeds', 'zoning'].includes(MainStore.currentTopic)"
       :items="$config.dorLegendData"
       :options="{ shape: 'square' }"
-    />
+    /> -->
   </div>
   <KeepAlive>
     <CyclomediaPanel

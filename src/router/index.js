@@ -3,16 +3,11 @@ import App from '@/App.vue';
 import $config from '@/config';
 
 import { useGeocodeStore } from '@/stores/GeocodeStore.js'
-import { useCondosStore } from '@/stores/CondosStore.js'
 import { useParcelsStore } from '@/stores/ParcelsStore.js'
-import { useOpaStore } from '@/stores/OpaStore.js'
-import { useLiStore } from '@/stores/LiStore.js'
-import { useDorStore } from '@/stores/DorStore.js'
-import { useZoningStore } from '@/stores/ZoningStore.js'
-import { useVotingStore } from '@/stores/VotingStore.js'
-import { useCity311Store } from '@/stores/City311Store.js'
-import { useStormwaterStore } from '@/stores/StormwaterStore.js'
-import { useNearbyActivityStore } from '@/stores/NearbyActivityStore.js'
+import { useBallotsStore } from '@/stores/BallotsStore.js'
+import { usePollingPlaceStore } from '@/stores/PollingPlaceStore.js'
+import { useVoteByMailStore } from '@/stores/VoteByMailStore.js'
+import { useElectedOfficialsStore } from '@/stores/ElectedOfficialsStore'
 import { useMainStore } from '@/stores/MainStore.js'
 
 import useRouting from '@/composables/useRouting';
@@ -24,24 +19,14 @@ const clearStoreData = async() => {
   const MainStore = useMainStore();
   MainStore.clearDataSourcesLoadedArray();
 
-  const OpaStore = useOpaStore();
-  OpaStore.clearAllOpaData();
-  const DorStore = useDorStore();
-  DorStore.clearAllDorData();
-  const LiStore = useLiStore();
-  LiStore.clearAllLiData();
-  const ZoningStore = useZoningStore();
-  ZoningStore.clearAllZoningData();
-  const VotingStore = useVotingStore();
-  VotingStore.clearAllVotingData();
-  const StormwaterStore = useStormwaterStore();
-  StormwaterStore.clearAllStormwaterData();
-  const NearbyActivityStore = useNearbyActivityStore();
-  NearbyActivityStore.clearAllNearbyActivityData();
-
-  const CondosStore = useCondosStore();
-  CondosStore.lastPageUsed = 1;
-  CondosStore.condosData.pages = { page_1: { features: [] } };
+  const BallotsStore = useBallotsStore();
+  BallotsStore.clearAllBallotsData();
+  const PollingPlaceStore = usePollingPlaceStore();
+  PollingPlaceStore.clearAllPollingPlaceData();
+  const VoteByMailStore = useVoteByMailStore();
+  VoteByMailStore.clearAllVoteByMailData();
+  const ElectedOfficialsStore = useElectedOfficialsStore();
+  ElectedOfficialsStore.clearAllElectedOfficialsData();
 }
 
 const getGeocodeAndPutInStore = async(address) => {
@@ -51,7 +36,8 @@ const getGeocodeAndPutInStore = async(address) => {
   if (MainStore.lastSearchMethod == 'address' && !GeocodeStore.aisData.features) {
     MainStore.currentAddress = null;
     if (import.meta.env.VITE_DEBUG == 'true') console.log('getGeocodeAndPutInStore, calling not-found');
-    // router.push({ name: 'not-found' });
+    MainStore.currentTopic = null;
+    router.push({ name: 'not-found' });
     return;
   } else if (!GeocodeStore.aisData.features) {
     return;
@@ -160,13 +146,16 @@ const dataFetch = async(to, from) => {
   }
   
   let address, topic;
-  if (to.params.address) { address = to.params.address } else if (to.query.address) { address = to.query.address }
+  if (to.params.address) {
+    address = to.params.address;
+    MainStore.currentAddress = to.params.address;
+  } else if (to.query.address) { address = to.query.address }
   if (to.params.topic) { topic = to.params.topic.toLowerCase() }
 
   if (import.meta.env.VITE_DEBUG == 'true') console.log('address:', address, 'to.params.address:', to.params.address, 'from.params.address:', from.params.address, 'GeocodeStore.aisData.normalized:', GeocodeStore.aisData.normalized);
   
   let routeAddressChanged;
-  if (from.params.address) {
+  if (to.params.address && from.params.address) {
     routeAddressChanged = to.params.address.trim() !== from.params.address.trim();
   } else {
     routeAddressChanged = to.params.address !== from.params.address;
@@ -190,8 +179,9 @@ const dataFetch = async(to, from) => {
 
     // if this was NOT started by a map click, get the parcels
     if (MainStore.lastSearchMethod !== 'mapClick') {
-      if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch, inside if routeAddressChanged:', routeAddressChanged);
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch, inside if dataSourcesLoadedArray[0]:', dataSourcesLoadedArray[0], 'routeAddressChanged:', routeAddressChanged);
       await ParcelsStore.fillPwdParcelData();
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch, inside if2 dataSourcesLoadedArray[0]:', dataSourcesLoadedArray[0], 'routeAddressChanged:', routeAddressChanged);
       await ParcelsStore.fillDorParcelData();
     }
 
@@ -204,13 +194,9 @@ const dataFetch = async(to, from) => {
     MainStore.datafetchRunning = false;
     return;
   }
-  
-  // check for condos
-  const CondosStore = useCondosStore();
-  CondosStore.loadingCondosData = true;
-  await CondosStore.fillCondoData(address);
-  CondosStore.loadingCondosData = false;
 
+  if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch, after geocode, GeocodeStore.aisData:', GeocodeStore.aisData);
+  
   // if the topic is condos and the address changes and there are no condos, reroute to property
   if (to.params.topic == "condos" && !CondosStore.condosData.pages.page_1.features.length) {
     MainStore.currentTopic = "property";
@@ -222,77 +208,44 @@ const dataFetch = async(to, from) => {
   MainStore.lastSearchMethod = null;
   MainStore.datafetchRunning = false;
 
-  await topicDataFetch(to.params.topic, to.params.data);
-  if (to.params.topic !== 'nearby') {
-    MainStore.addToDataSourcesLoadedArray(to.params.topic);
-  } else {
-    if (!MainStore.dataSourcesLoadedArray.includes('nearby')) {
-      MainStore.addToDataSourcesLoadedArray('nearby');
+  if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch, to.name:', to.name, 'to.params.topic:', to.params.topic, 'to.params.data:', to.params.data);
+
+  if (to.name !== 'topic') {
+    await topicDataFetch(to.params.topic, to.params.data);
+    if (to.params.topic) {
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('dataFetch, adding to dataSourcesLoadedArray:', to.params.topic.toLowerCase());
+      MainStore.addToDataSourcesLoadedArray(to.params.topic.toLowerCase());
     }
-    MainStore.addToDataSourcesLoadedArray(MainStore.currentNearbyDataType);
   }
 }
 
 const topicDataFetch = async (topic, data) => {
   if (import.meta.env.VITE_DEBUG == 'true') console.log('topicDataFetch is running, topic:', topic);
   
-  if (topic === 'property') {
-    const OpaStore = useOpaStore();
-    await OpaStore.fillOpaData();
-    if (import.meta.env.VITE_VERSION == 'cityatlas') {
-      await OpaStore.fillAssessmentHistory();
-    }
-    OpaStore.loadingOpaData = false;
+  if (topic && topic.toLowerCase() === 'elections-and-ballots') {
+    const BallotsStore = useBallotsStore();
+    await BallotsStore.fillAllBallotsData();
+    BallotsStore.loadingBallotsData = false;
   }
 
-  if (topic === 'li') {
-    const LiStore = useLiStore();
-    await LiStore.fillAllLiData();
-    LiStore.loadingLiData = false;
+  if (topic && topic.toLowerCase() === 'polling-place') {
+    const PollingPlaceStore = usePollingPlaceStore();
+    await PollingPlaceStore.fillAllPollingPlaceData();
+    PollingPlaceStore.loadingPollingPlaceData = false;
   }
 
-  if (topic === 'deeds') {
-    const DorStore = useDorStore();
-    if (import.meta.env.VITE_DEBUG == 'true') console.log('topic deeds before promise')
-    await Promise.all([DorStore.fillDorDocuments(),
-      DorStore.fillRegmaps(),
-      DorStore.fillDorCondos()
-    ]);
-    if (import.meta.env.VITE_DEBUG == 'true') console.log('topic deeds after promise')
-    DorStore.loadingDorData = false;
+  if (topic && topic.toLowerCase() === 'vote-by-mail') {
+    const VoteByMailStore = useVoteByMailStore();
+    await VoteByMailStore.fillVotingSites();
+    VoteByMailStore.loadingData = false;
   }
 
-  if (topic === 'zoning') {
-    const ZoningStore = useZoningStore();
-    await ZoningStore.fillAllZoningData();
-    ZoningStore.loadingZoningData = false;
+  if (topic && topic.toLowerCase() === 'elected-officials') {
+    const ElectedOfficialsStore = useElectedOfficialsStore();
+    await ElectedOfficialsStore.fillAllElectedOfficialsData();
+    ElectedOfficialsStore.loadingElectedOfficialsData = false;
   }
 
-  if (topic === 'voting') {
-    const VotingStore = useVotingStore();
-    await VotingStore.fillAllVotingData();
-    VotingStore.loadingVotingData = false;
-  }
-
-  if (topic === 'city311') {
-    const City311Store = useCity311Store();
-    if (!City311Store.agoToken) {
-      await City311Store.getAgoToken();
-    }
-    await City311Store.fillCity311(data);
-  }
-
-  if (topic === 'stormwater') {
-    const StormwaterStore = useStormwaterStore();
-    await StormwaterStore.fillStormwaterData();
-    // await StormwaterStore.fillStormwaterCapData();
-    StormwaterStore.loadingStormwaterData = false;
-  }
-
-  if (topic === 'nearby') {
-    const NearbyActivityStore = useNearbyActivityStore();
-    await NearbyActivityStore.fetchData(data);
-  }
 }
 
 const router = createRouter({
@@ -317,7 +270,7 @@ const router = createRouter({
       beforeEnter: async (to, from) => {
         if (import.meta.env.VITE_DEBUG === 'true') console.log('address-or-topic route beforeEnter, to:', to, 'from:', from, to.params.addressOrTopic.toLowerCase());
         const MainStore = useMainStore();
-        const topics = [ 'voting' ];
+        const topics = [ 'elections-and-ballots', 'polling-place', 'vote-by-mail', 'elected-officials' ];
         if (topics.includes(to.params.addressOrTopic.toLowerCase())) {
           if (import.meta.env.VITE_DEBUG === 'true') console.log('inside if, routing to topic');
           MainStore.currentTopic = to.params.addressOrTopic;
@@ -337,6 +290,9 @@ const router = createRouter({
       path: '/:address',
       name: 'address',
       component: App,
+      beforeEnter: async (to, from) => {
+        console.log('address route beforeEnter, to:', to, 'from:', from);
+      }
     },
     {
       path: '/:topic',
@@ -366,8 +322,8 @@ const router = createRouter({
       name: 'search',
       component: App,
       beforeEnter: async (to, from) => {
-        const { address, lat, lng } = to.query;
-        if (import.meta.env.VITE_DEBUG == 'true') console.log('search route beforeEnter, to.query:', to.query, 'from:', from, 'address:', address);
+        const { address, lat, lng, lang } = to.query;
+        if (import.meta.env.VITE_DEBUG == 'true') console.log('search route beforeEnter, to.query:', to.query, 'to:', to, 'from:', from, 'address:', address);
         const MainStore = useMainStore();
         const GeocodeStore = useGeocodeStore();
         const ParcelsStore = useParcelsStore();
@@ -401,30 +357,34 @@ const router = createRouter({
 })
 
 router.afterEach(async (to, from) => {
-  if (import.meta.env.VITE_DEBUG == 'true') console.log('router afterEach to:', to, 'from:', from);
   const MainStore = useMainStore();
+  if (import.meta.env.VITE_DEBUG == 'true') console.log('router afterEach to:', to, 'from:', from);
+  // if (to.query.lang !== from.query.lang && to.path === from.path) {
   if (to.query.lang !== from.query.lang) {
     MainStore.currentLang = to.query.lang;
+  // } else if (to.path === from.path) {
+  //   return;
   }
   if (to.name === 'address-or-topic') {
     return;
-  } else if (to.name !== 'not-found' && to.name !== 'search') {
+  } else if (to.name !== 'not-found' && to.name !== 'search' && to.name !== 'topic') {
     MainStore.addressSearchRunning = false;
     await dataFetch(to, from);
-    // let pageTitle = MainStore.appVersion + '.phila.gov';
-    let pageTitle = MainStore.appVersion.charAt(0).toUpperCase() + MainStore.appVersion.slice(1);
+    let pageTitle = 'VoterHub';
     for (let param of Object.keys(to.params)) {
       pageTitle += ' | ' + to.params[param];
     }
     MainStore.pageTitle = pageTitle;
   } else if (to.name == 'not-found') {
-    MainStore.currentTopic = "property"
-    MainStore.currentAddress = null;
-    MainStore.currentParcelGeocodeParameter = null;
-    MainStore.currentParcelAddress = null;
-    MainStore.otherParcelAddress = null;
-    MainStore.otherParcelGeocodeParameter = null;
+    const MainStore = useMainStore();
+    MainStore.currentTopic = "elections-and-ballots"
+    // MainStore.currentAddress = null;
+    // MainStore.currentParcelGeocodeParameter = null;
+    // MainStore.currentParcelAddress = null;
+    // MainStore.otherParcelAddress = null;
+    // MainStore.otherParcelGeocodeParameter = null;
   }
+  console.log('router afterEach, to.name:', to.name);
 });
 
 export default router

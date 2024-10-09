@@ -1,11 +1,7 @@
-# vue3-atlas and vue3-cityatlas
+# vue3-voterhub
 
-This project is a remake of atlas.phila.gov using [Vue 3](https://vuejs.org/guide/introduction.html).  Most of the vue files are written using the Vue3 Composition API.
+This project is an app containing all information for voters in philadelphia, based off a remake of atlas.phila.gov using [Vue 3](https://vuejs.org/guide/introduction.html).  Most of the vue files are written using the Vue3 Composition API.
 
-When pushed, it updates both atlas.phila.gov and cityatlas.phila.gov.  These 2 versions are controlled by a developer, and in the automated push, by the environmental variable VITE_VERSION.
-
-See [the Github Wiki](https://github.com/CityOfPhiladelphia/vue3-atlas/wiki) for full documentation.
-If you work for the City of Philadelphia, see [phila.city](https://phila.city/display/appdev/Atlas) for more information.
 
 ## Project Setup
 

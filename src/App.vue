@@ -35,16 +35,20 @@ const locale = computed(() => instance.appContext.config.globalProperties.$i18n.
 // if (import.meta.env.VITE_DEBUG == 'true') console.log('locale:', locale);
 
 onMounted(async () => {
-  MainStore.appVersion = import.meta.env.VITE_VERSION;
   MainStore.isMobileDevice = isMobileDevice();
   MainStore.isMac = isMac();
   await router.isReady()
-  if (import.meta.env.VITE_DEBUG == 'true') console.log('App onMounted, route.params.topic:', route.params.topic, 'route.params.address:', route.params.address);
+  if (import.meta.env.VITE_DEBUG == 'true') console.log('App onMounted, route.name:', route.name, 'route.params.topic:', route.params.topic, 'route.params.address:', route.params.address, 'route.query:', route.query);
   if (route.name === 'not-found') {
     router.push({ name: 'home' });
   }
   if (route.params.topic) {
-    MainStore.currentTopic = route.params.topic;
+    MainStore.currentTopic = route.params.topic.toLowerCase();
+  }
+
+  if (route.query.lang) {
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('instance:', instance);
+    instance.appContext.config.globalProperties.$i18n.locale = route.query.lang;
   }
 
   const main = document.getElementById('main');
@@ -130,12 +134,18 @@ watch(
     document.title = newPageTitle;
   }
 )
-const appTitle = computed(() => {
-  let version = 'Atlas';
-  if (import.meta.env.VITE_VERSION == 'cityatlas'){
-    version = 'CityAtlas';
+
+const brandingImage = computed(() => {
+  let value = null;
+  if (MainStore.windowDimensions.width > 767) {
+    value = {
+      src: '/images/philadelphia-city-commissioners-logo-edit_6.png',
+      alt: 'Philadelphia City Commissioners logo',
+      width: '250px',
+    }
   }
-  return version;
+  return value;
+
 })
 
 </script>
@@ -147,7 +157,8 @@ const appTitle = computed(() => {
   >Skip to main content</a>
 
   <app-header
-    :app-title="appTitle"
+    :app-title="$t('app.title')"
+    :branding-image="brandingImage"
     app-link="/"
     :is-sticky="true"
     :is-fluid="true"
@@ -156,10 +167,7 @@ const appTitle = computed(() => {
       <mobile-nav :links="links" />
     </template>
     <template #lang-selector-nav>
-      <lang-selector
-        v-show="MainStore.currentTopic == 'voting'"
-        :languages="languages"
-      />
+      <lang-selector :languages="languages" />
     </template>
   </app-header>
 
@@ -203,6 +211,21 @@ const appTitle = computed(() => {
 </template>
 
 <style>
+
+.branding-col {
+  padding-bottom: 0px !important;
+}
+
+
+@media 
+only screen and (max-width: 767px) {
+  .dropdown-nav {
+    span:nth-of-type(even) {
+      display: none;
+    }
+  }
+}
+
 
 
 
