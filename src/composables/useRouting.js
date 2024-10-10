@@ -8,7 +8,7 @@ export default function useRouting() {
     const MainStore = useMainStore();
     if (!MainStore.currentAddress && MainStore.currentTopic){
       if (import.meta.env.VITE_DEBUG) console.log('routeApp routing to topic because MainStore.currentTopic:', MainStore.currentTopic);
-      if (MainStore.currentLang) {
+      if (MainStore.currentLang != 'en-us') {
         router.replace({ name: 'topic', params: { topic: MainStore.currentTopic }, query: { lang: MainStore.currentLang } });
       } else {
         router.replace({ name: 'topic', params: { topic: MainStore.currentTopic } });
