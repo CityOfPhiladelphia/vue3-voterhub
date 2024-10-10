@@ -75,7 +75,7 @@ export const useBallotsStore = defineStore("BallotsStore", {
       if (import.meta.env.VITE_DEBUG == 'true') console.log('fillImportantDates is running');
       try {
         let baseUrl = 'https://phl.carto.com/api/v2/sql?q=';
-        const url = baseUrl += `SELECT * FROM voting_important_dates_2024 WHERE impacted_body = 'Voters' OR impacted_body = 'Mail-In Voting'`;
+        const url = baseUrl += `SELECT * FROM important_dates_elections WHERE impacted_body = 'Voters' OR impacted_body = 'Mail-In Voting'`;
         const response = await fetch(url);
 
         if (response.ok) {
@@ -88,7 +88,7 @@ export const useBallotsStore = defineStore("BallotsStore", {
             let now = new Date();
             let today = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
             console.log('row.date:', row.date, 'today:', today);
-            return row.date >= today;
+            return new Date(row.date_english) >= today;
           });
         } else {
           if (import.meta.env.VITE_DEBUG == 'true') console.warn('important dates - await resolved but HTTP status was not successful');

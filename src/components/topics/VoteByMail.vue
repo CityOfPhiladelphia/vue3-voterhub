@@ -40,7 +40,7 @@ const voteByMail = computed(() => {
 
 const voteByMailGeojson = computed(() => {
   if (!voteByMail.value) return [point([0,0])];
-  return voteByMail.value.map(item => point([item.lon, item.lat], { id: item.cartodb_id, type: 'voteByMail' }));
+  return voteByMail.value.map(item => point([item.lng, item.lat], { id: item.cartodb_id, type: 'voteByMail' }));
 })
 watch (() => voteByMailGeojson.value, async(newGeojson) => {
   const map = MapStore.map;
@@ -80,7 +80,7 @@ const voteByMailTableData = computed(() => {
 });
 
 const typeFieldFn = (row) => {
-  return row.site_type;
+  return row.type;
 }
 
 const clickedMarkerId = computed(() => { return MainStore.clickedMarkerId; });

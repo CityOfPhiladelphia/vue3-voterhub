@@ -109,7 +109,7 @@ export const useVoteByMailStore = defineStore("VoteByMailStore", {
         voteByMail: {
           title: 'Vote by Mail Sites',
           id_field: 'cartodb_id',
-          info_field: 'site_name'
+          info_field: 'location'
         },
       },
     };
@@ -135,7 +135,7 @@ export const useVoteByMailStore = defineStore("VoteByMailStore", {
         let dataSource = {
           url: 'https://phl.carto.com:443/api/v2/sql?',
           options: {
-            table: 'voting_sites',
+            table: 'mail_ballot_dropoff_locations',
             distances: 35000,
           },
         };
@@ -145,7 +145,7 @@ export const useVoteByMailStore = defineStore("VoteByMailStore", {
           feature = GeocodeStore.aisData.features[0];
           params = fetchNearby(feature, dataSource);
         } else {
-          params = {'q': 'select * from voting_sites'}
+          params = {'q': 'select * from mail_ballot_dropoff_locations'}
         }
         
         console.log('fillVotingSites params:', params);
@@ -154,7 +154,7 @@ export const useVoteByMailStore = defineStore("VoteByMailStore", {
           const data = response.data;
           data.rows.forEach(row => {
             row.distance_miles = (row.distance * 0.000621371).toFixed(2) + ' miles';
-            row.name_and_address = row.site_name+'<br/>'+row.street_address+'<br/>Philadelphia, PA '+row.zip;
+            row.name_and_address = row.location+'<br/>'+row.address+'<br/>Philadelphia, PA '+row.zip_code;
           });
           this.voteByMail = data;
           this.setLoadingData(false);

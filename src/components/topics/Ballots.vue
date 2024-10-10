@@ -70,16 +70,28 @@ const importantDates = computed(() => {
   return data;
 })
 
+const eventField = () => {
+  if (locale.value === 'zh') return 'title_chinese';
+  if (locale.value === 'es') return 'title_spanish';
+  if (locale.value === 'en-us') return 'event_title';
+}
+
+const dateField = () => {
+  if (locale.value === 'zh') return 'date_chinese';
+  if (locale.value === 'es') return 'date_spanish';
+  if (locale.value === 'en-us') return 'date_english';
+}
+
 const importantDatesTableData = computed(() => {
   return {
     columns: [
       {
         label: messages.value.ballot.topic.horizontalTable1.column1,
-        field: 'event_title',
+        field: eventField(),
       },
       {
         label: messages.value.ballot.topic.horizontalTable1.column2,
-        field: 'event_date',
+        field: dateField(),
       },
     ],
     rows: importantDates.value || [],
