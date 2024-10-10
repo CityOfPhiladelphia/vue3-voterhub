@@ -18,7 +18,6 @@ export default {
     "hours": "Horario",
     "location": "Spanish Location",
     "parking": "Spanish Parking",
-    "lastUpdated": "Spanish Last Updated",
     "note": "Spanish Note",
     "searchPlaceholder": "Spanish Search for an address, OPA account, or DOR number",
     "p1": "Spanish Search your home address or click on the map to:",
@@ -90,7 +89,6 @@ export default {
     "topic": {
       "externalLink1": " Spanish Report an issue at this polling place on election day through our portal ",
       "accessibility": "Accesibilidad",
-      "lastUpdatedSentence": "Spanish This has been the polling place for this division since ",
       "accessibilityCodes": {
         "buildingFullyAccessible": "Edificio totalmente accesible",
         "buildingSubstantiallyAccessible": "Edificio considerablemente accesible",
@@ -118,36 +116,41 @@ export default {
     "introPage": {
       "introTitle": "Spanish Find mail-in voting drop-off locations",
       "ul1": {
-        "li1": "Spanish Mail-in voting drop-off box and election office locations near you",
+        "li1": "Spanish Mail voting drop-off box and election office locations near you",
       },
-      "p4": "Many drop-off locations are available at limited times. All mail-in and absentee ballots must be deposited before 8pm on election day.",
-      "p5": "If a dropbox is full, not functioning, or is damaged in any way, call <a href='tel:215-686-3469'>(215) 686-3469</a> or email <a href='mailto:vote@phila.gov'>vote@phila.gov</a>.",
+      "p4": "Spanish Some drop-off locations are available at limited times. All mail-in and absentee ballots must be deposited before 8:00 p.m. on election day.",
+      "p5": "Spanish If a dropbox is full, not functioning, or is damaged in any way, call <a href='tel:215-686-3469'>(215) 686-3469</a> or email <a href='mailto:vote&#64;phila.gov'>vote&#64;phila.gov.</a>",
     },
+    "p5": "test test test vote@phila.gov",
     "topic": {
       "exclamationCallout1": {
-        "p1": "Spanish Mail-in ballot drop-off locations and availability may change for each election.\
+        "p1": "Spanish Mail ballot drop-off locations and availability may change for each election.\
         Check back closer to election day to get updated details about where you can drop off your mail-in ballot.",
       },
-      "table1": {
-        "title": "Spanish Important dates for mail-in voting",
+      "horizontalTable1": {
+        "title": "Spanish Important dates for mail voters",
+        "column1": "Spanish Event",
+        "column2": "Spanish Date",
+        "loadingImportantDates": "Spanish Loading important dates...",
+        "noImportantDates": "Spanish No important dates found",
       },
       "paragraph1": {
         "text": "Spanish All mail-in voting dates in 2023 have passed.",
       },
-      "mailinBallots": "Spanish Mail-in ballots",
+      "mailinBallots": "Spanish Mail ballots",
       "paragraph2": {
-        "text": "Spanish Mail-in and absentee ballots can be dropped off at our Election Office, at a fixed drop box, or at a temporary mobile ballot return location.",
+        "text": "Spanish Mail-in and absentee ballots can be dropped off at any one of our Satellite Election Offices, a ballot drop box, or a temporary mobile ballot return location.",
       },
       "ul1": {
-        "li1": "Spanish The Election Office is open Monday to Friday from 9am to 5pm and from 9am to 8pm on election day.",
-        "li2": "Spanish Fixed drop boxes may be used at all times up til 8pm on election day.",
-        "li3": "Spanish Mobile ballot returns are available on specific dates at each location.",
+        "li1": "Spanish All Satellite Election Offices will be open from 7:00 a.m. to 8:00 p.m. on election day.  For more details about these locations and hours before election day, visit <a target='blank' href='vote.phila.gov/seos'>vote.phila.gov/seos</a>",
+        "li2": "Spanish Mail ballot drop boxes are accessible 24/7 through 8:00 p.m. on election day",
+        "li3": "Spanish Mobile ballot returns are available on specific dates at each location",
       },
       "paragraph3": {
-        "text": "Spanish Learn more including how to request a mail in or absentee ballot at <a target='_blank' href='https://vote.phila.gov/'>vote.phila.gov</a>.",
+        "text": "Spanish Learn more including how to request a mail in or absentee ballot at <a target='_blank' href='vote.phila.gov/votebymail'>vote.phila.gov/votebymail</a>.",
       },
-      "horizontalTable1": {
-        "title": "Spanish mail-in ballot drop-off locations",
+      "horizontalTable2": {
+        "title": "Spanish Mail ballot drop-off locations",
         "typeAndHours": "Spanish Type and Hours",
         "distance": "Spanish Distance",
       },

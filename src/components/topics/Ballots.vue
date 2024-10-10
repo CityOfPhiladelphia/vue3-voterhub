@@ -86,12 +86,12 @@ const importantDatesTableData = computed(() => {
   return {
     columns: [
       {
-        label: messages.value.ballot.topic.horizontalTable1.column1,
-        field: eventField(),
-      },
-      {
         label: messages.value.ballot.topic.horizontalTable1.column2,
         field: dateField(),
+      },
+      {
+        label: messages.value.ballot.topic.horizontalTable1.column1,
+        field: eventField(),
       },
     ],
     rows: importantDates.value || [],
@@ -173,7 +173,7 @@ const importantDatesTableData = computed(() => {
     </vue-good-table>
   </div>
   
-  <a target="_blank" :href="'https://vote.phila.gov/voting/vote-by-mail/'">
+  <a target="_blank" :href="'https://vote.phila.gov/voting/registering-to-vote/how-to-register-2/check-my-registration-status/'">
     {{ $t('shared.link1') }} <font-awesome-icon icon="fa-solid fa-external-link-alt" />
   </a>
   <br>

@@ -63,10 +63,6 @@ const pollingPlaceData = computed(() => {
         label: messages.value.shared.parking,
         value: messages.value.pollingPlace.topic.parkingCodes[parking.value],
       },
-      {
-        label: messages.value.shared.lastUpdated,
-        value: messages.value.pollingPlace.topic.lastUpdatedSentence,
-      },
     ];
   }
 });

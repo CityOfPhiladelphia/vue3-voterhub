@@ -240,6 +240,7 @@ const topicDataFetch = async (topic, data) => {
   if (topic && topic.toLowerCase() === 'vote-by-mail') {
     const VoteByMailStore = useVoteByMailStore();
     await VoteByMailStore.fillVotingSites();
+    await VoteByMailStore.fillImportantDates();
     VoteByMailStore.loadingData = false;
   }
 

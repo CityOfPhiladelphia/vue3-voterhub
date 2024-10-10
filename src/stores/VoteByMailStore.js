@@ -102,7 +102,8 @@ const fetchNearby = (feature, dataSource) => {
 export const useVoteByMailStore = defineStore("VoteByMailStore", {
   state: () => {
     return {
-      dataError: false,
+      locationsDataError: false,
+      datesDataError: false,
       voteByMail: {},
       loadingData: true,
       dataFields: {
@@ -112,6 +113,7 @@ export const useVoteByMailStore = defineStore("VoteByMailStore", {
           info_field: 'location'
         },
       },
+      importantDates: {},
     };
   },
   actions: {
@@ -125,6 +127,7 @@ export const useVoteByMailStore = defineStore("VoteByMailStore", {
       this.dataError = false;
       this.loadingData = true;
       this.voteByMail = {};
+      this.importantDates = {};
     },
     async fillVotingSites() {
       if (import.meta.env.VITE_DEBUG == 'true') console.log('fillVotingSites is running');
@@ -154,7 +157,16 @@ export const useVoteByMailStore = defineStore("VoteByMailStore", {
           const data = response.data;
           data.rows.forEach(row => {
             row.distance_miles = (row.distance * 0.000621371).toFixed(2) + ' miles';
-            row.name_and_address = row.location+'<br/>'+row.address+'<br/>Philadelphia, PA '+row.zip_code;
+            row.name_and_address = `<a target="_blank" href="https://www.google.com/maps/place/${row.address}+Philadelphia,+PA+${row.zip_code}">${row.location}</a><br/>
+              ${row.address}<br/>Philadelphia, PA ${row.zip_code}`;
+            row.type_and_hours = '';
+            if (row.type === 'Dropbox') {
+              row.type_and_hours = `Mail ballot drop box: Available 24/7 until 8:00 p.m. on ${row.date_close}`
+            } else if (row.type === 'Election Office') {
+              row.type_and_hours = "Election Office: Open Monday to Friday 9:00 a.m. to 5:00 p.m. and Saturday to Sunday 10:00 a.m. to 4:00 p.m.  On election day, open 7:00 a.m. to 8:00 p.m."
+            } else if (row.type === 'Satellite Election Office') {
+              row.type_and_hours = "Satellite Office: Open Monday to Friday 10:00 a.m. to 6:00 p.m. and Saturday to Sunday 10:00 a.m. to 4:00 p.m.  On election day, open 7:00 a.m. to 8:00 p.m."
+            }
           });
           this.voteByMail = data;
           this.setLoadingData(false);
@@ -165,6 +177,33 @@ export const useVoteByMailStore = defineStore("VoteByMailStore", {
       } catch {
         this.setDataError(true);
         if (import.meta.env.VITE_DEBUG == 'true') console.error('voteByMail - await never resolved, failed to fetch address data');
+      }
+    },
+    async fillImportantDates() {
+      if (import.meta.env.VITE_DEBUG == 'true') console.log('fillImportantDates is running');
+      try {
+        let baseUrl = 'https://phl.carto.com/api/v2/sql?q=';
+        const url = baseUrl += `SELECT * FROM important_dates_elections WHERE impacted_body = 'Mail-In Voting'`;
+        const response = await fetch(url);
+
+        if (response.ok) {
+          let data = await response.json();
+          console.log('response:', response, 'data:', data);
+          for (let row of data.rows) {
+            row.date = new Date(row.event_date);
+          }
+          this.importantDates = data.rows.filter(row => {
+            let now = new Date();
+            let today = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+            console.log('row.date:', row.date, 'today:', today);
+            return new Date(row.date_english) >= today;
+          });
+        } else {
+          if (import.meta.env.VITE_DEBUG == 'true') console.warn('important dates - await resolved but HTTP status was not successful');
+        }
+      } catch {
+        this.dataError = true;
+        if (import.meta.env.VITE_DEBUG == 'true') console.error('important dates - await never resolved, failed to fetch address data');
       }
     },
   },

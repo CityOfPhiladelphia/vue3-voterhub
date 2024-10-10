@@ -426,7 +426,7 @@ const wardDivisionTableData = computed(() => {
       />
     </div>
       
-    <div class="mb-5" v-html="$t('electedOfficials.topic.callout1.text')" />
+    <!-- <div class="mb-5" v-html="$t('electedOfficials.topic.callout1.text')" />
 
     <div class="mb-5">
       <h5 class="subtitle is-5 vert-table-title">
@@ -438,7 +438,6 @@ const wardDivisionTableData = computed(() => {
       />
     </div>
 
-    <!-- Li Permits Table -->
     <div class="data-section">
       <h2 class="subtitle mb-3 is-5 table-title">
         {{ $t('electedOfficials.topic.horizontalTable1.title') }}
@@ -483,12 +482,7 @@ const wardDivisionTableData = computed(() => {
           </template>
         </vue-good-table>
       </div>
-      <!-- <a
-        class="table-link"
-        target="_blank"
-        :href="`https://li.phila.gov/Property-History/search?address=${encodeURIComponent(MainStore.currentAddress)}`"
-      >See all {{ permitsLength }} permits at L&I Property History <font-awesome-icon icon="fa-solid fa-external-link-alt" /></a> -->
-    </div>
+    </div> -->
 
   </section>
 </template>

@@ -11,8 +11,11 @@ const MapStore = useMapStore();
 
 const instance = getCurrentInstance();
 import i18nFromFiles from '@/i18n/i18n.js';
+const locale = computed(() => {
+  return instance.appContext.config.globalProperties.$i18n.locale;
+})
 const messages = computed(() => {
-  return i18nFromFiles.i18n.data.messages[instance.appContext.config.globalProperties.$i18n.locale];
+  return i18nFromFiles.i18n.data.messages[locale.value];
 })
 
 import useScrolling from '@/composables/useScrolling';
@@ -67,11 +70,11 @@ const voteByMailTableData = computed(() => {
         html: true,
       },
       {
-        label: messages.value.voteByMail.topic.horizontalTable1.typeAndHours,
+        label: messages.value.voteByMail.topic.horizontalTable2.typeAndHours,
         field: typeFieldFn,
       },
       {
-        label: messages.value.voteByMail.topic.horizontalTable1.distance,
+        label: messages.value.voteByMail.topic.horizontalTable2.distance,
         field: 'distance_miles',
       }
     ],
@@ -80,7 +83,7 @@ const voteByMailTableData = computed(() => {
 });
 
 const typeFieldFn = (row) => {
-  return row.type;
+  return row.type_and_hours;
 }
 
 const clickedMarkerId = computed(() => { return MainStore.clickedMarkerId; });
@@ -95,6 +98,43 @@ watch(() => clickedMarkerId.value, (newClickedMarkerId) => {
   }
 });
 
+const importantDates = computed(() => {
+  let data;
+  if (VoteByMailStore.importantDates.length) {
+    data = [ ...VoteByMailStore.importantDates ]
+    data.sort((a, b) => compareFn(a, b, 'date'))
+  }
+  return data;
+})
+
+const eventField = () => {
+  if (locale.value === 'zh') return 'title_chinese';
+  if (locale.value === 'es') return 'title_spanish';
+  if (locale.value === 'en-us') return 'event_title';
+}
+
+const dateField = () => {
+  if (locale.value === 'zh') return 'date_chinese';
+  if (locale.value === 'es') return 'date_spanish';
+  if (locale.value === 'en-us') return 'date_english';
+}
+
+const importantDatesTableData = computed(() => {
+  return {
+    columns: [
+      {
+        label: messages.value.voteByMail.topic.horizontalTable1.column2,
+        field: dateField(),
+      },
+      {
+        label: messages.value.voteByMail.topic.horizontalTable1.column1,
+        field: eventField(),
+      },
+    ],
+    rows: importantDates.value || [],
+  }
+}) 
+
 </script>
 
 <template>
@@ -107,17 +147,42 @@ watch(() => clickedMarkerId.value, (newClickedMarkerId) => {
     </div>
 
     <h2 class="subtitle is-5 mb-2">
-      {{ $t('voteByMail.topic.table1.title') }}
+      {{ $t('voteByMail.topic.horizontalTable1.title') }}
+      <font-awesome-icon
+        v-if="loadingData"
+        icon="fa-solid fa-spinner"
+        spin
+      />
+      <span v-else>({{ importantDatesTableData.rows.length }})</span>
     </h2>
-
     <div
-      id="Mail-in-dates"
-      class="topic-info"
-      v-html="$t('voteByMail.topic.paragraph1.text')"
+      v-if="loadingData === false"
+      class="horizontal-table"
     >
+      <vue-good-table
+        id="important-dates"
+        :columns="importantDatesTableData.columns"
+        :rows="importantDatesTableData.rows"
+        style-class="table nearby-table"
+      >
+        <template #emptystate>
+          <div v-if="loadingData">
+            {{ $t('voteByMail.topic.horizontalTable1.loadingImportantDates')}} <font-awesome-icon
+              icon="fa-solid fa-spinner"
+              spin
+            />
+          </div>
+          <div v-else-if="VoteByMailStore.datesDataError">
+            {{ $t('shared.dataLoadingError') }}
+          </div>
+          <div v-else>
+            {{ $t('voteByMail.topic.horizontalTable1.noImportantDates') }}
+          </div>
+        </template>
+      </vue-good-table>
     </div>
 
-    <h2 class="subtitle is-5 mb-2">
+    <h2 class="subtitle is-5 mt-5 mb-2">
       {{ $t('voteByMail.topic.mailinBallots') }}
     </h2>
 
@@ -129,7 +194,7 @@ watch(() => clickedMarkerId.value, (newClickedMarkerId) => {
     </div>
 
     <ul class="bullet-list mb-4">
-      <li>{{ $t('voteByMail.topic.ul1.li1') }}</li>
+      <li v-html="$t('voteByMail.topic.ul1.li1')"></li>
       <li>{{ $t('voteByMail.topic.ul1.li2') }}</li>
       <li>{{ $t('voteByMail.topic.ul1.li3') }}</li>
     </ul>
@@ -142,7 +207,7 @@ watch(() => clickedMarkerId.value, (newClickedMarkerId) => {
     </div>
 
     <h2 class="subtitle is-5 mb-2">
-      {{ $t('voteByMail.topic.horizontalTable1.title') }}
+      {{ $t('voteByMail.topic.horizontalTable2.title') }}
       <font-awesome-icon
         v-if="loadingData"
         icon="fa-solid fa-spinner"
@@ -168,7 +233,7 @@ watch(() => clickedMarkerId.value, (newClickedMarkerId) => {
               spin
             />
           </div>
-          <div v-else-if="VoteByMailStore.dataError">
+          <div v-else-if="VoteByMailStore.locationsDataError">
             Data loading error
           </div>
           <div v-else>
