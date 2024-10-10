@@ -53,7 +53,6 @@ export default {
       "ul1": {
         "li1": "Spanish Your complete sample ballot",
         "li2": "Spanish Upcoming election information",
-        "li3": "Spanish Past elections’ sample ballots and results",
       },
     },
     "topic": {

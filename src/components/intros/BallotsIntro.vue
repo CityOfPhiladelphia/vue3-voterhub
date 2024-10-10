@@ -27,7 +27,6 @@ import AddressSearchControl from '@/components/AddressSearchControl.vue';
       <ul class="bullet-list">
         <li>{{ $t('ballot.introPage.ul1.li1') }}</li>
         <li>{{ $t('ballot.introPage.ul1.li2') }}</li>
-        <li>{{ $t('ballot.introPage.ul1.li3') }}</li>
       </ul>
       <br>
 
