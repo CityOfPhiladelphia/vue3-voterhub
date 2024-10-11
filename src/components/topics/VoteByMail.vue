@@ -1,5 +1,5 @@
 <script setup>
-import { computed, watch, onMounted, onBeforeUnmount, getCurrentInstance } from 'vue';
+import { ref, computed, watch, onMounted, onBeforeUnmount, getCurrentInstance } from 'vue';
 import { point, featureCollection } from '@turf/helpers';
 
 import { useVoteByMailStore } from '@/stores/VoteByMailStore';
@@ -8,6 +8,9 @@ import { useMainStore } from '@/stores/MainStore';
 const MainStore = useMainStore();
 import { useMapStore } from '@/stores/MapStore';
 const MapStore = useMapStore();
+
+import TextFilter from '@/components/TextFilter.vue';
+const textSearch = ref('');
 
 const instance = getCurrentInstance();
 import i18nFromFiles from '@/i18n/i18n.js';
@@ -36,6 +39,14 @@ const voteByMail = computed(() => {
   let data;
   if (VoteByMailStore.voteByMail.rows) {
     data = [ ...VoteByMailStore.voteByMail.rows ]
+      .filter(item => {
+      // console.log('item:', item, 'item.name_and_address:', item.name_and_address);
+      let value = item.location.toLowerCase().includes(textSearch.value.toLowerCase()) ||
+      item.address.toLowerCase().includes(textSearch.value.toLowerCase()) ||
+      item.type.toLowerCase().includes(textSearch.value.toLowerCase());
+      console.log('value:', value);
+      return value;
+    });
     data.sort((a, b) => compareFn(a, b, 'distance'))
   }
   return data;
@@ -206,7 +217,15 @@ const importantDatesTableData = computed(() => {
     >
     </div>
 
-    <h2 class="subtitle is-5 mb-2">
+    <div class="column is-8 is-12-mobile">
+      <TextFilter
+        v-model="textSearch"
+        :search-label="`Search Locations`"
+        :placeholder="`Search Locations`"
+      />
+    </div>
+
+    <h2 class="subtitle is-5 mb-2 mt-4">
       {{ $t('voteByMail.topic.horizontalTable2.title') }}
       <font-awesome-icon
         v-if="loadingData"
