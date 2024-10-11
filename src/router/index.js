@@ -368,9 +368,11 @@ router.afterEach(async (to, from) => {
   } else if (to.query.lang !== from.query.lang) {
     MainStore.currentLang = to.query.lang;
   }
-  if (to.name === 'address-or-topic' || to.name === 'address') {
+  // if (to.name === 'address-or-topic' || to.name === 'address') {
+  if (to.name === 'address-or-topic') {
     return;
   } else if (to.name !== 'not-found' && to.name !== 'search' && to.name !== 'topic') {
+    if (import.meta.env.VITE_DEBUG == 'true') console.log('router afterEach, to.name:', to.name, 'to.params.address:', to.params.address, 'to.params.topic:', to.params.topic);
     MainStore.addressSearchRunning = false;
     await dataFetch(to, from);
     // let pageTitle = 'VoterHub';
