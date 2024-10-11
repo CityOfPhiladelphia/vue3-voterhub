@@ -71,7 +71,7 @@ const voteByMailTableData = computed(() => {
       },
       {
         label: messages.value.voteByMail.topic.horizontalTable2.typeAndHours,
-        field: typeFieldFn,
+        field: 'type',
       },
       {
         label: messages.value.voteByMail.topic.horizontalTable2.distance,
@@ -226,6 +226,13 @@ const importantDatesTableData = computed(() => {
         @row-mouseleave="handleRowMouseleave"
         @row-click="handleRowClick($event, 'cartodb_id', 'voteByMail')"
       >
+        <template #table-row="props">
+          <span v-if="props.column.field == 'type'">
+            <span v-if="props.row.type == 'Dropbox'">{{ $t('voteByMail.topic.horizontalTable2.dropbox') }} {{ props.row.date_close }}</span>
+            <span v-if="props.row.type == 'Election Office'">{{$t('voteByMail.topic.horizontalTable2.electionOffice')}}</span>
+            <span v-if="props.row.type == 'Satellite Election Office'">{{$t('voteByMail.topic.horizontalTable2.satelliteElectionOffice')}}</span>
+          </span>
+        </template>
         <template #emptystate>
           <div v-if="loadingData">
             Loading Vote by Mail Sites... <font-awesome-icon
