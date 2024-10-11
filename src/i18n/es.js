@@ -142,12 +142,12 @@ export default {
         "text": "Spanish Mail-in and absentee ballots can be dropped off at any one of our Satellite Election Offices, a ballot drop box, or a temporary mobile ballot return location.",
       },
       "ul1": {
-        "li1": "Spanish All Satellite Election Offices will be open from 7:00 a.m. to 8:00 p.m. on election day.  For more details about these locations and hours before election day, visit <a target='blank' href='vote.phila.gov/seos'>vote.phila.gov/seos</a>",
+        "li1": "Spanish All Satellite Election Offices will be open from 7:00 a.m. to 8:00 p.m. on election day.  For more details about these locations and hours before election day, visit <a target='blank' href='https://vote.phila.gov/seos'>vote.phila.gov/seos</a>",
         "li2": "Spanish Mail ballot drop boxes are accessible 24/7 through 8:00 p.m. on election day",
         "li3": "Spanish Mobile ballot returns are available on specific dates at each location",
       },
       "paragraph3": {
-        "text": "Spanish Learn more including how to request a mail in or absentee ballot at <a target='_blank' href='vote.phila.gov/votebymail'>vote.phila.gov/votebymail</a>.",
+        "text": "Spanish Learn more including how to request a mail in or absentee ballot at <a target='_blank' href='https://vote.phila.gov/votebymail'>vote.phila.gov/votebymail</a>.",
       },
       "horizontalTable2": {
         "title": "Spanish Mail ballot drop-off locations",
