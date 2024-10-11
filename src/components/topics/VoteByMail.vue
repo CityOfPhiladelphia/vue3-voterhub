@@ -40,10 +40,12 @@ const voteByMail = computed(() => {
   if (VoteByMailStore.voteByMail.rows) {
     data = [ ...VoteByMailStore.voteByMail.rows ]
       .filter(item => {
-      // console.log('item:', item, 'item.name_and_address:', item.name_and_address);
+      let translation = messages.value.voteByMail.topic.horizontalTable2[item.type.toLowerCase()] || '';
+      console.log('item:', item, 'translation:', translation);
       let value = item.location.toLowerCase().includes(textSearch.value.toLowerCase()) ||
       item.address.toLowerCase().includes(textSearch.value.toLowerCase()) ||
-      item.type.toLowerCase().includes(textSearch.value.toLowerCase());
+      item.type.toLowerCase().includes(textSearch.value.toLowerCase()) ||
+      translation.toLowerCase().includes(textSearch.value.toLowerCase());
       console.log('value:', value);
       return value;
     });

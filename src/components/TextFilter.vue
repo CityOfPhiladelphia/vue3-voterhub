@@ -38,7 +38,7 @@ const clearText = () => model.value = '';
         class="search-box"
       />
     </div>
-    <div class="column is-2 small-is-2 pl-0">
+    <div class="column button-div is-2 small-is-2 pl-0">
       <button
         v-if="model !== null && model !== ''"
         type="submit"
@@ -61,14 +61,19 @@ const clearText = () => model.value = '';
   padding: 0px;
 }
 
-.clear-span {
+.input-textbox {
   padding-left: 0px !important;
 }
 
+.button-div {
+  padding-right: 0px;
+}
+
+.button span:first-child:not([class=icon]) {
+  padding-left: 3px !important;
+}
+
 button.button.clear-button {
-  /* position: relative;
-  right: -240px;
-  top: -50px; */
   width: 86px;
   font-size: 12px !important;
   border: none;
