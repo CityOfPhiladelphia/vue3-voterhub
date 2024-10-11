@@ -25,7 +25,6 @@ import AddressSearchControl from '@/components/AddressSearchControl.vue';
         {{ $t('shared.p1') }}
       </p>
       <ul class="bullet-list">
-        <li>{{ $t('shared.link1') }}</li>
         <li>{{ $t('shared.link12') }}</li>
         <li>{{ $t('shared.link7') }}</li>
         <li>{{ $t('shared.link13') }}</li>

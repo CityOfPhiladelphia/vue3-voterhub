@@ -22,7 +22,7 @@ import AddressSearchControl from '@/components/AddressSearchControl.vue';
         {{ $t('ballot.introPage.introTitle') }}
       </h1>
       <p class="subtitle is-4">
-        {{ $t('shared.p1') }}
+        {{ $t('shared.p2') }}
       </p>
       <ul class="bullet-list">
         <li>{{ $t('ballot.introPage.ul1.li1') }}</li>
