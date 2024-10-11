@@ -249,7 +249,8 @@ const importantDatesTableData = computed(() => {
       >
         <template #table-row="props">
           <span v-if="props.column.field == 'type'">
-            <span v-if="props.row.type == 'Dropbox'">{{ $t('voteByMail.topic.horizontalTable2.dropbox') }} {{ props.row.date_close }}</span>
+            <span v-if="props.row.type == 'Dropbox'">{{ $t('voteByMail.topic.horizontalTable2.dropbox') }} 11/5/2024</span>
+            <!-- <span v-if="props.row.type == 'Dropbox'">{{ $t('voteByMail.topic.horizontalTable2.dropbox') }} {{ props.row.date_close }}</span> -->
             <span v-if="props.row.type == 'Election Office'">{{$t('voteByMail.topic.horizontalTable2.electionOffice')}}</span>
             <span v-if="props.row.type == 'Satellite Election Office'">{{$t('voteByMail.topic.horizontalTable2.satelliteElectionOffice')}}</span>
           </span>
